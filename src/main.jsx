@@ -88,7 +88,7 @@ const PrimaryLayout = () => {
         propsToPass={stableProps}
         onLoad={() => setSidebarLoaded(true)}
       />
-      <div className={`${!open ? "xl:max-w-[calc(100%-80px)]" : "xl:max-w-[calc(100%-240px)]"} relative min-h-[calc(100%-80px)]! p-4 xl:p-6 pt-[104px]! w-full bg-[#F5F9FE] dark:bg-slate-800`}>
+      <div className={`${!open ? "xl:max-w-[calc(100%-80px)]" : "xl:max-w-[calc(100%-240px)]"} relative min-h-[calc(100%-80px)]! p-4 xl:p-6 pt-[104px]! w-full bg-[#F5F9FE]`}>
         {true ? (
           <ReactRouterDOM.Outlet />
         ) : (
