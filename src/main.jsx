@@ -12,7 +12,11 @@ import * as MuiIcons from "@mui/icons-material";
 import * as ReactRouterDOM from "react-router-dom";
 import * as StylesMUI from "@mui/material/styles";
 import * as ReactHotToast from "react-hot-toast";
-import { getMuiTheme } from "./theme/muiTheme.jsx";
+import { getMuiTheme } from './theme/muiTheme.jsx'
+
+
+
+
 
 const PrimaryLayout = () => {
   window.React = React;
@@ -103,18 +107,19 @@ const PrimaryLayout = () => {
 };
 
 const AppWrapper = () => {
-  return (
-    <>
+  return <>
+    <StylesMUI.ThemeProvider theme={getMuiTheme()}>
+
       <ReactRouterDOM.BrowserRouter>
         <ReactRouterDOM.Routes>
-          <ReactRouterDOM.Route path="/" element={<PrimaryLayout />}>
-            <ReactRouterDOM.Route path="/*" element={<App />} />
+          <ReactRouterDOM.Route path='/' element={<PrimaryLayout />}>
+            <ReactRouterDOM.Route path='/*' element={<App />} />
           </ReactRouterDOM.Route>
         </ReactRouterDOM.Routes>
       </ReactRouterDOM.BrowserRouter>
-    </>
-  );
-};
+    </StylesMUI.ThemeProvider>
+  </>
+}
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
