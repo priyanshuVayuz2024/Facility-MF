@@ -11,6 +11,7 @@ function App() {
     <>
       <Routes>
         <Route path='/create-facility' element={<CreateLayout />} >
+          <Route index element={<BasicDetails />} />
           <Route path='basic-details' element={<BasicDetails />} />
           <Route path='time-availability' element={<TimeAvailability />} />
           <Route path='booking-rules' element={<BookingRules />} />
