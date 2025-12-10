@@ -83,7 +83,7 @@ function Header() {
                       {item.label}
                     </div>
                   </div>
-                  <IconButton className="!p-0">
+                  <IconButton className="p-0!">
                     <img src="/icons/arrow-right.svg" />
                     {/* <LuArrowRight className="text-[#884EA7]" /> */}
                   </IconButton>

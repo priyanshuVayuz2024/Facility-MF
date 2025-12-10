@@ -25,6 +25,7 @@ import {
 } from "../../components/dummyData";
 import Status from "../../components/ui/StatusColor";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
+import BookingFilter from "./BookingFilter";
 
 function BookingListing() {
   const location = useLocation();
@@ -256,7 +257,8 @@ function BookingListing() {
           </Box>
         }
       />
-      <Header />
+      {/* <Header /> */}
+      <BookingFilter />
       <MicrofrontendLoader
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}
