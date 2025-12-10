@@ -6,6 +6,7 @@ import TimeAvailability from "./pages/createFacility/TimeAvailability";
 import BookingRules from "./pages/createFacility/BookingRules";
 import FacilityListing from "./pages/listing/FacilityListing";
 import FacilityLayout from "./components/ui/FacilityLayout";
+import BookingListing from "./pages/listing/BookingListing";
 
 function App() {
   return (
@@ -13,10 +14,10 @@ function App() {
       <Routes>
         <Route element={<FacilityLayout />}>
           <Route path="/facilities" element={<FacilityListing />} />
-          <Route path="/active_bookings" element={<FacilityListing />} />
-          <Route path="/upcoming_bookings" element={<FacilityListing />} />
-          <Route path="/rejected_bookings" element={<FacilityListing />} />
-          <Route path="/pending_bookings" element={<FacilityListing />} />
+          <Route path="/active_bookings" element={<BookingListing />} />
+          <Route path="/upcoming_bookings" element={<BookingListing />} />
+          <Route path="/rejected_bookings" element={<BookingListing />} />
+          <Route path="/pending_bookings" element={<BookingListing />} />
 
           <Route path="/create-facility" element={<CreateLayout />}>
             <Route index element={<BasicDetails />} />

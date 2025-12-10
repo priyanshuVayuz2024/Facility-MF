@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import { basePath, getPageTitle } from "../../utils";
 import { Box, Button, Checkbox, Chip } from "@mui/material";
 import {
+  LuBan,
   LuCheck,
   LuScanEye,
   LuSquare,
@@ -15,15 +16,21 @@ import {
   LuX,
 } from "react-icons/lu";
 import MicrofrontendLoader from "../../MFloader/MicroFrontendLoader";
-import { facilities, headers } from "../../components/dummyData";
+import {
+  bookingHeaders,
+  bookings,
+  facilities,
+  headers,
+} from "../../components/dummyData";
 import Status from "../../components/ui/StatusColor";
 
-function FacilityListing() {
+function BookingListing() {
   const location = useLocation();
   const pathname = location.pathname;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
   console.log(selectedIds, "selectedIds");
+
   const handleCheckboxChange = (data, isChecked) => {
     setSelectedIds((prevSelectedIds) => {
       if (isChecked) {
@@ -51,31 +58,31 @@ function FacilityListing() {
         ),
         // disabled: loadingApprovingNotice || loadingRejectingNotice,
       },
+      //   {
+      //     text: "View",
+      //     // onClick: () => navigate(`${basePath}/view_notice/${id}`),
+      //     className: "!text-[#373BB5]",
+      //     icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
+      //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+      //   },
+      //   {
+      //     text: "Edit",
+      //     // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
+      //     className: "!text-[#C4750D]",
+      //     icon: <LuSquarePen color="#C4750D" />,
+      //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+      //   },
+      //   {
+      //     text: "Approve",
+      //     className: "!text-[#36AB6C]",
+      //     icon: <LuCheck color="#36AB6C" />,
+      //     // onClick: () => handleApproveNotice(selectedIds?.[0]),
+      //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+      //   },
       {
-        text: "View",
-        // onClick: () => navigate(`${basePath}/view_notice/${id}`),
-        className: "!text-[#373BB5]",
-        icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
-        // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      },
-      {
-        text: "Edit",
-        // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
-        className: "!text-[#C4750D]",
-        icon: <LuSquarePen color="#C4750D" />,
-        // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      },
-      {
-        text: "Approve",
-        className: "!text-[#36AB6C]",
-        icon: <LuCheck color="#36AB6C" />,
-        // onClick: () => handleApproveNotice(selectedIds?.[0]),
-        // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      },
-      {
-        text: "Reject",
+        text: "Cancel",
         className: "!text-[#AB0000]",
-        icon: <LuX color="#AB0000" />,
+        icon: <LuBan color="#AB0000" />,
         // onClick: () => handleRejectNoticeModal(selectedIds?.[0]),
         // disabled: loadingApprovingNotice || loadingRejectingNotice,
       },
@@ -93,7 +100,7 @@ function FacilityListing() {
     return temp;
   };
 
-  const tableData = facilities?.map((data) => ({
+  const tableData = bookings?.map((data) => ({
     checkbox: {
       content: (
         <Checkbox
@@ -108,35 +115,65 @@ function FacilityListing() {
       id: data.id,
     },
 
+    // Facility Name (Maps to 'facilityName')
     facilityName: {
-      text: data.name,
-      link: `/facilities/view/${data.id}`,
-      outerStyle: "min-w-[260px] max-w-[260px] !whitespace-normal",
+      text: data.facilityName,
+      link: `/bookings/view/${data.id}`,
+      outerStyle: "min-w-[180px] max-w-[200px] !whitespace-normal",
       innerStyle: "line-clamp-2 text-left font-medium text-[#884EA7]",
     },
 
+    // Community (Maps to 'community')
     community: {
       text: data.community,
     },
-
-    facilityCategory: {
-      text: data.category,
+    unit: {
+      text: data?.unit,
     },
-
     status: {
-      content: <Status label={"active"} />,
+      content: <Status label={data.status} />,
+    },
+    // Start Date (New column from image)
+    startDate: {
+      text: data.startDate,
+      outerStyle: "min-w-[120px]",
     },
 
-    intercomNumber: {
-      text: data.intercom,
+    // End Date (New column from image)
+    endDate: {
+      text: data.endDate,
+      outerStyle: "min-w-[120px]",
     },
 
-    approvalNeeded: {
-      text: data.approval,
+    // Time Slot (New column from image)
+    timeSlot: {
+      text: data.timeSlot,
+      outerStyle: "min-w-[130px]",
     },
 
+    // Status (Maps to 'status')
+
+    // Chargeable (Maps to 'chargeable')
     chargeable: {
       text: data.chargeable,
+    },
+
+    // Amount Charged (New column from image, using 'amountCharged')
+    amountCharged: {
+      text: data.amountCharged,
+      outerStyle: "font-medium",
+    },
+    usageInstruction: {
+      text: data?.usageInstruction,
+    },
+    // Booking For (Maps to 'bookingFor')
+    bookingFor: {
+      text: data.bookingFor,
+    },
+
+    // Booked By (Maps to 'bookedBy')
+    bookedBy: {
+      text: data.bookedBy,
     },
 
     extraData: {
@@ -151,7 +188,7 @@ function FacilityListing() {
       //   navigate,
       //   searchParams,
       //   setSearchParams,
-      headers,
+      headers: bookingHeaders,
       tableData,
       //   loading,
       //   loadingExportNotice,
@@ -178,8 +215,17 @@ function FacilityListing() {
     <>
       <MetaTitle title={"Facility Listing"} />
       <BreadCrumbCustom
+        links={[
+          (pathname.includes("active_bookings") ||
+            pathname.includes("upcoming_bookings") ||
+            pathname.includes("rejected_bookings") ||
+            pathname.includes("pending_bookings")) && {
+            label: "Facilities",
+            to: `${basePath}/facilities`,
+          },
+        ]}
         count={"8"}
-        pageTitle={"Facilities"}
+        pageTitle={getPageTitle(pathname)}
         buttons={
           <Box className="w-full sm:!w-fit flex flex-col sm:flex-row items-center gap-4">
             <Button
@@ -213,4 +259,4 @@ function FacilityListing() {
   );
 }
 
-export default FacilityListing;
+export default BookingListing;
