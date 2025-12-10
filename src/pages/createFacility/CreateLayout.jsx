@@ -5,6 +5,7 @@ import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb.jsx";
 import { FormWrapper } from "../../components/ui/wrapper/form.jsx";
 import { basePath } from "../../utils/index.jsx";
+import { useSelector } from "react-redux";
 
 const steps = [
     { label: "Basic Details", path: "basic-details" },
@@ -15,7 +16,7 @@ const steps = [
 export default function CreateLayout() {
     const theme = useTheme();
 
-    const [completed, setCompleted] = useState([]);  // <— Shared state
+    const [completed, setCompleted] = useState([]);
 
 
     const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ export default function CreateLayout() {
     const activeStep = steps.findIndex((s) =>
         location.pathname.includes(s.path)
     );
+    const isPreviewPage = location.pathname.includes("preview");
 
 
     const goToStep = (stepIdx) => {
@@ -50,14 +52,16 @@ export default function CreateLayout() {
 
     return (
         <Box>
-            <MetaTitle title="Add Facility" />
+            <MetaTitle title={isPreviewPage ? "Preview Facilites" : "Add Facility"} />
 
             {/* Breadcrumb and Page Title */}
             <BreadCrumbCustom
                 fixed={true}
                 links={[{ label: "Facility List", to: "/" }]}
-                pageTitle="Add New Facility"
-                description="Setup facility details and booking rules."
+                pageTitle={isPreviewPage ? "Preview Facilities" : "Add New Facility"}
+                description={!isPreviewPage && "Setup facility details and booking rules."}
+                backLink={isPreviewPage && "/create-facility/booking-rules"}
+
             />
 
             {/* Loader */}
@@ -67,87 +71,86 @@ export default function CreateLayout() {
                 </div>
             ) : (
                 <FormWrapper className="flex flex-col overflow-auto!">
-
-                    {/* Stepper */}
-                    <Stepper
-                        nonLinear
-                        activeStep={activeStep}
-                        sx={{
-                            width: "fit-content",
-                            paddingX: "4px",
-                            paddingTop: "16px",
-                            paddingBottom: "32px",
-                            "& .MuiStep-root": {
-                                paddingLeft: "12px",
-                                paddingRight: "12px",
-                            },
-                            "& .MuiStepIcon-root": {
-                                color: "#EBEBEB",
-                                "&.Mui-completed": {
-                                    color: "#4caf50",
+                    {!isPreviewPage &&
+                        < Stepper
+                            nonLinear
+                            activeStep={activeStep}
+                            sx={{
+                                width: "fit-content",
+                                paddingX: "4px",
+                                paddingTop: "16px",
+                                paddingBottom: "32px",
+                                "& .MuiStep-root": {
+                                    paddingLeft: "12px",
+                                    paddingRight: "12px",
                                 },
-                                "&.Mui-active": {
-                                    // backgroundColor: "#FBF5FF",
-                                    color: "#FBF5FF",
-                                    border: "1px solid #884EA7",
-                                    borderRadius: "50%",
+                                "& .MuiStepIcon-root": {
+                                    color: "#EBEBEB",
+                                    "&.Mui-completed": {
+                                        color: "#4caf50",
+                                    },
+                                    "&.Mui-active": {
+                                        // backgroundColor: "#FBF5FF",
+                                        color: "#FBF5FF",
+                                        border: "1px solid #884EA7",
+                                        borderRadius: "50%",
+                                    },
                                 },
-                            },
-                            "& .MuiStepLabel-label": {
-                                fontSize: "16px",
-                                fontWeight: 500,
-                                color: "#ADADAD",
-                                "&.Mui-active": {
+                                "& .MuiStepLabel-label": {
+                                    fontSize: "16px",
+                                    fontWeight: 500,
+                                    color: "#ADADAD",
+                                    "&.Mui-active": {
+                                        color: "#884EA7",
+                                        fontWeight: "600",
+                                    },
+                                    "&.Mui-completed": {
+                                        color: "#121212",
+                                        fontWeight: "500",
+                                    },
+                                },
+                                "& .MuiStepLabel-iconContainer": {
+                                    paddingRight: "12px",
+                                },
+                                "& .MuiStepIcon-root.Mui-active .MuiStepIcon-text": {
                                     color: "#884EA7",
-                                    fontWeight: "600",
+                                    fill: "#884EA7",
+                                    fontWeight: 500,
                                 },
-                                "&.Mui-completed": {
-                                    color: "#121212",
-                                    fontWeight: "500",
-                                },
-                            },
-                            "& .MuiStepLabel-iconContainer": {
-                                paddingRight: "12px",
-                            },
-                            "& .MuiStepIcon-root.Mui-active .MuiStepIcon-text": {
-                                color: "#884EA7",
-                                fill: "#884EA7",
-                                fontWeight: 500,
-                            },
-                            "& .MuiStepIcon-root.Mui-active.Mui-completed": {
-                                color: "#4caf50 !important",
-                                border: "none !important",
-                                fontWeight: 500,
-                            },
-
-                            "& .MuiStepIcon-text": {
-                                // color: "#884EA7",
-                                fill: "#ADADAD",
-                            },
-                            "& .MuiStepConnector-lineHorizontal": {
-                                width: "4px",
-
-                                [theme.breakpoints.up("sm")]: {
-                                    width: "90px",
+                                "& .MuiStepIcon-root.Mui-active.Mui-completed": {
+                                    color: "#4caf50 !important",
+                                    border: "none !important",
+                                    fontWeight: 500,
                                 },
 
-                                [theme.breakpoints.up("md")]: {
-                                    width: "121px",
+                                "& .MuiStepIcon-text": {
+                                    // color: "#884EA7",
+                                    fill: "#ADADAD",
                                 },
-                            },
-                        }}
-                    >
-                        {steps.map((s, index) => (
-                            <Step key={s.label} completed={completed.includes(index)}>
-                                <StepButton
-                                    disabled={!(completed.includes(index) || index <= activeStep)}
-                                    onClick={() => handleStepClick(index)}
-                                >
-                                    {s.label}
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
+                                "& .MuiStepConnector-lineHorizontal": {
+                                    width: "4px",
+
+                                    [theme.breakpoints.up("sm")]: {
+                                        width: "90px",
+                                    },
+
+                                    [theme.breakpoints.up("md")]: {
+                                        width: "121px",
+                                    },
+                                },
+                            }}
+                        >
+                            {steps.map((s, index) => (
+                                <Step key={s.label} completed={completed.includes(index)}>
+                                    <StepButton
+                                        disabled={!(completed.includes(index) || index <= activeStep)}
+                                        onClick={() => handleStepClick(index)}
+                                    >
+                                        {s.label}
+                                    </StepButton>
+                                </Step>
+                            ))}
+                        </Stepper>}
 
                     {/* Here the 3 step screens will render */}
                     <Outlet
@@ -160,7 +163,8 @@ export default function CreateLayout() {
                         }}
                     />
                 </FormWrapper>
-            )}
-        </Box>
+            )
+            }
+        </Box >
     );
 }

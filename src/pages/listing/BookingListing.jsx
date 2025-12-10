@@ -115,7 +115,7 @@ function BookingListing() {
     checkbox: {
       content: (
         <Checkbox
-          className="!text-[#121212]"
+          className="text-[#121212]!"
           disabled={false}
           checked={selectedIds?.some(
             (selectedId) => selectedId?.id == data?.id
@@ -261,9 +261,8 @@ function BookingListing() {
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}
         scriptUrl={
-          `${
-            localStorage.getItem(`noticeBoardMF-tableBundle`) ||
-            "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
+          `${localStorage.getItem(`noticeBoardMF-tableBundle`) ||
+          "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
           }` + `?date=${Date.now()}`
         }
         globalVarName="reusableTable"
