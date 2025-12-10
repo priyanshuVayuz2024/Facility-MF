@@ -9,6 +9,8 @@ import FacilityLayout from "./components/ui/FacilityLayout";
 import BookingListing from "./pages/listing/BookingListing";
 import { Provider } from "react-redux";
 import FacilityPreview from "./pages/createFacility/PreviewFacility";
+import BookingCreateLayout from "./pages/createBooking/BookingCreateLayout";
+import BookingDetail from "./pages/createBooking/BookingDetail";
 
 function App() {
   const store = window.sharedStore;
@@ -29,8 +31,14 @@ function App() {
               <Route path="basic-details" element={<BasicDetails />} />
               <Route path="time-availability" element={<TimeAvailability />} />
               <Route path="booking-rules" element={<BookingRules />} />
-              <Route path="preview-facility" element={<FacilityPreview />} />
+              <Route path="preview" element={<FacilityPreview />} />
             </Route>
+            <Route path="/create-booking" element={<BookingCreateLayout />}>
+              <Route index element={<BookingDetail />} />
+              <Route path="details" element={<BookingDetail />} />
+              {/* <Route path="preview" element={<BookingPreview />} /> */}
+            </Route>
+
           </Route>
         </Routes>
       </Provider>

@@ -72,7 +72,7 @@ export default function BookingRules() {
 
     const onSubmit = (data) => {
         dispatch(setMultipleFacilityFormFields(data));
-        navigate(`${basePath}/create-facility/preview-facility`);
+        navigate(`${basePath}/create-facility/preview`);
     };
 
     return (
@@ -358,6 +358,8 @@ export default function BookingRules() {
                 title="Confirm Cancellation"
                 description="Are you sure you want to cancel? Any changes will be lost."
                 confirmTextClassName="!bg-[#884EA7]"
+                cancelText="No, Keep It"
+                confirmText="Yes, Cancel"
                 icon={<img src={crossIcon} className="w-28" />}
             />
         </FormWrapper>
