@@ -4,7 +4,7 @@ import CreateLayout from "./pages/createFacility/createLayout";
 import BasicDetails from "./pages/createFacility/BasicDetails";
 import TimeAvailability from "./pages/createFacility/TimeAvailability";
 import BookingRules from "./pages/createFacility/BookingRules";
-import FacilityListing from "./pages/listing";
+import FacilityListing from "./pages/listing/FacilityListing";
 import FacilityLayout from "./components/ui/FacilityLayout";
 
 function App() {
