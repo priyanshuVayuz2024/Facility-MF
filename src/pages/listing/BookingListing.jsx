@@ -5,6 +5,7 @@ import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
 import { Link, useLocation } from "react-router-dom";
 import { basePath, getPageTitle } from "../../utils";
 import { Box, Button, Checkbox, Chip } from "@mui/material";
+import cancelBookingAnimation from "../../assets/animations/cancelBookings.json";
 import {
   LuBan,
   LuCheck,
@@ -241,9 +242,9 @@ function BookingListing() {
         count={"8"}
         pageTitle={getPageTitle(pathname)}
         buttons={
-          <Box className="w-full sm:!w-fit flex flex-col sm:flex-row items-center gap-4">
+          <Box className="w-full sm:w-fit! flex flex-col sm:flex-row items-center gap-4">
             <Button
-              className="w-full sm:!w-fit !px-6 !py-3 !min-w-[182px] h-10 font-medium text-sm !leading-4"
+              className="w-full sm:w-fit! px-6! py-3! min-w-[182px]! h-10 font-medium text-sm leading-4!"
               sx={{ textTransform: "none" }}
               LinkComponent={Link}
               to={`${basePath}/create-facility/basic-details`}
@@ -279,9 +280,10 @@ function BookingListing() {
         confirmText="Yes, Cancel All"
         cancelText="No, Keep It"
         color="error"
-        icon={
-          <img src="https://d18aratlqkym29.cloudfront.net/assets/warning.svg" />
-        }
+        // icon={
+        //   <img src="https://d18aratlqkym29.cloudfront.net/assets/warning.svg" />
+        // }
+        animation={cancelBookingAnimation}
       />
     </>
   );
