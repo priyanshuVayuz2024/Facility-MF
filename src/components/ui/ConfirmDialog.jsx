@@ -53,21 +53,28 @@ const ConfirmDialog = ({
           <div className="flex justify-center items-center">{icon}</div>
         </DialogTitle>
       )}
-      <DialogContent className="flex flex-col gap-3">
-        <h4 className="text-[28px]! font-medium! !text[#121212] leading-8!" align="center">
+      <DialogContent Content className="flex flex-col gap-3">
+        <h4
+          className="text-[28px]! font-medium! !text[#121212] leading-8!"
+          align="center"
+        >
           {title}
         </h4>
-        <DialogContentText className="text-[#4D4D4F]! leading-5!" align="center">
-          {breakSentencesToLines(description)}
+        <DialogContentText
+          className="text-[#4D4D4F]! leading-5!"
+          align="center"
+        >
+          {description}
         </DialogContentText>
       </DialogContent>
       <DialogActions className="p-4! flex justify-end gap-2">
         {cancelText && (
           <Button
-            className={`${cancelTextClassName
-              ? cancelTextClassName
-              : "bg-[#EBEBEB]! text-[#121212]!"
-              } px-6! py-3! leading-4!`}
+            className={`${
+              cancelTextClassName
+                ? cancelTextClassName
+                : "bg-[#EBEBEB]! text-[#121212]!"
+            } px-6! py-3! leading-4!`}
             disabled={loading}
             onClick={onClose}
           >
@@ -76,21 +83,24 @@ const ConfirmDialog = ({
         )}
         {confirmText && (
           <Button
-            className={`${confirmTextClassName ? confirmTextClassName : "bg-[#AB0000]!"
-              } px-6! py-3! leading-4!`}
+            className={`${
+              confirmTextClassName ? confirmTextClassName : "bg-[#AB0000]!"
+            } px-6! py-3! leading-4!`}
             disabled={loading}
             onClick={onConfirm}
             color={color}
             variant="contained"
             loading={confirmTextClassName ? loading : false}
           >
-            {!confirmTextClassName ? loading ? (
-              <CircularProgress size={20} sx={{ color: "#FFFFFF" }} />
+            {!confirmTextClassName ? (
+              loading ? (
+                <CircularProgress size={20} sx={{ color: "#FFFFFF" }} />
+              ) : (
+                confirmText
+              )
             ) : (
               confirmText
-            ) :
-              confirmText
-            }
+            )}
           </Button>
         )}
       </DialogActions>

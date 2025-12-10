@@ -23,12 +23,14 @@ import {
   headers,
 } from "../../components/dummyData";
 import Status from "../../components/ui/StatusColor";
+import ConfirmDialog from "../../components/ui/ConfirmDialog";
 
 function BookingListing() {
   const location = useLocation();
   const pathname = location.pathname;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [cancelBookingDialog, setCancelBookingDialog] = useState(false);
   console.log(selectedIds, "selectedIds");
 
   const handleCheckboxChange = (data, isChecked) => {
@@ -46,7 +48,7 @@ function BookingListing() {
     let temp = [
       {
         text: "De-select",
-        // onClick: () => setSelectedIds([]),
+        onClick: () => setSelectedIds([]),
         className: "!text-[#4D4D4F]",
         icon: (
           <LuSquareMinus
@@ -58,46 +60,54 @@ function BookingListing() {
         ),
         // disabled: loadingApprovingNotice || loadingRejectingNotice,
       },
-      //   {
-      //     text: "View",
-      //     // onClick: () => navigate(`${basePath}/view_notice/${id}`),
-      //     className: "!text-[#373BB5]",
-      //     icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
-      //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      //   },
-      //   {
-      //     text: "Edit",
-      //     // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
-      //     className: "!text-[#C4750D]",
-      //     icon: <LuSquarePen color="#C4750D" />,
-      //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      //   },
-      //   {
-      //     text: "Approve",
-      //     className: "!text-[#36AB6C]",
-      //     icon: <LuCheck color="#36AB6C" />,
-      //     // onClick: () => handleApproveNotice(selectedIds?.[0]),
-      //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      //   },
-      {
+    ];
+
+    //   {
+    //     text: "View",
+    //     // onClick: () => navigate(`${basePath}/view_notice/${id}`),
+    //     className: "!text-[#373BB5]",
+    //     icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
+    //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+    //   },
+    //   {
+    //     text: "Edit",
+    //     // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
+    //     className: "!text-[#C4750D]",
+    //     icon: <LuSquarePen color="#C4750D" />,
+    //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+    //   },
+    //   {
+    //     text: "Approve",
+    //     className: "!text-[#36AB6C]",
+    //     icon: <LuCheck color="#36AB6C" />,
+    //     // onClick: () => handleApproveNotice(selectedIds?.[0]),
+    //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+    //   },
+    if (selectedIds.length > 0) {
+      temp.push({
         text: "Cancel",
         className: "!text-[#AB0000]",
         icon: <LuBan color="#AB0000" />,
-        // onClick: () => handleRejectNoticeModal(selectedIds?.[0]),
-        // disabled: loadingApprovingNotice || loadingRejectingNotice,
-      },
-      {
-        text: "Select",
-        // onClick: () => setSelectedIds([...listings]),
-        className: "!text-[#4D4D4F]",
-        icon: <LuSquare className="-mr-[2.5px]" size={22} color="#121212" />,
-        //     disabled:
-        //       loadingApprovingNotice ||
-        //       loadingRejectingNotice ||
-        //       loadingPermissions,
-      },
-    ];
-    return temp;
+        onClick: () => handleCancelBooking(),
+      });
+    }
+
+    if (selectedIds?.length > 0) {
+      return temp;
+    } else {
+      return [
+        {
+          text: "Select",
+          onClick: () => setSelectedIds([...bookings]),
+          className: "!text-[#4D4D4F]",
+          icon: <LuSquare className="-mr-[2.5px]" size={22} color="#121212" />,
+          //     disabled:
+          //       loadingApprovingNotice ||
+          //       loadingRejectingNotice ||
+          //       loadingPermissions,
+        },
+      ];
+    }
   };
 
   const tableData = bookings?.map((data) => ({
@@ -211,6 +221,10 @@ function BookingListing() {
     }
   }, [staticProps, tableData]);
 
+  const handleCancelBooking = () => {
+    setCancelBookingDialog(true);
+  };
+
   return (
     <>
       <MetaTitle title={"Facility Listing"} />
@@ -254,6 +268,20 @@ function BookingListing() {
         globalVarName="reusableTable"
         mountDivId="reusableTable"
         propsToPass={staticProps}
+      />
+      <ConfirmDialog
+        open={cancelBookingDialog}
+        onClose={() => setCancelBookingDialog(false)}
+        onConfirm={() => handleCancelBooking()}
+        // loading={loadingRejectingNotice}
+        title="Cancel All Booking"
+        description="Once cancelled, this booking cannot be restored. You will need to create a new booking if you wish to proceed again."
+        confirmText="Yes, Cancel All"
+        cancelText="No, Keep It"
+        color="error"
+        icon={
+          <img src="https://d18aratlqkym29.cloudfront.net/assets/warning.svg" />
+        }
       />
     </>
   );
