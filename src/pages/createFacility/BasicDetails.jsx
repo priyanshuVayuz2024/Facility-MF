@@ -21,8 +21,16 @@ import { basePath, stripHtml } from "../../utils/index.jsx";
 import { LuBuilding } from "react-icons/lu";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import { facilityBasicDetailsSchema } from "../../validation/facilitySchema.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setMultipleFacilityFormFields } from "../../redux/slice/facilityCreateSlice.js";
 
 export default function BasicDetails() {
+    const dispatch = useDispatch();
+    const facilityFormData = useSelector(state => state.facility);
+
+
+
+
     const navigate = useNavigate();
     const { setCompleted, goToStep } = useOutletContext();
     const stepIndex = 0;
@@ -38,14 +46,7 @@ export default function BasicDetails() {
         trigger,
         formState: { errors, isValid },
     } = useForm({
-        defaultValues: {
-            facilityName: "",
-            category: null,
-            community: [],
-            accessibleTo: null,
-            intercom: "",
-            instructions: "",
-        },
+        defaultValues: facilityFormData,
         resolver: yupResolver(facilityBasicDetailsSchema),
         mode: "onChange",
     });
@@ -90,7 +91,10 @@ export default function BasicDetails() {
 
 
 
-    const onSubmit = () => goToStep(stepIndex + 1);
+    const onSubmit = (data) => {
+        dispatch(setMultipleFacilityFormFields(data));
+        goToStep(stepIndex + 1)
+    };
 
 
     useEffect(() => {

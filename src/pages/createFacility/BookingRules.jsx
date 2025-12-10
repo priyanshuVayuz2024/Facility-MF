@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {
     Box,
     Button,
@@ -10,7 +10,7 @@ import {
     Autocomplete,
     Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -19,6 +19,8 @@ import { basePath } from "../../utils";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import { facilityBookingSchema } from "../../validation/facilitySchema";
+import { useDispatch, useSelector } from "react-redux";
+import { setMultipleFacilityFormFields } from "../../redux/slice/facilityCreateSlice";
 
 // Dropdown Data
 const chargeTypeGroupOptions = [
@@ -33,6 +35,10 @@ const chargeCategoryOptions = [
 ];
 
 export default function BookingRules() {
+    const dispatch = useDispatch();
+    const facilityFormData = useSelector(state => state.facility);
+
+
     const navigate = useNavigate();
     const { setCompleted, goToStep } = useOutletContext();
     const stepIndex = 2;
@@ -45,17 +51,7 @@ export default function BookingRules() {
         handleSubmit,
         formState: { errors, isValid },
     } = useForm({
-        defaultValues: {
-            adminApproval: false,
-            chargeable: false,
-            chargeTypeGroup: null,
-            chargeCategory: null,
-            dueDatePolicy: "",
-            bookingQuota: "",
-            maxBookingPerSlot: "",
-            bookingTimeLimit: "",
-            advanceBookingLimit: "",
-        },
+        defaultValues: facilityFormData,
         resolver: yupResolver(facilityBookingSchema),
         mode: "onChange",
     });
@@ -74,8 +70,13 @@ export default function BookingRules() {
         }
     }, [isValid]);
 
-    const onSubmit = () => navigate("/create-facility/preview"); // final submit
+    const onSubmit = (data) => {
+        dispatch(setMultipleFacilityFormFields(data));
+        navigate(`${basePath}/create-facility/preview-facility`);
+    };
+
     return (
+
         <FormWrapper className="flex flex-col gap-8 overflow-auto! border-0!">
 
             {/* Booking Approval & Charges */}

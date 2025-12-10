@@ -21,6 +21,8 @@ import SelectorPopup from "../../components/ui/selectorPopup";
 import { basePath, weekDaysOptions } from "../../utils";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import { facilityTimeSchema } from "../../validation/facilitySchema";
+import { useDispatch, useSelector } from "react-redux";
+import { setMultipleFacilityFormFields } from "../../redux/slice/facilityCreateSlice";
 
 const timeOptions = Array.from({ length: 24 }, (_, h) =>
     ["00", "15", "30", "45"].map((m) => `${String(h).padStart(2, "0")}:${m}`)
@@ -30,6 +32,10 @@ const reverseTimeOptions = [...timeOptions].reverse();
 
 
 export default function TimeAvailability() {
+    const dispatch = useDispatch();
+    const facilityFormData = useSelector(state => state.facility);
+
+
     const navigate = useNavigate();
     const { setCompleted, goToStep } = useOutletContext();
     const stepIndex = 1;
@@ -45,14 +51,7 @@ export default function TimeAvailability() {
         trigger,
         formState: { errors, isValid },
     } = useForm({
-        defaultValues: {
-            blockedDays: [],
-            operatingHours: false,
-            opensAt: "",
-            closesAt: "",
-            fixedSlot: false,
-            slots: [],
-        },
+        defaultValues: facilityFormData,
         resolver: yupResolver(facilityTimeSchema),
         mode: "onChange",
     });
@@ -77,9 +76,9 @@ export default function TimeAvailability() {
     };
 
     const displayDaysText =
-        blockedDays.length === 7
+        blockedDays?.length == 7
             ? "All 7 Days"
-            : blockedDays.length > 0
+            : blockedDays?.length > 0
                 ? `${blockedDays.length} Selected`
                 : "Choose Days";
 
@@ -95,8 +94,10 @@ export default function TimeAvailability() {
         }
     }, [isValid]);
 
-    const onSubmit = () => goToStep(stepIndex + 1);
-    return (
+    const onSubmit = (data) => {
+        dispatch(setMultipleFacilityFormFields(data));
+        goToStep(stepIndex + 1);
+    }; return (
         <FormWrapper className="flex flex-col gap-8 border-0!">
 
             {/* Week Days */}

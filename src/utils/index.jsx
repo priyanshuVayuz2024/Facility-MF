@@ -59,3 +59,30 @@ export const weekDaysOptions = [
   { id: 6, name: "Saturday" },
   { id: 7, name: "Sunday" },
 ];
+
+
+
+
+export function convertDateFormat(dateStr) {
+  if (!dateStr) return null;
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const [day, month, year] = dateStr.split("/");
+
+  const monthName = months[parseInt(month, 10) - 1];
+
+  return `${day}-${monthName}-${year}`;
+}

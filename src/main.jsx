@@ -13,6 +13,9 @@ import * as ReactRouterDOM from "react-router-dom";
 import * as StylesMUI from "@mui/material/styles";
 import * as ReactHotToast from "react-hot-toast";
 import { getMuiTheme } from './theme/muiTheme.jsx'
+import { Provider } from "react-redux";
+import store from "./redux/store.js";
+import facilityCreateSlice from './redux/slice/facilityCreateSlice.js';
 
 
 
@@ -89,9 +92,8 @@ const PrimaryLayout = () => {
           onLoad={() => setSidebarLoaded(true)}
         />
         <div
-          className={`${
-            !open ? "xl:max-w-[calc(100%-80px)]" : "xl:max-w-[calc(100%-240px)]"
-          } relative min-h-[calc(100%-80px)]! p-4 xl:p-6 pt-[104px]! w-full bg-[#F5F9FE]`}
+          className={`${!open ? "xl:max-w-[calc(100%-80px)]" : "xl:max-w-[calc(100%-240px)]"
+            } relative min-h-[calc(100%-80px)]! p-4 xl:p-6 pt-[104px]! w-full bg-[#F5F9FE]`}
         >
           {true ? (
             <ReactRouterDOM.Outlet />
@@ -106,20 +108,59 @@ const PrimaryLayout = () => {
   );
 };
 
-const AppWrapper = () => {
-  return <>
-    <StylesMUI.ThemeProvider theme={getMuiTheme()}>
 
-      <ReactRouterDOM.BrowserRouter>
+
+const WrapperInner = () => {
+
+  const [storeReady, setStoreReady] = useState(false);
+
+  useEffect(() => {
+    if (window.sharedStore?.reducerManager?.add) {
+      window.sharedStore.reducerManager.add("facility", facilityCreateSlice);
+      // window.sharedStore.reducerManager.add("notice", noticeSlice);
+      // window.sharedStore.reducerManager.add("templates", templateSlice);
+      // window.sharedStore.reducerManager.add("meta", metaSlice);
+
+      window.sharedStore.replaceReducer(window.sharedStore.reducerManager.reduce);
+
+      setStoreReady(true);
+    } else {
+      // console.log("Waiting for store setup...");
+    }
+  }, []); // Run this effect only once on mount
+
+  if (!storeReady) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+  return <>
+    <ReactRouterDOM.BrowserRouter>
+      <Provider store={store}>
         <ReactRouterDOM.Routes>
           <ReactRouterDOM.Route path='/' element={<PrimaryLayout />}>
             <ReactRouterDOM.Route path='/*' element={<App />} />
           </ReactRouterDOM.Route>
         </ReactRouterDOM.Routes>
-      </ReactRouterDOM.BrowserRouter>
+      </Provider>
+    </ReactRouterDOM.BrowserRouter>
+  </>
+}
+
+
+
+const AppWrapper = () => {
+  return <>
+    <StylesMUI.ThemeProvider theme={getMuiTheme()}>
+      <MaterialUI.CssBaseline />
+      <WrapperInner />
+
     </StylesMUI.ThemeProvider>
   </>
 }
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
