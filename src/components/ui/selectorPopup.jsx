@@ -75,6 +75,9 @@ const SelectorPopup = ({
   rightHeader = "Details",
   initialSelection = [],
   options = [],
+  searchPlaceholderLeft = "Search Communities",
+  searchPlaceholderRight = "Search Block or Unit",
+  hideSearch
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="100%" fullWidth>
@@ -88,6 +91,9 @@ const SelectorPopup = ({
           onSave={onSave}
           initialSelection={initialSelection}
           options={options}
+          searchPlaceholderLeft={searchPlaceholderLeft}
+          searchPlaceholderRight={searchPlaceholderRight}
+          hideSearch={hideSearch}
         />
       </DialogContent>
     </Dialog>
@@ -113,6 +119,9 @@ export const MainFilter = ({
   closeButton = true,
   containerClassName,
   noDataMsg,
+  searchPlaceholderLeft,
+  searchPlaceholderRight,
+  hideSearch
 }) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -381,10 +390,10 @@ export const MainFilter = ({
             )}
           </div>
           {/* {!readOnly && ( */}
-          <TextField
+          {!hideSearch && <TextField
             fullWidth
             size="small"
-            placeholder="Search Communities"
+            placeholder={searchPlaceholderLeft}
             value={searchInput}
             onChange={(e) => {
               const input = e.target.value;
@@ -428,7 +437,7 @@ export const MainFilter = ({
                 ),
               }
             }
-          />
+          />}
         </DialogTitle>
         {/* )} */}
         <div className="flex-1 overflow-y-auto">
@@ -461,7 +470,7 @@ export const MainFilter = ({
                   primary={
                     <div className={`${!readOnly && "ps-3"} flex justify-between items-center`}>
                       <h4 className="text-[16px] text-[#121212]">
-                        All Communities
+                        All
                       </h4>
                     </div>
                   }
@@ -479,8 +488,8 @@ export const MainFilter = ({
                     // updateSelection(opt.id, null, null, !isChecked(opt.id));
                   }}
                   className={`rounded-md cursor-pointer transition-all ${activeOptionId === opt.id
-                      ? "bg-[#FBF5FF] text-[#884EA7]"
-                      : ""
+                    ? "bg-[#FBF5FF] text-[#884EA7]"
+                    : ""
                     } p-6! rounded-none hover:bg-[#FBF5FF]!`}
                 >
                   {!readOnly && (
@@ -547,11 +556,11 @@ export const MainFilter = ({
               </button>
             )}
           </div>
-          {activeOptionId && (
+          {activeOptionId && !hideSearch && (
             <TextField
               fullWidth
               size="small"
-              placeholder="Search Block or Unit"
+              placeholder={searchPlaceholderRight}
               value={rightSearchInput}
               onChange={(e) => {
                 const input = e.target.value;

@@ -15,6 +15,9 @@ const steps = [
 export default function CreateLayout() {
     const theme = useTheme();
 
+    const [completed, setCompleted] = useState([]);  // <— Shared state
+
+
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -24,8 +27,16 @@ export default function CreateLayout() {
         location.pathname.includes(s.path)
     );
 
-    const handleStepClick = (path) => {
-        navigate(`/create-facility/${path}`);
+
+    const goToStep = (stepIdx) => {
+        navigate(`/create-facility/${steps[stepIdx].path}`);
+    };
+
+    const handleStepClick = (idx) => {
+        // allow only previous or completed steps
+        if (completed.includes(idx) || idx <= activeStep) {
+            goToStep(idx);
+        }
     };
 
 
@@ -126,17 +137,28 @@ export default function CreateLayout() {
                             },
                         }}
                     >
-                        {steps.map((step) => (
-                            <Step key={step.label}>
-                                <StepButton onClick={() => handleStepClick(step.path)}>
-                                    {step.label}
+                        {steps.map((s, index) => (
+                            <Step key={s.label} completed={completed.includes(index)}>
+                                <StepButton
+                                    disabled={!(completed.includes(index) || index <= activeStep)}
+                                    onClick={() => handleStepClick(index)}
+                                >
+                                    {s.label}
                                 </StepButton>
                             </Step>
                         ))}
                     </Stepper>
 
                     {/* Here the 3 step screens will render */}
-                    <Outlet />
+                    <Outlet
+                        context={{
+                            activeStep,
+                            completed,
+                            setCompleted,
+                            setActiveStep: (step) => goToStep(step),
+                            goToStep,
+                        }}
+                    />
                 </FormWrapper>
             )}
         </Box>

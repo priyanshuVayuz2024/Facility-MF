@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import {
     Box,
     Button,
@@ -24,6 +24,8 @@ import { facilityBasicDetailsSchema } from "../../validation/facilitySchema.js";
 
 export default function BasicDetails() {
     const navigate = useNavigate();
+    const { setCompleted, goToStep } = useOutletContext();
+    const stepIndex = 0;
 
     const [popupOpen, setPopupOpen] = useState(false);
     const [cancelDialog, setCancelDialog] = useState(false);
@@ -71,9 +73,25 @@ export default function BasicDetails() {
         setPopupOpen(false);
     };
 
-    const onSubmit = () => {
-        navigate("/create-facility/time-availability");
-    };
+
+
+    useEffect(() => {
+        goToStep(stepIndex);
+    }, []);
+
+    useEffect(() => {
+        if (isValid) {
+            setCompleted((prev) => [...new Set([...prev, stepIndex])]);
+        } else {
+            setCompleted((prev) => prev.filter((s) => s !== stepIndex));
+        }
+    }, [isValid]);
+
+
+
+
+    const onSubmit = () => goToStep(stepIndex + 1);
+
 
     useEffect(() => {
         console.log("Form Valid:", isValid);
@@ -82,7 +100,7 @@ export default function BasicDetails() {
 
 
     return (
-        <FormWrapper className="flex flex-col gap-8 overflow-auto!">
+        <FormWrapper className="flex flex-col gap-8 overflow-auto! border-0!">
 
             {/* Facility Name */}
             <Controller

@@ -54,7 +54,7 @@ function FacilityListing() {
         text: "View",
         // onClick: () => navigate(`${basePath}/view_notice/${id}`),
         className: "!text-[#373BB5]",
-        icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
+        icon: <LuScanEye className="text-[#373BB5]!" color="#373BB5" />,
         // disabled: loadingApprovingNotice || loadingRejectingNotice,
       },
       {
@@ -96,7 +96,7 @@ function FacilityListing() {
     checkbox: {
       content: (
         <Checkbox
-          className="!text-[#121212]"
+          className="text-[#121212]!"
           disabled={false}
           checked={selectedIds?.some(
             (selectedId) => selectedId?.id == data?.id
@@ -172,7 +172,7 @@ function FacilityListing() {
       tableRef.current.updateProps(staticProps); // ✅ sending plain functions
     }
   }, [staticProps, tableData]);
-  
+
   return (
     <>
       <MetaTitle title={"Facility Listing"} />
@@ -188,17 +188,17 @@ function FacilityListing() {
         ]}
         count={
           pathname.includes("active_bookings") ||
-          pathname.includes("upcoming_bookings") ||
-          pathname.includes("rejected_bookings") ||
-          pathname.includes("pending_bookings")
+            pathname.includes("upcoming_bookings") ||
+            pathname.includes("rejected_bookings") ||
+            pathname.includes("pending_bookings")
             ? "8"
             : null
         }
         pageTitle={getPageTitle(pathname)}
         buttons={
-          <Box className="w-full sm:!w-fit flex flex-col sm:flex-row items-center gap-4">
+          <Box className="w-full sm:w-fit! flex flex-col sm:flex-row items-center gap-4">
             <Button
-              className="w-full sm:!w-fit !px-6 !py-3 !min-w-[182px] h-10 font-medium text-sm !leading-4"
+              className="w-full sm:w-fit! px-6! py-3! min-w-[182px]! h-10 font-medium text-sm leading-4!"
               sx={{ textTransform: "none" }}
               LinkComponent={Link}
               to={`${basePath}/create-facility/basic-details`}
@@ -215,9 +215,8 @@ function FacilityListing() {
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}
         scriptUrl={
-          `${
-            localStorage.getItem(`noticeBoardMF-tableBundle`) ||
-            "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
+          `${localStorage.getItem(`noticeBoardMF-tableBundle`) ||
+          "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
           }` + `?date=${Date.now()}`
         }
         globalVarName="reusableTable"
