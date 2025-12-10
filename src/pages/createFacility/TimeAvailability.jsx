@@ -11,6 +11,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FormWrapper } from "../../components/ui/wrapper/form";
+import ConfirmDialog from "../../components/ui/ConfirmDialog";
+import { basePath } from "../../utils";
+import crossIcon from "../../../public/icons/crossIcon.svg"
 
 export default function TimeAvailability() {
     const navigate = useNavigate();
@@ -18,6 +21,7 @@ export default function TimeAvailability() {
     const [blockedDays, setBlockedDays] = useState([]);
     const [operatingHours, setOperatingHours] = useState(false);
     const [fixedSlot, setFixedSlot] = useState(false);
+    const [cancelDialog, setCancelDialog] = useState(false);
 
     const weekDaysOptions = [
         { label: "Monday" },
@@ -120,7 +124,7 @@ export default function TimeAvailability() {
             <div className="flex flex-col justify-between sm:flex-row border-t border-[#EDEDED] pt-4">
                 <Button
                     variant="outlined"
-                    onClick={() => navigate("/")}
+                    onClick={() => setCancelDialog(true)}
                 >
                     Cancel
                 </Button>
@@ -140,6 +144,30 @@ export default function TimeAvailability() {
                         Next
                     </Button>
                 </div>
+
+
+
+
+
+                <ConfirmDialog
+                    open={cancelDialog}
+                    onClose={() => setCancelDialog(false)}
+                    onConfirm={() => {
+                        navigate(`${basePath}/`)
+                        setCancelDialog(false)
+                    }
+                    }
+                    title="Confirm Cancellation"
+                    description="Are you sure you want to cancel? Any changes made will be lost and cannot be recovered."
+                    cancelText={"No, Keep It"}
+                    confirmText={"Yes, Cancel"}
+                    confirmTextClassName={"!bg-[#884EA7]"}
+                    icon={
+                        <span className="py-2">
+                            <img src={crossIcon} className="w-28" alt="" />
+                        </span>
+                    }
+                />
             </div>
         </FormWrapper>
     );

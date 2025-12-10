@@ -9,12 +9,16 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { FormWrapper } from "../../components/ui/wrapper/form";
+import { basePath } from "../../utils";
+import crossIcon from "../../../public/icons/crossIcon.svg"
+import ConfirmDialog from "../../components/ui/ConfirmDialog";
 
 export default function BookingRules() {
     const navigate = useNavigate();
 
     const [adminApproval, setAdminApproval] = useState(false);
     const [chargeable, setChargeable] = useState(false);
+    const [cancelDialog, setCancelDialog] = useState(false);
 
     return (
         <FormWrapper className="flex flex-col gap-8 overflow-auto!">
@@ -132,7 +136,7 @@ export default function BookingRules() {
             <div className="flex flex-col justify-between sm:flex-row border-t border-[#EDEDED] pt-4">
                 <Button
                     variant="outlined"
-                    onClick={() => navigate("/")}
+                    onClick={() => setCancelDialog(true)}
                 >
                     Cancel
                 </Button>
@@ -149,6 +153,30 @@ export default function BookingRules() {
                         Save & Preview
                     </Button>
                 </div>
+
+
+
+                <ConfirmDialog
+                    open={cancelDialog}
+                    onClose={() => setCancelDialog(false)}
+                    onConfirm={() => {
+                        navigate(`${basePath}/`)
+                        setCancelDialog(false)
+                    }
+                    }
+                    title="Confirm Cancellation"
+                    description="Are you sure you want to cancel? Any changes made will be lost and cannot be recovered."
+                    cancelText={"No, Keep It"}
+                    confirmText={"Yes, Cancel"}
+                    confirmTextClassName={"!bg-[#884EA7]"}
+                    icon={
+                        <span className="py-2">
+                            <img src={crossIcon} className="w-28" alt="" />
+                        </span>
+                    }
+                />
+
+
             </div>
 
         </FormWrapper>
