@@ -15,6 +15,7 @@ import BookingConfirmation from "./pages/createBooking/BookingConfirmation";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import BookingPreview from "./pages/createBooking/BookingPreview";
+import FacilityDetail from "./pages/facilityDetail";
 
 function App() {
   const store = window.sharedStore;
@@ -30,11 +31,15 @@ function App() {
               <Route path="/upcoming_bookings" element={<BookingListing />} />
               <Route path="/rejected_bookings" element={<BookingListing />} />
               <Route path="/pending_bookings" element={<BookingListing />} />
+              <Route path="/facility/:id" element={<FacilityDetail />} />
 
               <Route path="/create-facility" element={<CreateLayout />}>
                 <Route index element={<BasicDetails />} />
                 <Route path="basic-details" element={<BasicDetails />} />
-                <Route path="time-availability" element={<TimeAvailability />} />
+                <Route
+                  path="time-availability"
+                  element={<TimeAvailability />}
+                />
                 <Route path="booking-rules" element={<BookingRules />} />
                 <Route path="preview" element={<FacilityPreview />} />
               </Route>
@@ -44,12 +49,10 @@ function App() {
                 <Route path="confirmation" element={<BookingConfirmation />} />
                 <Route path="preview" element={<BookingPreview />} />
               </Route>
-
             </Route>
           </Routes>
         </Provider>
       </LocalizationProvider>
-
     </>
   );
 }

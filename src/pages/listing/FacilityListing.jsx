@@ -126,7 +126,7 @@ function FacilityListing() {
 
     facilityName: {
       text: data.name,
-      link: `/facilities/view/${data.id}`,
+      link: `/facility/${data.id}`,
       outerStyle: "min-w-[260px] max-w-[260px] !whitespace-normal",
       innerStyle: "line-clamp-2 text-left font-medium text-[#884EA7]",
     },
@@ -171,7 +171,7 @@ function FacilityListing() {
       tableData,
       //   loading,
       //   loadingExportNotice,
-      totalLength: "50",
+      // totalLength: "50",
       //   tileCardData: cardData,
       enableGlobalSearch: true,
       actionMenu: getActionMenu,
@@ -216,8 +216,9 @@ function FacilityListing() {
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}
         scriptUrl={
-          `${localStorage.getItem(`noticeBoardMF-tableBundle`) ||
-          "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
+          `${
+            localStorage.getItem(`noticeBoardMF-tableBundle`) ||
+            "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
           }` + `?date=${Date.now()}`
         }
         globalVarName="reusableTable"
