@@ -16,6 +16,7 @@ import { getMuiTheme } from './theme/muiTheme.jsx'
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import facilityCreateSlice from './redux/slice/facilityCreateSlice.js';
+import bookingCreateSlice from './redux/slice/bookingCreateSlice.js';
 
 
 
@@ -117,6 +118,7 @@ const WrapperInner = () => {
   useEffect(() => {
     if (window.sharedStore?.reducerManager?.add) {
       window.sharedStore.reducerManager.add("facility", facilityCreateSlice);
+      window.sharedStore.reducerManager.add("booking", bookingCreateSlice);
       // window.sharedStore.reducerManager.add("notice", noticeSlice);
       // window.sharedStore.reducerManager.add("templates", templateSlice);
       // window.sharedStore.reducerManager.add("meta", metaSlice);

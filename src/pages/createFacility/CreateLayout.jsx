@@ -5,7 +5,8 @@ import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb.jsx";
 import { FormWrapper } from "../../components/ui/wrapper/form.jsx";
 import { basePath } from "../../utils/index.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetFacilityForm } from "../../redux/slice/facilityCreateSlice.js";
 
 const steps = [
     { label: "Basic Details", path: "basic-details" },
@@ -23,6 +24,7 @@ export default function CreateLayout() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch()
 
     const activeStep = steps.findIndex((s) =>
         location.pathname.includes(s.path)
@@ -46,9 +48,14 @@ export default function CreateLayout() {
         if (!steps?.some(s => location.pathname.includes(s?.path))) {
             navigate(`${basePath}/create-facility/basic-details`)
         }
+        dispatch(resetFacilityForm())
     }, [])
 
-
+    useEffect(() => {
+        if (activeStep > 0 && !completed.includes(activeStep - 1)) {
+            navigate("/create-facility/basic-details");
+        }
+    }, [activeStep, completed]);
 
     return (
         <Box>
