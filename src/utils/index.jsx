@@ -16,11 +16,9 @@ export const getPageTitle = (pathname) => {
 };
 export const uploadDocuments = async (files) => {
   //   const formData = new FormData();
-
   //   files.forEach((file) => {
   //     formData.append("files", file); // 'files[]' matches the backend expectation
   //   });
-
   //   try {
   //     const response = await tryCatch(() =>
   //       axios.post("/api/upload-image", formData, {
@@ -30,7 +28,6 @@ export const uploadDocuments = async (files) => {
   //         },
   //       })
   //     );
-
   //     return response.data;
   //   } catch (error) {
   //     console.error("File upload failed:", error);
@@ -38,16 +35,12 @@ export const uploadDocuments = async (files) => {
   //   }
 };
 
-
 export const stripHtml = (html) => {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
   const text = tempDiv.textContent || tempDiv.innerText || "";
   return text.trim();
 };
-
-
-
 
 // Weekdays
 export const weekDaysOptions = [
@@ -59,9 +52,6 @@ export const weekDaysOptions = [
   { id: 6, name: "Saturday" },
   { id: 7, name: "Sunday" },
 ];
-
-
-
 
 export function convertDateFormat(dateStr) {
   if (!dateStr) return null;
@@ -86,3 +76,11 @@ export function convertDateFormat(dateStr) {
 
   return `${day}-${monthName}-${year}`;
 }
+
+export const capitalize = (str) => {
+  if (typeof str == "string") {
+    return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
+  } else {
+    return str;
+  }
+};

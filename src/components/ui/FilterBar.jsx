@@ -18,7 +18,14 @@ export default function FilterBar({
   globalFilterState,
   handleGlobalFilterChange,
   selectorOptions,
+  filterDataOptions,
+  toggleAllFilters,
+  handleResetFilters,
+  handleApplyFilters,
+  filterKeyToTabIndexMap,
+  shouldShowDot,
 }) {
+  console.log(toggleAllFilters, "toggleAllFilters from filter bar");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
   const dateRef = useRef();
@@ -35,14 +42,6 @@ export default function FilterBar({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // const filterKeyToTabIndexMap = {
-  //   "Community/ Block/ Unit": 0,
-  //   "Select Status": 2,
-  //   "Select Date Range": 3,
-  //   Visibility: 1,
-  //   // Add all relevant mappings here
-  // };
-
   const renderInput = (key, value) => (
     <div key={key} className="flex flex-col">
       <label className="text-sm font-medium text-[#4D4D4F] capitalize mb-3">
@@ -51,8 +50,8 @@ export default function FilterBar({
       <button
         // disabled={loadingCommunityBlockUnit || loadingPermissions}
         onClick={() => {
-          // const tabIndex = filterKeyToTabIndexMap[key];
-          setSelectedFilterKey(1);
+          const tabIndex = filterKeyToTabIndexMap[key];
+          setSelectedFilterKey(tabIndex);
           setFilterModal(!filterModal);
         }}
         className="relative cursor-pointer w-full h-[34px] bg-[#FAFAFA] border-[0.5px] border-[#EBEBEB] rounded px-3 py-2 pr-8"
@@ -83,6 +82,11 @@ export default function FilterBar({
         handleGlobalFilterChange={handleGlobalFilterChange}
         selectorOptions={selectorOptions}
         selectedFilterKey={selectedFilterKey}
+        filterDataOptions={filterDataOptions}
+        toggleAllFilters={toggleAllFilters}
+        handleResetFilters={handleResetFilters}
+        handleApplyFilters={handleApplyFilters}
+        shouldShowDot={shouldShowDot}
       />
     </>
   );

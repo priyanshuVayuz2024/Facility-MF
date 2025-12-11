@@ -18,7 +18,7 @@ function Header() {
         <img src="/icons/sheet.svg" />
         // <LuFileSpreadsheet className="text-[#36AB6C] h-[20px] w-[20px]" />
       ),
-    //   color: "bg-gradient-to-b from-[#E7F5ED] to-[#E6F4E6]",
+      //   color: "bg-gradient-to-b from-[#E7F5ED] to-[#E6F4E6]",
       color: "bg-[#E6F4E9]",
     },
     {
@@ -32,25 +32,25 @@ function Header() {
       color: "bg-[#EDF6FF]",
     },
     {
-      label: "Rejected Booking",
+      label: "Rejected Bookings",
       count: formatCount(counts?.rejected_booking),
       link: `${basePath}/rejected_bookings`,
       icon: (
         <img src={ticketIcon} />
         //     // <LuTicketCheck className="text-[#AB0000] h-[20px] w-[20px]" />
       ),
-    //   color: "bg-gradient-to-b from-[#F5E5E5] to-[#F4E7E7]",
+      //   color: "bg-gradient-to-b from-[#F5E5E5] to-[#F4E7E7]",
       color: "bg-[#F5E6E6]",
     },
     {
-      label: "Pending Booking",
+      label: "Pending Bookings",
       count: formatCount(counts?.pending_booking),
       link: `${basePath}/pending_bookings`,
       icon: (
         <img src="/icons/triangle-alert.svg" />
         // <LuTriangleAlert className="text-[#F27C15] h-[20px] w-[20px]" />
       ),
-    //   color: "bg-gradient-to-b from-[#FDEFE3] to-[#FDEEE2]",
+      //   color: "bg-gradient-to-b from-[#FDEFE3] to-[#FDEEE2]",
       color: "bg-[#FCEEE2]",
     },
   ];
