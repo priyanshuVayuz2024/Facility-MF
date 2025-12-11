@@ -5,11 +5,12 @@ import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb.jsx";
 import { FormWrapper } from "../../components/ui/wrapper/form.jsx";
 import { basePath } from "../../utils/index.jsx";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { resetBookingForm } from "../../redux/slice/bookingCreateSlice.js";
 
 const steps = [
     { label: "Booking Details", path: "details" },
-    { label: "Schedule & Confirmation", path: "schedule" },
+    { label: "Schedule & Confirmation", path: "confirmation" },
 ];
 
 export default function BookingCreateLayout() {
@@ -22,6 +23,7 @@ export default function BookingCreateLayout() {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useDispatch()
 
     const activeStep = steps.findIndex((s) =>
         location.pathname.includes(s.path)
@@ -34,18 +36,31 @@ export default function BookingCreateLayout() {
     };
 
     const handleStepClick = (idx) => {
-        // allow only previous or completed steps
         if (completed.includes(idx) || idx <= activeStep) {
+
+            // reset completion of future steps if moving backwards
+            if (idx < activeStep) {
+                setCompleted(prev => prev.filter(step => step <= idx));
+            }
+
             goToStep(idx);
         }
     };
+
 
 
     useEffect(() => {
         if (!steps?.some(s => location.pathname.includes(s?.path))) {
             navigate(`${basePath}/create-booking/details`)
         }
+        setCompleted([]);
+        dispatch(resetBookingForm())
     }, [])
+    useEffect(() => {
+        if (activeStep > 0 && !completed.includes(activeStep - 1)) {
+            navigate("/create-booking/details");
+        }
+    }, [activeStep, completed]);
 
 
 
@@ -56,10 +71,10 @@ export default function BookingCreateLayout() {
             {/* Breadcrumb and Page Title */}
             <BreadCrumbCustom
                 fixed={true}
-                links={[{ label: "Booking List", to: "/" }]}
+                links={[{ label: "Booking List", to: `${basePath}/` }]}
                 pageTitle={isPreviewPage ? "Preview Booking" : "Add New Booking"}
                 description={!isPreviewPage && "Add a new booking for this facility"}
-                backLink={isPreviewPage && "/create-booking/schedule"}
+                backLink={isPreviewPage && `${basePath}/create-booking/confirmation`}
 
             />
 
