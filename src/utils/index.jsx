@@ -84,3 +84,22 @@ export const capitalize = (str) => {
     return str;
   }
 };
+
+export const bookingBreadcrumbLinks = {
+  upcoming: {
+    label: "Upcoming Bookings",
+    to: `${basePath}/upcoming_bookings`,
+  },
+  active: {
+    label: "Active Bookings",
+    to: `${basePath}/active_bookings`,
+  },
+  rejected: {
+    label: "Rejected Bookings",
+    to: `${basePath}/rejected_bookings`,
+  },
+  pending: {
+    label: "Pending Bookings",
+    to: `${basePath}/pending_bookings`,
+  },
+};

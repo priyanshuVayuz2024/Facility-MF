@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import BookingPreview from "./pages/createBooking/BookingPreview";
 import FacilityDetail from "./pages/facilityDetail";
+import BookingDetailPage from "./pages/bookingDetail";
 
 function App() {
   const store = window.sharedStore;
@@ -26,12 +27,17 @@ function App() {
         <Provider store={store}>
           <Routes>
             <Route element={<FacilityLayout />}>
-              <Route path="/facilities" element={<FacilityListing />} />
+              <Route
+                index={true}
+                path="/facilities"
+                element={<FacilityListing />}
+              />
               <Route path="/active_bookings" element={<BookingListing />} />
               <Route path="/upcoming_bookings" element={<BookingListing />} />
               <Route path="/rejected_bookings" element={<BookingListing />} />
               <Route path="/pending_bookings" element={<BookingListing />} />
               <Route path="/facility/:id" element={<FacilityDetail />} />
+              <Route path="/booking/:id" element={<BookingDetailPage />} />
 
               <Route path="/create-facility" element={<CreateLayout />}>
                 <Route index element={<BasicDetails />} />

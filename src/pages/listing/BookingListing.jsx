@@ -112,6 +112,13 @@ function BookingListing() {
     }
   };
 
+  const ROUTE_TO_FROM_KEY = {
+    "/active_bookings": "active",
+    "/upcoming_bookings": "upcoming",
+    "/rejected_bookings": "rejected",
+    "/pending_bookings": "pending",
+  };
+
   const tableData = bookings?.map((data) => ({
     checkbox: {
       content: (
@@ -130,7 +137,7 @@ function BookingListing() {
     // Facility Name (Maps to 'facilityName')
     facilityName: {
       text: data.facilityName,
-      link: `/bookings/view/${data.id}`,
+      link: `/booking/${data.id}?from=${ROUTE_TO_FROM_KEY[location.pathname]}`,
       outerStyle: "min-w-[180px] max-w-[200px] !whitespace-normal",
       innerStyle: "line-clamp-2 text-left font-medium text-[#884EA7]",
     },
@@ -263,8 +270,9 @@ function BookingListing() {
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}
         scriptUrl={
-          `${localStorage.getItem(`noticeBoardMF-tableBundle`) ||
-          "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
+          `${
+            localStorage.getItem(`noticeBoardMF-tableBundle`) ||
+            "https://d18aratlqkym29.cloudfront.net/frontend-build/table/1.1/mf/reusableTable-bundle.js"
           }` + `?date=${Date.now()}`
         }
         globalVarName="reusableTable"
