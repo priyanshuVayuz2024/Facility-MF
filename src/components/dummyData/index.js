@@ -74,6 +74,27 @@ export const bookingHeaders = [
   },
 ];
 
+export const detailPageHeaders = [
+  {
+    title: "", // For Checkbox
+  },
+  {
+    title: "Charge Type",
+  },
+  {
+    title: "Applicable From",
+  },
+  {
+    title: "Time Slot", // Added Unit as it's in the image
+  },
+  {
+    title: "Owner rate(₹)",
+  },
+  {
+    title: "Tenant rate(₹)",
+  },
+];
+
 export const facilities = [
   {
     id: "id1",
@@ -247,5 +268,24 @@ export const bookings = [
     usageInstruction: "Read Instruction",
     bookingFor: "Owners",
     bookedBy: "Priyo Katiyar",
+  },
+];
+
+export const pricing = [
+  {
+    id: 1,
+    name: "Metered Hourly Rate (Up to 10 Hours)",
+    date: "14-Nov-2025",
+    time: "05:00 hrs - 23:00 hrs",
+    rate: "₹ 100",
+    discountedRate: "₹ 100",
+  },
+  {
+    id: 2,
+    name: "Flat Rate",
+    date: "14-Nov-2025",
+    time: "06:00 hrs - 07:00 hrs",
+    rate: "₹ 100",
+    discountedRate: "₹ 100",
   },
 ];
