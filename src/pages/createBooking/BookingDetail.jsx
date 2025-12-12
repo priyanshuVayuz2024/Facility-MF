@@ -17,13 +17,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormWrapper } from "../../components/ui/wrapper/form";
 import ConfirmDialog from "../../components/ui/ConfirmDialog.jsx";
 
-import { basePath } from "../../utils/index.jsx";
-import { LuBuilding, LuUsers } from "react-icons/lu";
+import { basePath, bookingForOptions } from "../../utils/index.jsx";
+import { LuBuilding, LuChevronDown, LuUsers } from "react-icons/lu";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 import { bookingDetailsSchema } from "../../validation/bookingSchema.js";
 import { setMultipleBookingFields } from "../../redux/slice/bookingCreateSlice.js";
+import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup.jsx";
 
 export default function BookingDetail() {
 
@@ -35,18 +36,27 @@ export default function BookingDetail() {
     const stepIndex = 0;
 
     const [cancelDialog, setCancelDialog] = useState(false);
+    const [popupOpen, setPopupOpen] = useState(false);
 
     const {
         control,
         setValue,
         handleSubmit,
         watch,
+        trigger,
         formState: { errors, isValid },
     } = useForm({
         defaultValues: bookingFormData,
         resolver: yupResolver(bookingDetailsSchema),
         mode: "onChange",
     });
+
+
+
+
+    const selectedFor = watch("bookingFor");
+
+
 
     /* -------------------- Options -------------------- */
     const blockOptions = [
@@ -61,11 +71,6 @@ export default function BookingDetail() {
         { label: "Flat C" },
     ];
 
-    const bookingForOptions = [
-        { label: "Person A" },
-        { label: "Person B" },
-        { label: "Person C" },
-    ];
 
     const bookingTypes = [
         {
@@ -111,6 +116,15 @@ export default function BookingDetail() {
         dispatch(setMultipleBookingFields(data));
         goToStep(stepIndex + 1);
     };
+
+
+
+    const handleBookingForSave = (val) => {
+        setValue("bookingFor", val)
+        trigger("bookingFor")
+        setPopupOpen(false)
+    }
+
 
     return (
         <FormWrapper className="flex flex-col gap-8 overflow-auto! border-0!">
@@ -214,28 +228,35 @@ export default function BookingDetail() {
             )}
 
             {/* -------------------- Booking For -------------------- */}
-            <Controller
-                name="bookingFor"
-                control={control}
-                render={({ field }) => (
-                    <FormControl className="flex flex-col gap-2">
-                        <FormLabel required className="formLabels">Booking For</FormLabel>
-                        <Autocomplete
-                            options={bookingForOptions}
-                            value={field.value}
-                            onChange={(_, v) => field.onChange(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Choose booking for"
-                                    error={!!errors.bookingFor}
-                                    helperText={errors.bookingFor?.message}
-                                />
-                            )}
-                        />
-                    </FormControl>
+
+            <FormControl className="flex flex-col gap-2">
+                <FormLabel required className="formLabels">Booking For</FormLabel>
+                <Button
+                    onClick={() => setPopupOpen(true)}
+                    variant="outlined"
+                    sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                >
+                    {selectedFor?.length > 0
+                        ? `${selectedFor.length} Selected`
+                        : "Choose booking for"}
+                    <span className="ml-auto"><LuChevronDown /></span>
+                </Button>
+                {errors?.bookingFor && (
+                    <FormHelperText error>{errors.bookingFor?.message}</FormHelperText>
                 )}
+            </FormControl>
+
+            <SimpleSelectorPopup
+                open={popupOpen}
+                onClose={() => setPopupOpen(false)}
+                options={bookingForOptions}
+                initialSelection={selectedFor || []}
+                onSave={handleBookingForSave}
+                showSelectAll={false}
+                hideSearch={true}
+                headingText="Booking For"
             />
+
 
             {/* -------------------- Purpose -------------------- */}
             <Controller

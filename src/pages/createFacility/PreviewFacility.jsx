@@ -2,22 +2,19 @@ import {
     Box,
     Button,
     Typography,
-    Chip,
-    FormLabel
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 
 import { FormWrapper } from "../../components/ui/wrapper/form";
-import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
-import SelectorPopup from "../../components/ui/selectorPopup";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 
-import { stripHtml, basePath, convertDateFormat } from "../../utils";
+import { basePath, convertDateFormat, communityOptions, categoryOptions } from "../../utils";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import Status from "../../components/ui/StatusColor";
 import "react-quill-new/dist/quill.snow.css";
+import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
 
 
 
@@ -28,7 +25,8 @@ export default function FacilityPreview() {
     const dispatch = useDispatch();
     const facilityData = useSelector((state) => state.facility);
 
-    const [popupOpen, setPopupOpen] = React.useState(false);
+    const [categoryPopupOpen, setCategoryPopupOpen] = React.useState(false);
+    const [postedInPopupOpen, setPostedInPopupOpen] = React.useState(false);
     const [cancelDialog, setCancelDialog] = React.useState(false);
 
     const {
@@ -54,6 +52,38 @@ export default function FacilityPreview() {
         bookingTimeLimit,
         advanceBookingLimit,
     } = facilityData;
+
+
+
+
+    const selectedPostedIn = communityOptions.filter(opt =>
+        community?.includes(opt.id.toString())
+    );
+
+    const postedCount = selectedPostedIn.length;
+
+    const postedInLabel =
+        postedCount === 1
+            ? selectedPostedIn[0]?.name
+            : postedCount > 1
+                ? `${postedCount} selected`
+                : "—";
+
+
+
+    const selectedCategories = categoryOptions.filter(opt =>
+        category?.includes(opt.id.toString())
+    );
+
+
+    const categoryCount = selectedCategories.length;
+
+    const categoryLabel =
+        categoryCount === 1
+            ? selectedCategories[0]?.name
+            : categoryCount > 1
+                ? `${categoryCount} selected`
+                : "—";
 
     return (
         <>
@@ -83,20 +113,41 @@ export default function FacilityPreview() {
                     </Box>
                     <DividerLine />
                     <Box className="grid grid-cols-4 gap-y-4">
-                        <InfoRow label="Category" value={category?.label} />
+                        <InfoRow
+                            label="Category"
+                            value={
+                                categoryCount === 0 ? (
+                                    "—"
+                                ) : (
+                                    <span
+                                        className="text-[#884EA7] cursor-pointer font-medium"
+                                        onClick={() => setCategoryPopupOpen(true)}
+                                    >
+                                        {categoryLabel}
+                                    </span>
+                                )
+                            }
+                        />
+
+
                         <InfoRow label="Accessible To" value={accessibleTo?.label} />
                         <InfoRow label="Intercom" value={intercom || "—"} />
                         <InfoRow
                             label="Posted In"
                             value={
-                                <span
-                                    className="text-[#884EA7] cursor-pointer font-medium"
-                                    onClick={() => setPopupOpen(true)}
-                                >
-                                    {community?.length || 0} selected
-                                </span>
+                                postedCount <= 1 ? (
+                                    postedInLabel
+                                ) : (
+                                    <span
+                                        className="text-[#884EA7] cursor-pointer font-medium"
+                                        onClick={() => setPostedInPopupOpen(true)}
+                                    >
+                                        {postedInLabel}
+                                    </span>
+                                )
                             }
                         />
+
                         <InfoRow label="Availability"
                             value={
                                 blockedDays?.length == 7
@@ -136,14 +187,37 @@ export default function FacilityPreview() {
 
                 </Box>
 
-                {/* Community Viewer */}
-                <SelectorPopup
-                    open={popupOpen}
-                    onClose={() => setPopupOpen(false)}
-                    readOnly
+
+                <SimpleSelectorPopup
+                    open={categoryPopupOpen}
+                    onClose={() => setCategoryPopupOpen(false)}
+                    onSave={() => setCategoryPopupOpen(false)}
+
+                    headingText="Category"
+                    hideSearch={true}
+                    showSelectAll={false}
+
+                    selectionMode="checkbox"   // now supports multiple
+                    readOnly={true}
+
+                    initialSelection={category}         // array of string IDs
+                    options={categoryOptions}           // [{ id, name }]
+                />
+
+                <SimpleSelectorPopup
+                    open={postedInPopupOpen}
+                    onClose={() => setPostedInPopupOpen(false)}
+                    onSave={() => setPostedInPopupOpen(false)}
+
+                    headingText="Posted In"
+                    hideSearch={false}
+                    showSelectAll={false}
+
+                    selectionMode="checkbox"
+                    readOnly={true}
+
                     initialSelection={community}
-                    leftHeader="Selected Communities"
-                    hideSearch
+                    options={communityOptions}
                 />
 
 
@@ -216,12 +290,6 @@ const DividerLine = ({ thick }) => (
     <hr className={`border-[#EBEBEB] ${thick ? "border-b-0" : "border-dashed"} my-4`} />
 );
 
-const SectionHeader = ({ title }) => (
-    <Typography className="font-medium! text-[#121212]">
-        {title}
-    </Typography>
-);
-
 const InfoRow = ({ label, value }) => (
     <Box className="flex justify-start gap-2 items-center">
         <span className="font-medium text-[#4D4D4D] text-sm">{label} :</span>
@@ -236,17 +304,4 @@ const ToggleResult = ({ label, value }) => (
             <Typography className="font-medium!">{label}</Typography>
         </Box>
     )
-);
-
-const InfoGrid = ({ children }) => (
-    <Box className="grid grid-cols-1 md:grid-cols-2 gap-6 border border-[#EBEBEB] bg-white rounded p-6">
-        {children}
-    </Box>
-);
-
-const InfoGridItem = ({ label, value }) => (
-    <Box className="flex flex-col">
-        <FormLabel className="text-xs text-[#4D4D4F] mb-1">{label}</FormLabel>
-        <Typography className="text-sm font-medium text-[#121212]">{value}</Typography>
-    </Box>
 );

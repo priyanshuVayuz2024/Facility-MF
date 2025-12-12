@@ -18,6 +18,7 @@ import BookingPreview from "./pages/createBooking/BookingPreview";
 import FacilityDetail from "./pages/facilityDetail";
 import BookingDetailPage from "./pages/bookingDetail";
 
+
 function App() {
   const store = window.sharedStore;
 

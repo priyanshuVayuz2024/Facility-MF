@@ -18,12 +18,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { FormWrapper } from "../../components/ui/wrapper/form";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import { bookingScheduleSchema } from "../../validation/bookingSchema";
-import { basePath } from "../../utils";
+import { basePath, bookingFrequencyOptions } from "../../utils";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import { DatePicker } from "@mui/x-date-pickers";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setMultipleBookingFields } from "../../redux/slice/bookingCreateSlice";
+import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
+import { LuChevronDown } from "react-icons/lu";
 
 // =============================
 // Time Input Component
@@ -76,12 +78,9 @@ export default function BookingConfirmation() {
     const stepIndex = 1;
 
     const [cancelDialog, setCancelDialog] = useState(false);
+    const [popupOpen, setPopupOpen] = useState(false);
 
-    const bookingFrequencyOptions = [
-        { label: "One Time" },
-        { label: "Daily" },
-        { label: "Weekly" },
-    ];
+
 
     // =============================
     // FORM SETUP
@@ -91,12 +90,20 @@ export default function BookingConfirmation() {
         handleSubmit,
         watch,
         trigger,
+        setValue,
         formState: { errors, isValid },
     } = useForm({
         defaultValues: reduxData,
         resolver: yupResolver(bookingScheduleSchema),
         mode: "onChange",
     });
+
+
+
+    let bookingFrequency = watch("bookingFrequency")
+
+
+
 
     // Auto-mark step completion
     useEffect(() => {
@@ -135,6 +142,11 @@ export default function BookingConfirmation() {
 
 
 
+    const handleBookingFrequencySave = (val) => {
+        setValue("bookingFrequency", val)
+        trigger("bookingFrequency")
+        setPopupOpen(false)
+    }
 
     // =============================
     // UI STARTS HERE
@@ -143,28 +155,41 @@ export default function BookingConfirmation() {
         <FormWrapper className="flex flex-col gap-8 border-0!">
 
             {/* Booking Frequency */}
-            <Controller
-                name="bookingFrequency"
-                control={control}
-                render={({ field }) => (
-                    <FormControl className="flex flex-col gap-2">
-                        <FormLabel required className="formLabels">Booking Frequency</FormLabel>
-                        <Autocomplete
-                            options={bookingFrequencyOptions}
-                            value={field.value}
-                            onChange={(_, v) => field.onChange(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Choose booking frequency"
-                                    error={!!errors.bookingFrequency}
-                                    helperText={errors.bookingFrequency?.message}
-                                />
-                            )}
-                        />
-                    </FormControl>
+
+
+            <FormControl className="flex flex-col gap-2">
+                <FormLabel required className="formLabels">Booking Frequency</FormLabel>
+                <Button
+                    onClick={() => setPopupOpen(true)}
+                    variant="outlined"
+                    sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                >
+                    {bookingFrequency?.length > 0
+                        ? `${bookingFrequency.length} Selected`
+                        : "Choose booking frequency"}
+                    <span className="ml-auto"><LuChevronDown /></span>
+                </Button>
+                {errors?.bookingFrequency && (
+                    <FormHelperText error>{errors.bookingFrequency?.message}</FormHelperText>
                 )}
+            </FormControl>
+
+            <SimpleSelectorPopup
+                open={popupOpen}
+                selectionMode="radio"
+                onClose={() => setPopupOpen(false)}
+                options={bookingFrequencyOptions}
+                initialSelection={bookingFrequency || []}
+                onSave={handleBookingFrequencySave}
+                showSelectAll={false}
+                hideSearch={true}
+                headingText="Booking For"
             />
+
+
+
+
+
 
             {/* DATE RANGE */}
             <Box>

@@ -77,6 +77,44 @@ export function convertDateFormat(dateStr) {
   return `${day}-${monthName}-${year}`;
 }
 
+
+
+// booking
+
+
+
+export const bookingFrequencyOptions = [
+  { id: 1, name: "One Time" },
+  { id: 2, name: "Daily" },
+  { id: 3, name: "Weekly" },
+];
+
+
+export const bookingForOptions = [
+  { id: 1, name: "Owners" },
+  { id: 2, name: "Guests Of Owner" },
+  { id: 3, name: "Tenants" },
+  { id: 4, name: "Guests Of Tenants" },
+  { id: 5, name: "Third Party Vendors" },
+  { id: 6, name: "Faculty" },
+];
+
+
+
+
+
+
+// facility
+
+
+export const categoryOptions = [
+  { id: 1, name: "Gym" },
+  { id: 2, name: "Swimming Pool" },
+  { id: 3, name: "Club House" },
+];
+
+
+export const communityOptions = [{ id: 1, name: "Community A" }, { id: 2, name: "Community B" }]
 export const capitalize = (str) => {
   if (typeof str == "string") {
     return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
