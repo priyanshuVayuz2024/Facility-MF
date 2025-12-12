@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import BookingPreview from "./pages/createBooking/BookingPreview";
 
+
 function App() {
   const store = window.sharedStore;
 

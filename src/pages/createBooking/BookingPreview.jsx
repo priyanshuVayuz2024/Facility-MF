@@ -11,10 +11,11 @@ import { FormWrapper } from "../../components/ui/wrapper/form";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 
-import { basePath } from "../../utils";
+import { basePath, bookingForOptions, bookingFrequencyOptions } from "../../utils";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 
 import dayjs from "dayjs";
+import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
 
 // -----------------------------
 // Helper Formatters
@@ -51,6 +52,22 @@ export default function BookingPreview() {
     } = booking;
 
     const [cancelDialog, setCancelDialog] = React.useState(false);
+    const [showBookingForPopup, setShowBookingForPopup] = React.useState(false);
+
+
+
+    const selectedBookingFor = bookingForOptions.filter(opt =>
+        bookingFor?.includes(opt.id.toString())
+    );
+
+    const selectedCount = selectedBookingFor.length;
+
+    const bookingForLabel =
+        selectedCount === 1
+            ? selectedBookingFor[0]?.name
+            : selectedCount > 1
+                ? `${selectedCount} selected`
+                : "—";
 
     return (
         <>
@@ -86,9 +103,48 @@ export default function BookingPreview() {
                             value={type === "personal" ? "Personal" : "Community"}
                         />
 
-                        <InfoRow label="Booking For" value={bookingFor?.label || "—"} />
 
-                        <InfoRow label="Booking Frequency" value={bookingFrequency?.label || "—"} />
+                        <InfoRow
+                            label="Booking For"
+                            value={
+                                selectedCount <= 1 ? (
+                                    bookingForLabel
+                                ) : (
+                                    <span
+                                        className="text-[#884EA7] cursor-pointer underline"
+                                        onClick={() => setShowBookingForPopup(true)}
+                                    >
+                                        {bookingForLabel}
+                                    </span>
+                                )
+                            }
+                        />
+
+
+                        <SimpleSelectorPopup
+                            open={showBookingForPopup}
+                            onClose={() => setShowBookingForPopup(false)}
+                            onSave={() => setShowBookingForPopup(false)}
+
+                            selectionMode="checkbox"
+                            showSelectAll={false}
+                            hideSearch={true}
+
+                            headingText="Booking For"
+                            selectAllText=""
+
+                            options={bookingForOptions}
+                            initialSelection={bookingFor}   // array of ids
+
+                            readOnly={true}
+                        />
+
+
+
+                        {bookingFrequencyOptions?.filter(b => bookingFrequency?.some(bf => bf == b?.id))?.map(b => (<>
+                            <InfoRow label="Booking Frequency" value={b?.name || "—"} />
+                        </>))}
+
 
                         <InfoRow
                             label="Date"

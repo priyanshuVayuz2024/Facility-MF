@@ -82,7 +82,6 @@ export const MyEditor = ({
         const s3Url = uploadedRes?.data?.file_upload?.details?.[0]?.file_url;
 
         if (!s3Url) {
-          console.error("Upload failed: No S3 URL found");
           return;
         }
 

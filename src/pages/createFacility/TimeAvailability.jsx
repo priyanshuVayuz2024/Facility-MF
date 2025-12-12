@@ -16,13 +16,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { FormWrapper } from "../../components/ui/wrapper/form";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
-import SelectorPopup from "../../components/ui/selectorPopup";
 
 import { basePath, weekDaysOptions } from "../../utils";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import { facilityTimeSchema } from "../../validation/facilitySchema";
 import { useDispatch, useSelector } from "react-redux";
 import { setMultipleFacilityFormFields } from "../../redux/slice/facilityCreateSlice";
+import { LuChevronDown } from "react-icons/lu";
+import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
 
 const timeOptions = Array.from({ length: 24 }, (_, h) =>
     ["00", "15", "30", "45"].map((m) => `${String(h).padStart(2, "0")}:${m}`)
@@ -103,15 +104,22 @@ export default function TimeAvailability() {
             {/* Week Days */}
             <FormControl className="flex flex-col gap-2">
                 <FormLabel required className="formLabels">Block Week Days</FormLabel>
-                <Button variant="outlined" sx={{ justifyContent: "flex-start" }} onClick={() => setPopupOpen(true)}>
+
+                <Button
+                    onClick={() => setPopupOpen(true)}
+                    variant="outlined"
+                    sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                >
                     {displayDaysText}
+
+                    <span className="ml-auto"><LuChevronDown /></span>
                 </Button>
                 {errors.blockedDays && (
                     <FormHelperText error>{errors.blockedDays.message}</FormHelperText>
                 )}
             </FormControl>
 
-            <SelectorPopup
+            <SimpleSelectorPopup
                 open={popupOpen}
                 onClose={() => setPopupOpen(false)}
                 options={weekDaysOptions}
@@ -119,6 +127,7 @@ export default function TimeAvailability() {
                 onSave={handleBlockedDaysSave}
                 leftHeader="Select Week Days"
                 hideSearch={true}
+                selectAllText="All"
             />
 
             {/* Operating Hours */}

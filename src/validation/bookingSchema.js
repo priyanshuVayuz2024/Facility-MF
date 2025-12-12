@@ -3,7 +3,7 @@ import * as Yup from "yup";
 
 export const bookingDetailsSchema = Yup.object().shape({
     type: Yup.string()
-        .required("Facility name is required"),
+        .required("Booking type is required"),
     block: Yup
         .mixed()
         .when("type", {
@@ -18,11 +18,11 @@ export const bookingDetailsSchema = Yup.object().shape({
             then: (schema) => schema.required("Flat is required"),
             otherwise: (schema) => schema.notRequired(),
         }),
-    bookingFor: Yup.object()
-        .nullable()
-        .required("Facility category is required"),
+    bookingFor: Yup.array()
+        .required("Booking for value is required")
+        .min(1, "Please select at least one option"),
     purpose: Yup.string()
-        .required("Facility name is required").max(100, "Maximum 100 characters allowed"),
+        .required("Purpose is required").max(100, "Maximum 100 characters allowed"),
 
 });
 
@@ -37,8 +37,8 @@ const toMinutes = (v) => {
 export const bookingScheduleSchema = Yup.object().shape({
 
     bookingFrequency: Yup
-        .object()
-        .nullable()
+        .array()
+        .min(1)
         .required("Booking frequency is required"),
 
     // ---------------- FROM DATE ----------------

@@ -14,15 +14,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { FormWrapper } from "../../components/ui/wrapper/form";
 import { MyEditor } from "../../components/MyEditor.jsx";
-import SelectorPopup from "../../components/ui/selectorPopup.jsx";
 import ConfirmDialog from "../../components/ui/ConfirmDialog.jsx";
 
-import { basePath, stripHtml } from "../../utils/index.jsx";
-import { LuBuilding } from "react-icons/lu";
+import { basePath, categoryOptions, communityOptions, stripHtml } from "../../utils/index.jsx";
+import { LuBuilding, LuChevronDown } from "react-icons/lu";
 import crossIcon from "../../../public/icons/crossIcon.svg";
 import { facilityBasicDetailsSchema } from "../../validation/facilitySchema.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setMultipleFacilityFormFields } from "../../redux/slice/facilityCreateSlice.js";
+import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup.jsx";
 
 export default function BasicDetails() {
     const dispatch = useDispatch();
@@ -36,6 +36,7 @@ export default function BasicDetails() {
     const stepIndex = 0;
 
     const [popupOpen, setPopupOpen] = useState(false);
+    const [facilityPopupOpen, setFacilityPopupOpen] = useState(false);
     const [cancelDialog, setCancelDialog] = useState(false);
 
     const {
@@ -55,13 +56,9 @@ export default function BasicDetails() {
     const facilityName = watch("facilityName");
     const instructions = watch("instructions");
     const selectedCommunities = watch("community");
+    const selectedCategory = watch("category");
 
     // Fake dropdown options
-    const categoryOptions = [
-        { label: "Gym" },
-        { label: "Swimming Pool" },
-        { label: "Club House" },
-    ];
 
     const accessibleOptions = [
         { label: "Members Only" },
@@ -95,6 +92,13 @@ export default function BasicDetails() {
         dispatch(setMultipleFacilityFormFields(data));
         goToStep(stepIndex + 1)
     };
+
+
+    const handleCategorySave = (val) => {
+        setValue("category", val)
+        trigger("category")
+        setFacilityPopupOpen(false)
+    }
 
 
     useEffect(() => {
@@ -144,28 +148,39 @@ export default function BasicDetails() {
             />
 
             {/* Category */}
-            <Controller
-                name="category"
-                control={control}
-                render={({ field }) => (
-                    <FormControl className="flex flex-col gap-2">
-                        <FormLabel required className="formLabels">Facility Category</FormLabel>
-                        <Autocomplete
-                            options={categoryOptions}
-                            value={field.value}
-                            onChange={(_, v) => field.onChange(v)}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    placeholder="Choose category"
-                                    error={!!errors.category}
-                                    helperText={errors.category?.message}
-                                />
-                            )}
-                        />
-                    </FormControl>
+            <FormControl className="flex flex-col gap-2">
+                <FormLabel required className="formLabels">Facility Category</FormLabel>
+                <Button
+                    onClick={() => setFacilityPopupOpen(true)}
+                    variant="outlined"
+                    sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                >
+                    {selectedCategory?.length > 0
+                        ? `${selectedCategory.length} Selected`
+                        : "Choose booking for"}
+                    <span className="ml-auto"><LuChevronDown /></span>
+                </Button>
+                {errors?.category && (
+                    <FormHelperText error>{errors.category?.message}</FormHelperText>
                 )}
+            </FormControl>
+
+            <SimpleSelectorPopup
+                open={facilityPopupOpen}
+                onClose={() => setFacilityPopupOpen(false)}
+                options={categoryOptions}
+                initialSelection={selectedCategory || []}
+                onSave={handleCategorySave}
+                showSelectAll={false}
+                hideSearch={true}
+                headingText="Booking For"
             />
+
+
+
+
+
+
 
             {/* Community Selection */}
             <FormControl className="flex flex-col gap-2">
@@ -185,12 +200,13 @@ export default function BasicDetails() {
                 )}
             </FormControl>
 
-            <SelectorPopup
+            <SimpleSelectorPopup
                 open={popupOpen}
                 onClose={() => setPopupOpen(false)}
-                options={[{ id: 1, name: "Community A" }]}
+                options={communityOptions}
                 initialSelection={selectedCommunities}
                 onSave={handleCommunitySave}
+                headingText="Select Communities"
             />
 
             {/* Access Level */}
