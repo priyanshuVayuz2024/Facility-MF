@@ -37,7 +37,7 @@ const FacilityDetail = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
-  console.log(selectedIds, "selectedIds");
+
   const handleCheckboxChange = (data, isChecked) => {
     setSelectedIds((prevSelectedIds) => {
       if (isChecked) {

@@ -2321,7 +2321,7 @@ function BookingFilter() {
 
       return values.length > 0;
     }
-    console.log(key, "key");
+
     const param = searchParams.get(key);
     const isListKey = ["chargeable"];
 

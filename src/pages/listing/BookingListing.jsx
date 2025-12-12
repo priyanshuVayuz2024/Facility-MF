@@ -33,7 +33,6 @@ function BookingListing() {
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [cancelBookingDialog, setCancelBookingDialog] = useState(false);
-  console.log(selectedIds, "selectedIds");
 
   const handleCheckboxChange = (data, isChecked) => {
     setSelectedIds((prevSelectedIds) => {

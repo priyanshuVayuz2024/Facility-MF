@@ -30,12 +30,8 @@ import {
   LuX,
 } from "react-icons/lu";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-// import { MainFilter } from "./selectorPopup";
-// import { basePath, buildCommunityStructure } from "../../utils";
-// import { context } from "../../context/context";
 import { DatePicker } from "@mui/x-date-pickers";
 import { MainFilter } from "./selectorPopup";
-// import { useSelector } from "react-redux";
 
 export default function FilterModal({
   open,
@@ -93,8 +89,6 @@ export default function FilterModal({
     a.length === b.length &&
     a.every((val) => b.includes(val));
 
-  console.log(searchParams.get("multi_status"));
-
   // const multiStatus = searchParams.get("multi_status");
   // const noticeAccessLevel = searchParams.get("notice_access_level");
   // const isFilterUnchanged =
@@ -106,8 +100,6 @@ export default function FilterModal({
   //   globalFilterState.end_date === defaultFilterState.end_date &&
   //   isEqualArray(globalFilterState.status, defaultFilterState.status) &&
   //   isEqualArray(globalFilterState.visibility, defaultFilterState.visibility);
-
-  console.log(globalFilterState, "globalFilterState");
 
   useEffect(() => {
     if (open && selectedFilterKey != null) {
@@ -477,11 +469,7 @@ function CheckboxFilter({
     const allValues = options?.map((o) =>
       typeof o === "object" ? o.value : o
     );
-    console.log(
-      toggleAllFilters,
-      Array.isArray(toggleAllFilters),
-      "toggleAllFilters"
-    );
+
     const isMultiSelectToggleKey = toggleAllFilters;
     let newValue;
 
@@ -491,14 +479,13 @@ function CheckboxFilter({
       if (isMultiSelectToggleKey.includes(key) && selectedValue === "all") {
         const isAllSelected = value.length === allValues.length;
         newValue = isAllSelected ? [] : allValues;
-        console.log(newValue, key, "newvalue");
       } else {
         if (value?.includes(selectedValue)) {
           newValue = value.filter((item) => item !== selectedValue);
         } else {
           newValue = [...value, selectedValue];
         }
-        console.log(newValue, key, "newvalue");
+
         const rest = allValues.filter((v) => v !== "all");
         const selectedWithoutAll = newValue.filter((v) => v !== "all");
 

@@ -23,7 +23,7 @@ function FacilityListing() {
   const pathname = location.pathname;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
-  console.log(selectedIds, "selectedIds");
+
   const handleCheckboxChange = (data, isChecked) => {
     setSelectedIds((prevSelectedIds) => {
       if (isChecked) {
