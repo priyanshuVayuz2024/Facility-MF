@@ -10,6 +10,8 @@ export const getPageTitle = (pathname) => {
       return "Rejected Bookings";
     case pathname.includes("pending_bookings"):
       return "Pending Bookings";
+    case pathname.includes("bookings"):
+      return "All Bookings";
     default:
       return "Facilities";
   }
@@ -77,18 +79,13 @@ export function convertDateFormat(dateStr) {
   return `${day}-${monthName}-${year}`;
 }
 
-
-
 // booking
-
-
 
 export const bookingFrequencyOptions = [
   { id: 1, name: "One Time" },
   { id: 2, name: "Daily" },
   { id: 3, name: "Weekly" },
 ];
-
 
 export const bookingForOptions = [
   { id: 1, name: "Owners" },
@@ -99,13 +96,7 @@ export const bookingForOptions = [
   { id: 6, name: "Faculty" },
 ];
 
-
-
-
-
-
 // facility
-
 
 export const categoryOptions = [
   { id: 1, name: "Gym" },
@@ -113,8 +104,10 @@ export const categoryOptions = [
   { id: 3, name: "Club House" },
 ];
 
-
-export const communityOptions = [{ id: 1, name: "Community A" }, { id: 2, name: "Community B" }]
+export const communityOptions = [
+  { id: 1, name: "Community A" },
+  { id: 2, name: "Community B" },
+];
 export const capitalize = (str) => {
   if (typeof str == "string") {
     return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();

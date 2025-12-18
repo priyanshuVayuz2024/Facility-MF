@@ -235,12 +235,13 @@ function BookingListing() {
 
   return (
     <>
-      <MetaTitle title={"Facility Listing"} />
+      <MetaTitle title={"Booking Listing"} />
       <BreadCrumbCustom
         links={[
           (pathname.includes("active_bookings") ||
             pathname.includes("upcoming_bookings") ||
             pathname.includes("rejected_bookings") ||
+            pathname.includes("bookings") ||
             pathname.includes("pending_bookings")) && {
             label: "Facilities",
             to: `${basePath}/facilities`,

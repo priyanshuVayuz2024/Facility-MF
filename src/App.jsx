@@ -18,7 +18,6 @@ import BookingPreview from "./pages/createBooking/BookingPreview";
 import FacilityDetail from "./pages/facilityDetail";
 import BookingDetailPage from "./pages/bookingDetail";
 
-
 function App() {
   const store = window.sharedStore;
 
@@ -33,6 +32,7 @@ function App() {
                 path="/facilities"
                 element={<FacilityListing />}
               />
+              <Route path="/bookings" element={<BookingListing />} />
               <Route path="/active_bookings" element={<BookingListing />} />
               <Route path="/upcoming_bookings" element={<BookingListing />} />
               <Route path="/rejected_bookings" element={<BookingListing />} />
