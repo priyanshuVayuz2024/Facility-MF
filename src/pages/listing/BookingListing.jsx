@@ -64,26 +64,13 @@ function BookingListing() {
     ];
 
     //   {
-    //     text: "View",
-    //     // onClick: () => navigate(`${basePath}/view_notice/${id}`),
-    //     className: "!text-[#373BB5]",
-    //     icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
-    //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
-    //   },
-    //   {
     //     text: "Edit",
     //     // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
     //     className: "!text-[#C4750D]",
     //     icon: <LuSquarePen color="#C4750D" />,
     //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
     //   },
-    //   {
-    //     text: "Approve",
-    //     className: "!text-[#36AB6C]",
-    //     icon: <LuCheck color="#36AB6C" />,
-    //     // onClick: () => handleApproveNotice(selectedIds?.[0]),
-    //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
-    //   },
+
     if (selectedIds.length > 0) {
       temp.push({
         text: "Cancel",
@@ -91,6 +78,29 @@ function BookingListing() {
         icon: <LuBan color="#AB0000" />,
         onClick: () => handleCancelBooking(),
       });
+      temp.push(
+        {
+          text: "View",
+          // onClick: () => navigate(`${basePath}/view_notice/${id}`),
+          className: "!text-[#373BB5]",
+          icon: <LuScanEye className="text-[#373BB5]!" color="#373BB5" />,
+          // disabled: loadingApprovingNotice || loadingRejectingNotice,
+        },
+        {
+          text: "Approve",
+          className: "!text-[#36AB6C]",
+          icon: <LuCheck color="#36AB6C" />,
+          // onClick: () => handleApproveNotice(selectedIds?.[0]),
+          // disabled: loadingApprovingNotice || loadingRejectingNotice,
+        },
+        {
+          text: "Reject",
+          className: "!text-[#AB0000]",
+          icon: <LuX color="#AB0000" />,
+          // onClick: () =>
+          //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
+        }
+      );
     }
 
     if (selectedIds?.length > 0) {
