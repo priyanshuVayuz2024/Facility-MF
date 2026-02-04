@@ -27,11 +27,8 @@ function App() {
         <Provider store={store}>
           <Routes>
             <Route element={<FacilityLayout />}>
-              <Route
-                index={true}
-                path="/facilities"
-                element={<FacilityListing />}
-              />
+              <Route index element={<FacilityListing />} />
+              <Route path="/facilities" element={<FacilityListing />} />
               <Route path="/bookings" element={<BookingListing />} />
               <Route path="/active_bookings" element={<BookingListing />} />
               <Route path="/upcoming_bookings" element={<BookingListing />} />

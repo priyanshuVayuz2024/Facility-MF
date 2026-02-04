@@ -15,12 +15,8 @@ import * as ReactHotToast from "react-hot-toast";
 import { getMuiTheme } from "./theme/muiTheme.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
-import facilityCreateSlice from './redux/slice/facilityCreateSlice.js';
-import bookingCreateSlice from './redux/slice/bookingCreateSlice.js';
-
-
-
-
+import facilityCreateSlice from "./redux/slice/facilityCreateSlice.js";
+import bookingCreateSlice from "./redux/slice/bookingCreateSlice.js";
 
 const PrimaryLayout = () => {
   window.React = React;
@@ -42,7 +38,7 @@ const PrimaryLayout = () => {
   const [sidebarLoaded, setSidebarLoaded] = useState(false);
 
   let routes = JSON.parse(
-    '[{"text":"NoticeBoard","containerId":"noticeBoardMF","url":" / notice - board","bundleLink":"https://d18aratlqkym29.cloudfront.net/frontend-build/Noticeboard/1.1/mf/noticeboard-bundle.js","cssLink":"https://d18aratlqkym29.cloudfront.net/frontend-build/Noticeboard/1.1/mf/noticeboardmf.css","additionalLink":[],"layout":true},{"text":"Login","containerId":"signInMF","url":"/sign-in/","bundleLink":"https://d18aratlqkym29.cloudfront.net/frontend-build/login/1.1/mf/signin-bundle.js","cssLink":null,"group":{"_id":"687744be75039553643227d9","moduleGroupId":"moduleGroupId_1752646846085","moduleName":"Dashboard","moduleIcon":"AcUnit","category":"General"},"additionalLink":["https://d18aratlqkym29.cloudfront.net/frontend-build/login/1.1/mf/signin-bundle.js"],"layout":false}]'
+    '[{"text":"NoticeBoard","containerId":"noticeBoardMF","url":" / notice - board","bundleLink":"https://d18aratlqkym29.cloudfront.net/frontend-build/Noticeboard/1.1/mf/noticeboard-bundle.js","cssLink":"https://d18aratlqkym29.cloudfront.net/frontend-build/Noticeboard/1.1/mf/noticeboardmf.css","additionalLink":[],"layout":true},{"text":"Login","containerId":"signInMF","url":"/sign-in/","bundleLink":"https://d18aratlqkym29.cloudfront.net/frontend-build/login/1.1/mf/signin-bundle.js","cssLink":null,"group":{"_id":"687744be75039553643227d9","moduleGroupId":"moduleGroupId_1752646846085","moduleName":"Dashboard","moduleIcon":"AcUnit","category":"General"},"additionalLink":["https://d18aratlqkym29.cloudfront.net/frontend-build/login/1.1/mf/signin-bundle.js"],"layout":false}]',
   );
   let config = [];
 
@@ -53,7 +49,7 @@ const PrimaryLayout = () => {
       setOpen,
       setHeaderLoaded,
     }),
-    []
+    [],
   );
 
   // Update MF props when location changes
@@ -122,7 +118,7 @@ const WrapperInner = () => {
       // window.sharedStore.reducerManager.add("meta", metaSlice);
 
       window.sharedStore.replaceReducer(
-        window.sharedStore.reducerManager.reduce
+        window.sharedStore.reducerManager.reduce,
       );
 
       setStoreReady(true);
@@ -143,8 +139,8 @@ const WrapperInner = () => {
       <ReactRouterDOM.BrowserRouter>
         <Provider store={store}>
           <ReactRouterDOM.Routes>
-            <ReactRouterDOM.Route path="/" element={<PrimaryLayout />}>
-              <ReactRouterDOM.Route path="/*" element={<App />} />
+            <ReactRouterDOM.Route element={<PrimaryLayout />}>
+              <ReactRouterDOM.Route path="*" element={<App />} />
             </ReactRouterDOM.Route>
           </ReactRouterDOM.Routes>
         </Provider>
@@ -167,5 +163,5 @@ const AppWrapper = () => {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AppWrapper />
-  </StrictMode>
+  </StrictMode>,
 );
