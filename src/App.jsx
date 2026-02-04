@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import CreateLayout from "./pages/createFacility/createLayout";
+import CreateLayout from "./pages/createFacility/CreateLayout";
 import BasicDetails from "./pages/createFacility/BasicDetails";
 import TimeAvailability from "./pages/createFacility/TimeAvailability";
 import BookingRules from "./pages/createFacility/BookingRules";
