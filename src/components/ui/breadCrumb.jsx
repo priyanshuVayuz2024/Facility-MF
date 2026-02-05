@@ -34,7 +34,7 @@ export const BreadCrumbCustom = ({
             setwarningDialog(true);
         } else {
             // No warning, navigate directly
-            navigate(to);
+            navigate(`${basePath}${to}`);
         }
     };
 
