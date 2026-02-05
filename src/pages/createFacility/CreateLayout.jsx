@@ -33,7 +33,7 @@ export default function CreateLayout() {
 
 
     const goToStep = (stepIdx) => {
-        navigate(`/create-facility/${steps[stepIdx].path}`);
+        navigate(`${basePath}/create-facility/${steps[stepIdx].path}`);
     };
 
     const handleStepClick = (idx) => {
@@ -53,7 +53,7 @@ export default function CreateLayout() {
 
     useEffect(() => {
         if (activeStep > 0 && !completed.includes(activeStep - 1)) {
-            navigate("/create-facility/basic-details");
+            navigate(`${basePath}/create-facility/basic-details`);
         }
     }, [activeStep, completed]);
 
