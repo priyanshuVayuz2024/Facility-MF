@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Header from "./Header";
+import FacilityHeader from "./FacilityHeader";
 import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
 import { Link, useLocation } from "react-router-dom";
@@ -26,6 +26,7 @@ import {
 import Status from "../../components/ui/StatusColor";
 import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import BookingFilter from "./BookingFilter";
+import BookingHeader from "./BookingHeader";
 
 function BookingListing() {
   const location = useLocation();
@@ -40,7 +41,7 @@ function BookingListing() {
         return [...prevSelectedIds, data];
       } else {
         return prevSelectedIds.filter(
-          (selectedId) => selectedId.id !== data.id
+          (selectedId) => selectedId.id !== data.id,
         );
       }
     });
@@ -99,7 +100,7 @@ function BookingListing() {
           icon: <LuX color="#AB0000" />,
           // onClick: () =>
           //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
-        }
+        },
       );
     }
 
@@ -135,7 +136,7 @@ function BookingListing() {
           className="text-[#121212]!"
           disabled={false}
           checked={selectedIds?.some(
-            (selectedId) => selectedId?.id == data?.id
+            (selectedId) => selectedId?.id == data?.id,
           )}
           onChange={(e) => handleCheckboxChange(data, e.target.checked)}
         />
@@ -230,7 +231,7 @@ function BookingListing() {
       //   exportButtonOnClick: () =>
       //     fetchNotices({ pageToPass: page, isExport: true }),
     }),
-    [tableData]
+    [tableData],
   );
 
   useEffect(() => {
@@ -251,10 +252,9 @@ function BookingListing() {
           (pathname.includes("active_bookings") ||
             pathname.includes("upcoming_bookings") ||
             pathname.includes("rejected_bookings") ||
-            pathname.includes("bookings") ||
             pathname.includes("pending_bookings")) && {
-            label: "Facilities",
-            to: `${basePath}/facilities`,
+            label: "Bookings",
+            to: `${basePath}/bookings`,
           },
         ]}
         count={"8"}
@@ -265,16 +265,16 @@ function BookingListing() {
               className="w-full sm:w-fit! px-6! py-3! min-w-[182px]! h-10 font-medium text-sm leading-4!"
               sx={{ textTransform: "none" }}
               LinkComponent={Link}
-              to={`${basePath}/create-facility/basic-details`}
+              to={`${basePath}/create-booking`}
               variant="contained"
               startIcon={<LuSquarePlus className="mr-[7px]" size={20} />}
             >
-              Add New Facility
+              Add New Booking
             </Button>
           </Box>
         }
       />
-      {/* <Header /> */}
+      <BookingHeader />
       <BookingFilter />
       <MicrofrontendLoader
         ref={tableRef}

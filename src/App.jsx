@@ -29,6 +29,11 @@ function App() {
             <Route element={<FacilityLayout />}>
               <Route index element={<FacilityListing />} />
               <Route path="/facilities" element={<FacilityListing />} />
+              <Route path="/active_facilities" element={<FacilityListing />} />
+              <Route
+                path="/suspended_facilities"
+                element={<FacilityListing />}
+              />
               <Route path="/bookings" element={<BookingListing />} />
               <Route path="/active_bookings" element={<BookingListing />} />
               <Route path="/upcoming_bookings" element={<BookingListing />} />

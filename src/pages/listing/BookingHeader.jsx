@@ -3,8 +3,9 @@ import { counts } from "../../components/dummyData";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import { basePath } from "../../utils";
-import ticketIcon from "../../../public/icons/ticket-unchecked.svg";
-function Header() {
+import ticketIcon from "../../../public/icons/ticket-checked.svg";
+
+function BookingHeader() {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
@@ -54,7 +55,6 @@ function Header() {
       color: "bg-[#FCEEE2]",
     },
   ];
-
   return (
     <>
       {pathname.includes("active_bookings") ||
@@ -73,20 +73,25 @@ function Header() {
                   const searchParams = new URLSearchParams(location.search);
                   const view = searchParams.get("view");
                   const viewParam = view ? `?view=${view}` : "";
-                  navigate(`${item.link}${viewParam}`);
+
+                  {
+                    item?.link && navigate(`${item.link}${viewParam}`);
+                  }
                 }}
               >
                 <div className="w-full flex justify-between items-center">
                   <div className="flex items-center gap-2">
                     {item.icon}
-                    <div className="text-base font-normal leading-[20px] text-[#4D4D4F]">
+                    <div className="text-base font-normal leading-5 text-[#4D4D4F]">
                       {item.label}
                     </div>
                   </div>
-                  <IconButton className="p-0!">
-                    <img src="/icons/arrow-right.svg" />
-                    {/* <LuArrowRight className="text-[#884EA7]" /> */}
-                  </IconButton>
+                  {item?.link && (
+                    <IconButton className="p-0!">
+                      <img src="/icons/arrow-right.svg" />
+                      {/* <LuArrowRight className="text-[#884EA7]" /> */}
+                    </IconButton>
+                  )}
                 </div>
                 <div className="text-xl font-semibold leading-[24px]">
                   {item.count.toString().padStart(2, "0")}
@@ -100,4 +105,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default BookingHeader;

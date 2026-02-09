@@ -25,7 +25,6 @@ export default function FilterBar({
   filterKeyToTabIndexMap,
   shouldShowDot,
 }) {
-  console.log(toggleAllFilters, "toggleAllFilters from filter bar");
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [filterModal, setFilterModal] = useState(false);
   const dateRef = useRef();

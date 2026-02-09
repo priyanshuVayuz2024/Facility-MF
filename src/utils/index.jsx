@@ -11,7 +11,11 @@ export const getPageTitle = (pathname) => {
     case pathname.includes("pending_bookings"):
       return "Pending Bookings";
     case pathname.includes("bookings"):
-      return "All Bookings";
+      return "Bookings";
+    case pathname.includes("active_facilities"):
+      return "Active Facilities";
+    case pathname.includes("suspended_facilities"):
+      return "Suspended Facilities";
     default:
       return "Facilities";
   }

@@ -18,7 +18,6 @@ export const MyEditor = ({
   const [error, setError] = useState("");
   const [hasInteracted, setHasInteracted] = useState(false);
 
-  // Validation logic based on plain text length
   const validate = (content) => {
     const plainText = quillRef.current
       ? stripHtml(quillRef.current.getEditor().getText())
