@@ -59,30 +59,25 @@ export default function BookingDetail() {
 
 
     /* -------------------- Options -------------------- */
-    const blockOptions = [
-        { label: "Block A" },
-        { label: "Block B" },
-        { label: "Block C" },
+    const unitOptions = [
+        { label: "Unit A" },
+        { label: "Unit B" },
+        { label: "Unit C" },
     ];
 
-    const flatOptions = [
-        { label: "Flat A" },
-        { label: "Flat B" },
-        { label: "Flat C" },
-    ];
 
 
     const bookingTypes = [
         {
             value: "personal",
             label: "Personal",
-            description: "For personal use.",
+            description: "For personal use",
             icon: <LuUsers />,
         },
         {
             value: "community",
             label: "Community",
-            description: "For Community use.",
+            description: "For Community use",
             icon: <LuBuilding />,
         }
     ];
@@ -101,12 +96,11 @@ export default function BookingDetail() {
     }, [isValid]);
 
 
-    /* -------------------- Auto-clear Block & Flat when switching type -------------------- */
+    /* -------------------- Auto-clear Unit when switching type -------------------- */
     const selectedType = watch("type");
     useEffect(() => {
         if (selectedType !== "personal") {
-            setValue("block", null);
-            setValue("flat", null);
+            setValue("unit", null);
         }
     }, [selectedType]);
 
@@ -174,60 +168,87 @@ export default function BookingDetail() {
                 )}
             />
 
-            {/* -------------------- Block & Flat (Personal Only) -------------------- */}
+            {/* -------------------- Unit (Personal Only) -------------------- */}
             {selectedType === "personal" && (
                 <>
-                    {/* Block */}
-                    <Controller
-                        name="block"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControl className="flex flex-col gap-2">
-                                <FormLabel required className="formLabels">Choose Block</FormLabel>
-                                <Autocomplete
-                                    options={blockOptions}
-                                    value={field.value || null}
-                                    onChange={(_, v) => field.onChange(v)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            placeholder="Choose Block"
-                                            error={!!errors.block}
-                                            helperText={errors.block?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
-                        )}
-                    />
+                    <div className="border border-[#EBEBEB] flex flex-col pt-4 pb-5 px-4 rounded-sm">
+                        {/* Unit */}
+                        <FormLabel required className="pb-4! font-medium capitalize!">
+                            Choose Unit
+                        </FormLabel>
+                        <Button
+                            //   onClick={() => setPopupOpen(true)}
+                            //   disabled={!noticeLevel || loadingCommunityBlockUnit}
+                            variant="outlined"
+                            sx={{
+                                textTransform: "none",
+                                borderColor: "#EBEBEB",
+                                backgroundColor: "#FAFAFA",
+                                justifyContent: "flex-start",
+                                textAlign: "left",
+                                px: 2,
+                            }}
+                            className={`capitalize! ${false ? "text-[#121212]!" : "text-[#ADADAD]!"} font-normal!`}
+                        >
+                            {false ? "Block A - 101" : "Choose Unit"}
 
-                    {/* Flat */}
-                    <Controller
-                        name="flat"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControl className="flex flex-col gap-2">
-                                <FormLabel required className="formLabels">Choose Flat</FormLabel>
-                                <Autocomplete
-                                    options={flatOptions}
-                                    value={field.value || null}
-                                    onChange={(_, v) => field.onChange(v)}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            placeholder="Choose Flat"
-                                            error={!!errors.flat}
-                                            helperText={errors.flat?.message}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
-                        )}
-                    />
+                            <span className="block ml-auto">
+                                <LuBuilding className="text-[#884EA7]!" />
+                            </span>
+                        </Button>
+
+
+                    </div>
+                </>
+            )}
+            {selectedType === "community" && (
+                <>
+                    <div className="border border-[#EBEBEB] flex flex-col pt-4 pb-5 px-4 rounded-sm">
+                        {/* Unit */}
+                        <FormLabel required className="pb-4! font-medium capitalize!">
+                            Choose Community
+                        </FormLabel>
+                        <Button
+                            //   onClick={() => setPopupOpen(true)}
+                            //   disabled={!noticeLevel || loadingCommunityBlockUnit}
+                            variant="outlined"
+                            sx={{
+                                textTransform: "none",
+                                borderColor: "#EBEBEB",
+                                backgroundColor: "#FAFAFA",
+                                justifyContent: "flex-start",
+                                textAlign: "left",
+                                px: 2,
+                            }}
+                            className="capitalize! text-[#121212]! font-normal!"
+                        >
+                            Block A - 101
+                            <span className="block ml-auto">
+                                <LuBuilding />
+                            </span>
+                        </Button>
+
+
+                    </div>
                 </>
             )}
 
             {/* -------------------- Booking For -------------------- */}
+
+            <FormControl className="flex flex-col gap-2">
+                <FormLabel required className="formLabels">Facility</FormLabel>
+                <Button
+                    onClick={() => setPopupOpen(true)}
+                    variant="outlined"
+                    sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                    className={`${!(selectedFor?.length > 0) && "text-[#ADADAD]! font-normal!"} bg-[#FAFAFA]! border-[#EBEBEB]! px-3!`}
+                >
+                    {selectedFor?.length > 0
+                        ? `${selectedFor.length} Selected`
+                        : "Choose Facility"}
+                    <span className="ml-auto text-[#884EA7]!"><LuChevronDown /></span>
+                </Button>
+            </FormControl>
 
             <FormControl className="flex flex-col gap-2">
                 <FormLabel required className="formLabels">Booking For</FormLabel>
@@ -235,15 +256,13 @@ export default function BookingDetail() {
                     onClick={() => setPopupOpen(true)}
                     variant="outlined"
                     sx={{ textTransform: "none", justifyContent: "flex-start" }}
+                    className={`${!(selectedFor?.length > 0) && "text-[#ADADAD]! font-normal!"} bg-[#FAFAFA]! border-[#EBEBEB]! px-3!`}
                 >
                     {selectedFor?.length > 0
                         ? `${selectedFor.length} Selected`
                         : "Choose booking for"}
-                    <span className="ml-auto"><LuChevronDown /></span>
+                    <span className="ml-auto text-[#884EA7]!"><LuChevronDown /></span>
                 </Button>
-                {errors?.bookingFor && (
-                    <FormHelperText error>{errors.bookingFor?.message}</FormHelperText>
-                )}
             </FormControl>
 
             <SimpleSelectorPopup
@@ -314,3 +333,16 @@ export default function BookingDetail() {
         </FormWrapper>
     );
 }
+
+{/* <SelectorPopup
+open={popupOpen}
+onClose={() => setPopupOpen(false)}
+options={selectorOptions}
+initialSelection={selectedCommunities}
+onSave={handlePopupSave}
+readOnly={false}
+leftHeader="Select Communities"
+rightHeader={selectedLevels === "block" ? "Select Blocks" : "Select Blocks & Units"}
+secondarySearchPlaceholder={selectedLevels === "block" ? "Search Block" : "Search Blocks & Units"}
+hideRight={selectedLevels === "community"}
+/> */}
