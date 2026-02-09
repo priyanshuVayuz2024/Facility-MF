@@ -1722,7 +1722,6 @@ function BookingFilter() {
       end_date,
       date_range = "current_month",
     } = bookingGlobalFilterState;
-    // console.log(status);
     const communityNames = communitySelection.map((c) => c.name);
     const visibleCommunities =
       communityNames.length === 0 ||
@@ -1874,10 +1873,7 @@ function BookingFilter() {
       communitySelection: [],
     }));
 
-    // const newPath = viewParam
-    //   ? `${basePath || "/"}?view=${viewParam}`
-    //   : basePath;
-    // console.log(basePath, "basepath");
+
     navigate("/facilities", { replace: true });
   };
 

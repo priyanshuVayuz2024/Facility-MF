@@ -91,7 +91,7 @@ const PrimaryLayout = () => {
         <div
           className={`${
             !open ? "xl:max-w-[calc(100%-80px)]" : "xl:max-w-[calc(100%-240px)]"
-          } relative min-h-[calc(100%-80px)]! p-4 xl:p-6 pt-[104px]! w-full bg-[#F5F9FE]`}
+          } relative min-h-[calc(100%-80px)]! p-4 xl:p-6 pt-[104px]! w-full`}
         >
           {true ? (
             <ReactRouterDOM.Outlet />
@@ -123,9 +123,9 @@ const WrapperInner = () => {
 
       setStoreReady(true);
     } else {
-      // console.log("Waiting for store setup...");
+    
     }
-  }, []); // Run this effect only once on mount
+  }, []); 
 
   if (!storeReady) {
     return (
@@ -140,7 +140,7 @@ const WrapperInner = () => {
         <Provider store={store}>
           <ReactRouterDOM.Routes>
             <ReactRouterDOM.Route element={<PrimaryLayout />}>
-              <ReactRouterDOM.Route path="*" element={<App />} />
+              <ReactRouterDOM.Route path="/*" element={<App />} />
             </ReactRouterDOM.Route>
           </ReactRouterDOM.Routes>
         </Provider>

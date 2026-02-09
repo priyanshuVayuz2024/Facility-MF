@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Header from "./Header";
+import FacilityHeader from "./FacilityHeader";
 import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
 import { Link, useLocation } from "react-router-dom";
@@ -30,7 +30,7 @@ function FacilityListing() {
         return [...prevSelectedIds, data];
       } else {
         return prevSelectedIds.filter(
-          (selectedId) => selectedId.id !== data.id
+          (selectedId) => selectedId.id !== data.id,
         );
       }
     });
@@ -116,7 +116,7 @@ function FacilityListing() {
           className="text-[#121212]!"
           disabled={false}
           checked={selectedIds?.some(
-            (selectedId) => selectedId?.id == data?.id
+            (selectedId) => selectedId?.id == data?.id,
           )}
           onChange={(e) => handleCheckboxChange(data, e.target.checked)}
         />
@@ -181,7 +181,7 @@ function FacilityListing() {
       //   exportButtonOnClick: () =>
       //     fetchNotices({ pageToPass: page, isExport: true }),
     }),
-    [tableData]
+    [tableData],
   );
 
   useEffect(() => {
@@ -194,24 +194,44 @@ function FacilityListing() {
     <>
       <MetaTitle title={"Facility Listing"} />
       <BreadCrumbCustom
+        links={[
+          (pathname.includes("active_facilities") ||
+            pathname.includes("suspended_facilities")) && {
+            label: "Facilities",
+            to: `${basePath}/facilities`,
+          },
+        ]}
         count={"8"}
-        pageTitle={"Facilities"}
+        pageTitle={getPageTitle(pathname)}
         buttons={
-          <Box className="w-full sm:w-fit! flex flex-col sm:flex-row items-center gap-4">
-            <Button
-              className="w-full sm:w-fit! px-6! py-3! min-w-[182px]! h-10 font-medium text-sm leading-4!"
-              sx={{ textTransform: "none" }}
-              LinkComponent={Link}
-              to={`${basePath}/create-facility/basic-details`}
-              variant="contained"
-              startIcon={<LuSquarePlus className="mr-[7px]" size={20} />}
-            >
-              Add New Facility
-            </Button>
-          </Box>
+          <div className="flex justify-center gap-4">
+            <Box className="w-full sm:w-fit! flex flex-col sm:flex-row items-center gap-4">
+              <Button
+                className="w-full sm:w-fit! px-6! py-3! min-w-[182px]! h-10 font-medium text-sm leading-4!"
+                sx={{ textTransform: "none" }}
+                LinkComponent={Link}
+                to={`${basePath}/bookings`}
+                variant="outlined"
+              >
+                Bookings
+              </Button>
+            </Box>
+            <Box className="w-full sm:w-fit! flex flex-col sm:flex-row items-center gap-4">
+              <Button
+                className="w-full sm:w-fit! px-6! py-3! min-w-[182px]! h-10 font-medium text-sm leading-4!"
+                sx={{ textTransform: "none" }}
+                LinkComponent={Link}
+                to={`${basePath}/create-facility/basic-details`}
+                variant="contained"
+                startIcon={<LuSquarePlus className="mr-[7px]" size={20} />}
+              >
+                Add New Facility
+              </Button>
+            </Box>
+          </div>
         }
       />
-      <Header />
+      <FacilityHeader />
       <MicrofrontendLoader
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}

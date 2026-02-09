@@ -101,11 +101,6 @@ export default function BasicDetails() {
     }
 
 
-    useEffect(() => {
-        console.log("Form Valid:", isValid);
-    }, [isValid]);
-
-
 
     return (
         <FormWrapper className="flex flex-col gap-8 overflow-auto! border-0!">
