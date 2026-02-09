@@ -26,17 +26,17 @@ export const BreadCrumbCustom = ({
     });
   }
 
-  // Function to handle link click
-  const handleLinkClick = (to) => {
-    if (showWarning) {
-      // Prevent direct navigation and open confirmation dialog
-      setTargetLink(to);
-      setwarningDialog(true);
-    } else {
-      // No warning, navigate directly
-      navigate(to);
-    }
-  };
+    // Function to handle link click
+    const handleLinkClick = (to) => {
+        if (showWarning) {
+            // Prevent direct navigation and open confirmation dialog
+            setTargetLink(to);
+            setwarningDialog(true);
+        } else {
+            // No warning, navigate directly
+            navigate(`${basePath}${to}`);
+        }
+    };
 
   return (
     <>
