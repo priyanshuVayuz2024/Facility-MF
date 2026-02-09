@@ -44,7 +44,7 @@ function BookingDetailPage() {
         onClick: () => navigate(`${basePath}/print-notice/${idToUse}`),
         className: "!text-[#329DFF]",
         icon: <LuPrinter color="#329DFF" />,
-      }
+      },
       //   {
       //   text: "Reply",
       //   onClick: () => navigate(`${basePath}/reply-on-notice/${idToUse}`),
@@ -144,7 +144,7 @@ function BookingDetailPage() {
             label: "Facilities",
             to: `${basePath}/facilities`,
           },
-          bookingBreadcrumbLinks[from] && bookingBreadcrumbLinks[from],
+          // bookingBreadcrumbLinks[from] && bookingBreadcrumbLinks[from],
         ]}
         backDisable={false}
       />
@@ -287,15 +287,15 @@ function BookingDetailPage() {
                     icon={<LuHourglass />}
                     label="End Date"
                     value="27-January-2025"
-                     iconBg="#FFEAEA"
-                     iconColor="#AB0000"
+                    iconBg="#FFEAEA"
+                    iconColor="#AB0000"
                   />
                   <InfoRow
                     icon={<LuClock />}
                     label="Time"
                     value="07:00 - 09:00 Hrs"
                     iconBg="#EDF6FF"
-                     iconColor="#329DFF"
+                    iconColor="#329DFF"
                   />
                 </div>
               </div>

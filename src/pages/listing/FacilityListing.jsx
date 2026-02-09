@@ -6,9 +6,12 @@ import { Link, useLocation } from "react-router-dom";
 import { basePath, getPageTitle } from "../../utils";
 import { Box, Button, Checkbox, Chip } from "@mui/material";
 import {
+  LuBan,
   LuCheck,
+  LuFullscreen,
   LuScanEye,
   LuSquare,
+  LuSquareEqual,
   LuSquareMinus,
   LuSquarePen,
   LuSquarePlus,
@@ -17,6 +20,7 @@ import {
 import MicrofrontendLoader from "../../MFloader/MicroFrontendLoader";
 import { facilities, headers } from "../../components/dummyData";
 import Status from "../../components/ui/StatusColor";
+import { SquarePause, Trash2 } from "lucide-react";
 
 function FacilityListing() {
   const location = useLocation();
@@ -52,44 +56,54 @@ function FacilityListing() {
         // disabled: loadingApprovingNotice || loadingRejectingNotice,
       },
     ];
-    // {
-    //   text: "View",
-    //   // onClick: () => navigate(`${basePath}/view_notice/${id}`),
-    //   className: "!text-[#373BB5]",
-    //   icon: <LuScanEye className="!text-[#373BB5]" color="#373BB5" />,
-    //   // disabled: loadingApprovingNotice || loadingRejectingNotice,
-    // },
-    // {
-    //   text: "Edit",
-    //   // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
-    //   className: "!text-[#C4750D]",
-    //   icon: <LuSquarePen color="#C4750D" />,
-    //   // disabled: loadingApprovingNotice || loadingRejectingNotice,
-    // },
-    // {
-    //   text: "Approve",
-    //   className: "!text-[#36AB6C]",
-    //   icon: <LuCheck color="#36AB6C" />,
-    //   // onClick: () => handleApproveNotice(selectedIds?.[0]),
-    //   // disabled: loadingApprovingNotice || loadingRejectingNotice,
-    // },
-    // {
-    //   text: "Reject",
-    //   className: "!text-[#AB0000]",
-    //   icon: <LuX color="#AB0000" />,
-    //   // onClick: () => handleRejectNoticeModal(selectedIds?.[0]),
-    //   // disabled: loadingApprovingNotice || loadingRejectingNotice,
-    // },
-    // {
-    //   text: "Select",
-    //   // onClick: () => setSelectedIds([...listings]),
-    //   className: "!text-[#4D4D4F]",
-    //   icon: <LuSquare className="-mr-[2.5px]" size={22} color="#121212" />,
-    //   //     disabled:
-    //   //       loadingApprovingNotice ||
-    //   //       loadingRejectingNotice ||
-    //   //       loadingPermissions,
-    // },
+
+    //   {
+    //     text: "Edit",
+    //     // onClick: () => navigate(`${basePath}/edit_notice/${id}`),
+    //     className: "!text-[#C4750D]",
+    //     icon: <LuSquarePen color="#C4750D" />,
+    //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
+    //   },
+
+    if (selectedIds.length > 0) {
+      temp.push(
+        {
+          text: "View",
+          // onClick: () => navigate(`${basePath}/view_notice/${id}`),
+          className: "!text-[#373BB5]",
+          icon: <LuScanEye className="text-[#373BB5]!" color="#373BB5" />,
+          // disabled: loadingApprovingNotice || loadingRejectingNotice,
+        },
+        {
+          text: "Edit",
+          className: "!text-[#c3750D]",
+          icon: <LuSquarePen color="#c3750D" />,
+          // onClick: () => handleApproveNotice(selectedIds?.[0]),
+          // disabled: loadingApprovingNotice || loadingRejectingNotice,
+        },
+        {
+          text: "View Booking",
+          className: "!text-[#2e90e9]",
+          icon: <LuFullscreen color="#2e90e9" />,
+          // onClick: () =>
+          //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
+        },
+        {
+          text: "Suspend Facility",
+          className: "!text-[#bd3737] ",
+          icon: <SquarePause color="#bd3737" />,
+          // onClick: () =>
+          //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
+        },
+        {
+          text: "Delete",
+          className: "!text-[#4d4d4f] ",
+          icon: <Trash2 color="#4d4d4f" />,
+          // onClick: () =>
+          //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
+        },
+      );
+    }
 
     if (selectedIds?.length > 0) {
       return temp;

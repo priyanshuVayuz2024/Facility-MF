@@ -81,7 +81,7 @@ function FacilityHeader() {
                     </IconButton>
                   )}
                 </div>
-                <div className="text-xl font-semibold leading-[24px]">
+                <div className="text-xl font-semibold leading-6">
                   {item.count.toString().padStart(2, "0")}
                 </div>
               </div>

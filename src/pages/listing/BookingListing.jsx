@@ -147,7 +147,7 @@ function BookingListing() {
     // Facility Name (Maps to 'facilityName')
     facilityName: {
       text: data.facilityName,
-      link: `/booking/${data.id}?from=${ROUTE_TO_FROM_KEY[location.pathname]}`,
+      link: `/booking/${data.id}`,
       outerStyle: "min-w-[180px] max-w-[200px] !whitespace-normal",
       innerStyle: "line-clamp-2 text-left font-medium text-[#884EA7]",
     },
