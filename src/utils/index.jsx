@@ -138,3 +138,11 @@ export const bookingBreadcrumbLinks = {
     to: `${basePath}/pending_bookings`,
   },
 };
+
+export const DividerLine = ({ thick }) => (
+  <hr
+    className={`border-[#EBEBEB] ${
+      thick ? "border-b-0" : "border-dashed"
+    } my-4`}
+  />
+);

@@ -21,6 +21,7 @@ import MicrofrontendLoader from "../../MFloader/MicroFrontendLoader";
 import { facilities, headers } from "../../components/dummyData";
 import Status from "../../components/ui/StatusColor";
 import { SquarePause, Trash2 } from "lucide-react";
+import DeleteFacilityModal from "../../components/ui/DeleteFacilityModal";
 
 function FacilityListing() {
   const location = useLocation();
@@ -259,6 +260,7 @@ function FacilityListing() {
         mountDivId="reusableTable"
         propsToPass={staticProps}
       />
+      <DeleteFacilityModal />
     </>
   );
 }
