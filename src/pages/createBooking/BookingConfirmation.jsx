@@ -307,8 +307,7 @@ export default function BookingConfirmation() {
                                 label="I understand that I would be charged for the usage of this facility."
                             />
                             <Typography className="text-sm text-[#4D4D4F] leading-5 pl-8">
-                                I acknowledge that using this facility involves a fee.
-                            </Typography>
+                                I acknowledge that using this facility involves a fee, and I fully accept the charges associated with it. I am aware that the facility is not complimentary and that payment is required as per the guidelines. By stating this, I confirm my understanding of the cost and agree to comply with all applicable usage and billing terms.                            </Typography>
                             {errors.consent1 && <FormHelperText error>{errors.consent1.message}</FormHelperText>}
                         </Box>
                     )}
@@ -326,7 +325,7 @@ export default function BookingConfirmation() {
                                     <span>
                                         I have read the{" "}
                                         <span
-                                            className="text-[#884EA7] underline cursor-pointer"
+                                            className="text-[#884EA7] cursor-pointer"
                                             onClick={() => window.open(`${basePath}/`, "_blank")}
                                         >
                                             Facility usage instructions
