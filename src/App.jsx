@@ -17,6 +17,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import BookingPreview from "./pages/createBooking/BookingPreview";
 import FacilityDetail from "./pages/facilityDetail";
 import BookingDetailPage from "./pages/bookingDetail";
+import SuspendFacility from "./pages/suspendFacility/SuspendFacility";
 
 function App() {
   const store = window.sharedStore;
@@ -41,6 +42,10 @@ function App() {
               <Route path="/pending_bookings" element={<BookingListing />} />
               <Route path="/facility/:id" element={<FacilityDetail />} />
               <Route path="/booking/:id" element={<BookingDetailPage />} />
+              <Route
+                path="/suspend-facility/:id"
+                element={<SuspendFacility />}
+              />
 
               <Route path="/create-facility" element={<CreateLayout />}>
                 <Route index element={<BasicDetails />} />

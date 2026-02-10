@@ -28,6 +28,11 @@ function FacilityListing() {
   const pathname = location.pathname;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [deleteFacModal, setDeleteFacModal] = useState(false);
+
+  const handleDeleteModal = () => {
+    setDeleteFacModal(false);
+  };
 
   const handleCheckboxChange = (data, isChecked) => {
     setSelectedIds((prevSelectedIds) => {
@@ -100,8 +105,8 @@ function FacilityListing() {
           text: "Delete",
           className: "!text-[#4d4d4f] ",
           icon: <Trash2 color="#4d4d4f" />,
-          // onClick: () =>
-          //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
+
+          onClick: () => setDeleteFacModal(true),
         },
       );
     }
@@ -260,7 +265,7 @@ function FacilityListing() {
         mountDivId="reusableTable"
         propsToPass={staticProps}
       />
-      <DeleteFacilityModal />
+      <DeleteFacilityModal open={deleteFacModal} onClose={handleDeleteModal} />
     </>
   );
 }
