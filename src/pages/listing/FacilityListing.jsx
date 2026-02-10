@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import FacilityHeader from "./FacilityHeader";
 import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { basePath, getPageTitle } from "../../utils";
 import { Box, Button, Checkbox, Chip } from "@mui/material";
 import {
@@ -29,6 +29,8 @@ function FacilityListing() {
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
   const [deleteFacModal, setDeleteFacModal] = useState(false);
+  console.log(selectedIds, "selectedIds");
+  const navigate = useNavigate();
 
   const handleDeleteModal = () => {
     setDeleteFacModal(false);
@@ -98,8 +100,8 @@ function FacilityListing() {
           text: "Suspend Facility",
           className: "!text-[#bd3737] ",
           icon: <SquarePause color="#bd3737" />,
-          // onClick: () =>
-          //   navigate(`${basePath}/reject-notice/${data?.title?.id}`),
+          onClick: () =>
+            navigate(`${basePath}/suspend-facility/${selectedIds?.[0]?.id}`),
         },
         {
           text: "Delete",
