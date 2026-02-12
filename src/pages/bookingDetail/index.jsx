@@ -18,14 +18,18 @@ import {
   LuCalendar,
   LuCalendarDays,
   LuCalendarPlus,
+  LuClipboardList,
   LuClock,
+  LuDollarSign,
   LuEllipsisVertical,
+  LuFileText,
   LuGrid2X2,
   LuHourglass,
   LuPrinter,
   LuSquarePen,
   LuUsers,
 } from "react-icons/lu";
+import { BookMarked, Coins, FileText, ReceiptText } from "lucide-react";
 
 function BookingDetailPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,9 +86,7 @@ function BookingDetailPage() {
   };
   const DividerLine = ({ thick }) => (
     <hr
-      className={`border-[#EBEBEB] ${
-        thick ? "border-b-0" : "border-dashed"
-      } my-4`}
+      className={`border-[#EBEBEB] ${thick ? "border-b-0" : "border-dashed"}`}
     />
   );
 
@@ -113,17 +115,19 @@ function BookingDetailPage() {
   }) => (
     <div className="flex items-start gap-3">
       {/* Icon Box */}
-      <div
-        className="p-2 rounded-lg flex items-center justify-center"
-        style={{ backgroundColor: iconBg, color: iconColor }}
-      >
-        <div className="text-2xl">{icon}</div>
-      </div>
+      {icon && (
+        <div
+          className="p-2 rounded-lg flex items-center justify-center"
+          style={{ backgroundColor: iconBg, color: iconColor }}
+        >
+          <div className="text-2xl">{icon}</div>
+        </div>
+      )}
 
       {/* Text Section */}
       <div className="flex flex-col leading-tight">
         <span className="text-sm" style={{ color: labelColor }}>
-          {label}:
+          {label}
         </span>
 
         <span className="font-medium" style={{ color: valueColor }}>
@@ -144,159 +148,191 @@ function BookingDetailPage() {
             label: "Facilities",
             to: `${basePath}/facilities`,
           },
-          // bookingBreadcrumbLinks[from] && bookingBreadcrumbLinks[from],
+          {
+            label: "Bookings",
+            to: `${basePath}/bookings`,
+          },
         ]}
         backDisable={false}
       />
       <Card
         elevation={0}
-        className="flex flex-col gap-6 p-6 bg-white border border-[#EBEBEB] rounded-lg"
+        className="flex flex-col gap-5 p-6 bg-white border border-[#EBEBEB] rounded-lg"
       >
+        {/* Header Section */}
+
+        <div className="">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex flex-col">
+                <h1 className="font-semibold text-3xl text-[#121212]">
+                  {data?.facilityName || "Auditorium Hall"}
+                </h1>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <Status label={data?.status || "Upcoming"} />
+              <p className="text-[#4D4D4D] text-sm">
+                {data?.bookingDate || "17-June-2025 02:08:25 PM"}
+              </p>
+
+              {actionMenu()?.length > 0 && (
+                <>
+                  <IconButton onClick={handleMenuOpen}>
+                    <LuEllipsisVertical className="text-xl" />
+                  </IconButton>
+
+                  <Menu
+                    anchorEl={menuAnchorEl}
+                    open={Boolean(menuAnchorEl)}
+                    onClose={handleMenuClose}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    slotProps={{
+                      paper: {
+                        sx: {
+                          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+                        },
+                      },
+                    }}
+                  >
+                    {actionMenu().map((action, i) => (
+                      <MenuItem
+                        key={i}
+                        onClick={() => {
+                          action?.onClick?.();
+                          handleMenuClose();
+                        }}
+                        sx={{
+                          "&:not(:last-of-type)": {
+                            borderBottom: "0.5px solid #EBEBEB",
+                          },
+                        }}
+                        className="flex items-center gap-2"
+                      >
+                        {action.icon}
+                        {action.text}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+        <DividerLine />
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 flex flex-col gap-6">
             <Card
               elevation={0}
               className="border border-[#EBEBEB] rounded-lg bg-white"
             >
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 rounded-lg bg-[#884EA7]  items-center justify-center">
-                      <LuBuilding size={26} className="text-white" />
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h1 className="font-semibold text-2xl text-[#121212]">
-                        {data?.facilityName || "GYM"}
-                      </h1>
-                      <p className="text-[#4D4D4D] text-sm">
-                        {data?.communityName || "Ashiana Garden"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-4">
-                    <Status label={data?.status || "Upcoming"} />
-
-                    {actionMenu()?.length > 0 && (
-                      <>
-                        <IconButton onClick={handleMenuOpen}>
-                          <LuEllipsisVertical className="text-xl" />
-                        </IconButton>
-
-                        <Menu
-                          anchorEl={menuAnchorEl}
-                          open={Boolean(menuAnchorEl)}
-                          onClose={handleMenuClose}
-                          anchorOrigin={{
-                            vertical: "bottom",
-                            horizontal: "right",
-                          }}
-                          transformOrigin={{
-                            vertical: "top",
-                            horizontal: "right",
-                          }}
-                          slotProps={{
-                            paper: {
-                              sx: {
-                                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                              },
-                            },
-                          }}
-                        >
-                          {actionMenu().map((action, i) => (
-                            <MenuItem
-                              key={i}
-                              onClick={() => {
-                                action?.onClick?.();
-                                handleMenuClose();
-                              }}
-                              sx={{
-                                "&:not(:last-of-type)": {
-                                  borderBottom: "0.5px solid #EBEBEB",
-                                },
-                              }}
-                              className="flex items-center gap-2"
-                            >
-                              {action.icon}
-                              {action.text}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card
-              elevation={0}
-              className="border border-[#EBEBEB] rounded-lg bg-white"
-            >
               <div className="p-6">
-                <h1 className="text-xl font-semibold text-[#121212]">
-                  Booking Details
-                </h1>
-                <DividerLine thick={true} />
+                <div className="flex items-center gap-2 mb-4">
+                  <ReceiptText className="text-[#6B6B6B]" />
+                  <h1 className="text-xl font-semibold text-[#121212]">
+                    Booking Details
+                  </h1>
+                </div>
+                <DividerLine />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
-                  <InfoRow icon={<LuGrid2X2 />} label="Unit" value="--" />
-                  <InfoRow
-                    icon={<LuCalendarPlus />}
-                    label="Booking Type"
-                    value="Community"
-                  />
-                  <InfoRow
-                    icon={<LuUsers />}
-                    label="Booking For"
-                    value="Owner"
-                  />
-                  <InfoRow
-                    icon={<LuBuilding />}
-                    label="Community"
-                    value="Ashiana Garden"
-                  />
-                  <InfoRow
-                    icon={<LuBell />}
-                    label="Booking Frequency"
-                    value="Daily"
-                  />
+                <div className="grid grid-cols-3 gap-6 mt-4">
+                  {/* Column 1 */}
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Booking Date:"
+                      value={data?.bookingDate || "06-Feb-2026"}
+                    />
+                  </div>
+
+                  {/* Column 2 */}
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Booking Time:"
+                      value={data?.bookingTime || "09:00 AM - 10:00 AM"}
+                    />
+                  </div>
+
+                  {/* Column 3 */}
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Booking Frequency:"
+                      value={data?.bookingFrequency || "One Time"}
+                    />
+                  </div>
                 </div>
               </div>
             </Card>
+
+            {/* Other Details Card */}
             <Card
               elevation={0}
               className="border border-[#EBEBEB] rounded-lg bg-white"
             >
               <div className="p-6">
-                <h1 className="text-xl font-semibold text-[#121212]">
-                  Date & Time
-                </h1>
-                <DividerLine thick={true} />
+                <div className="flex items-center gap-2 mb-4">
+                  <BookMarked className="text-[#6B6B6B]" />
+                  <h1 className="text-xl font-semibold text-[#121212]">
+                    Other Details
+                  </h1>
+                </div>
+                <DividerLine />
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-4">
-                  <InfoRow
-                    icon={<LuCalendarDays />}
-                    label="Start Date"
-                    value="22-December-2025"
-                    iconBg="#F0FFF7" // light green
-                    iconColor="#16A34A"
-                  />
-                  <InfoRow
-                    icon={<LuHourglass />}
-                    label="End Date"
-                    value="27-January-2025"
-                    iconBg="#FFEAEA"
-                    iconColor="#AB0000"
-                  />
-                  <InfoRow
-                    icon={<LuClock />}
-                    label="Time"
-                    value="07:00 - 09:00 Hrs"
-                    iconBg="#EDF6FF"
-                    iconColor="#329DFF"
-                  />
+                <div className="grid grid-cols-3 gap-6 mt-4">
+                  {/* Column 1 */}
+                  <div className="space-y-4">
+                    <InfoRow label="Unit:" value={data?.unit || "A - 1012"} />
+                    <InfoRow
+                      label="Chargeable"
+                      value={data?.chargeable || "Yes"}
+                    />
+                  </div>
+
+                  {/* Column 2 */}
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Community:"
+                      value={data?.community || "Golden Park"}
+                    />
+                    <InfoRow
+                      label="Charges Type:"
+                      value={data?.chargesType || "Flat Rate"}
+                    />
+                  </div>
+
+                  {/* Column 3 */}
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Booking For:"
+                      value={data?.bookingFor || "Owners"}
+                    />
+                    <InfoRow
+                      label="Due Date:"
+                      value={data?.dueDate || "10-Feb-2026"}
+                    />
+                  </div>
+
+                  {/* Additional Row */}
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Booking Type:"
+                      value={data?.bookingType || "Personal"}
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <InfoRow
+                      label="Booking By:"
+                      value={data?.bookingBy || "Gourov"}
+                    />
+                  </div>
                 </div>
               </div>
             </Card>
@@ -304,28 +340,44 @@ function BookingDetailPage() {
 
           <Card
             elevation={0}
-            className="border border-[#EBEBEB] rounded-lg bg-white p-6"
+            className="border border-[#EBEBEB] rounded-lg bg-white p-6 h-full"
           >
-            <h1 className="text-xl font-semibold text-[#121212]">
-              Amount Charged
-            </h1>
-            <DividerLine thick={true} />
-
-            <div className="text-sm text-[#6B6B6B] flex justify-between mt-2">
-              <span>Category</span>
-              <span>Price</span>
+            <div className="flex items-center gap-4 mb-4">
+              <Coins className="text-[#6B6B6B]" />
+              <h1 className="text-xl">Amount Charged</h1>
             </div>
+            <DividerLine />
+            <div className="flex justify-between flex-col">
+              <div className="mt-4 space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-[#6B6B6B] text-sm">
+                    Facility Charges
+                  </span>
+                  <span className="font-medium text-[#121212">
+                    ₹ {data?.facilityCharges || "8,000.00"}
+                  </span>
+                </div>
 
-            <h2 className="mt-4 mb-1 font-semibold text-[#121212]">Owners</h2>
+                <div className="flex justify-between items-center ">
+                  <span className="text-[#6B6B6B] text-sm">PCGST (9.00%)</span>
+                  <span className="font-medium text-[#121212]">
+                    ₹ {data?.pcgst || "720.00"}
+                  </span>
+                </div>
 
-            <div className="flex justify-between py-2 border-b border-[#EBEBEB]">
-              <span className="text-[#6B6B6B]">For Flat</span>
-              <span className="font-medium text-[#121212]">₹ 800.00</span>
-            </div>
-
-            <div className="flex justify-between mt-4">
-              <span className="font-semibold text-[#121212]">Total</span>
-              <span className="font-bold text-[#121212]">₹ 800.00</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-[#6B6B6B] text-sm">SGST (9.00%)</span>
+                  <span className="font-medium text-[#121212]">
+                    ₹ {data?.sgst || "720.00"}
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-between items-center pt-3 mt-3 ">
+                <span className="font-semibold text-[#121212]">Total</span>
+                <span className="font-bold text-[#121212] text-lg">
+                  ₹ {data?.total || "9640.00"}
+                </span>
+              </div>
             </div>
           </Card>
         </div>
@@ -335,17 +387,17 @@ function BookingDetailPage() {
           className="border border-[#EBEBEB] rounded-lg bg-white"
         >
           <div className="p-6">
-            <h1 className="text-xl font-semibold text-[#121212]">
-              Purpose of Booking
-            </h1>
-            <DividerLine thick={true} />
+            <div className="flex items-center gap-2 mb-4">
+              <FileText className="text-[#6B6B6B]" />
+              <h1 className="text-xl font-semibold text-[#121212]">
+                Purpose of Booking
+              </h1>
+            </div>
+            <DividerLine />
 
             <p className="mt-4 text-[#4D4D4D] text-sm leading-relaxed">
-              We are booking the activity room for a kids’ party. The event will
-              include children’s activities and light refreshments. The room
-              will be required for the full duration of the celebration. All
-              arrangements will be managed responsibly, ensuring cleanliness and
-              safety. This message is for documentation of the booking purpose.
+              {data?.purpose ||
+                "We are booking the activity room for a kids' party. The event will include children's activities and light refreshments. The room will be required for the full duration of the celebration. All arrangements will be managed responsibly, ensuring cleanliness and safety. This message is for documentation of the booking purpose."}
             </p>
           </div>
         </Card>

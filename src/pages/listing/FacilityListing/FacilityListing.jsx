@@ -32,10 +32,13 @@ function FacilityListing() {
   const [deleteFacModal, setDeleteFacModal] = useState(false);
   console.log(selectedIds, "selectedIds");
   const navigate = useNavigate();
-
+  const [selectAllData, setSelectAllData] = useState("");
   const handleDeleteModal = () => {
     setDeleteFacModal(false);
   };
+  console.log(selectAllData, "selectAllData");
+
+  const totalFacility = 140;
 
   const handleCheckboxChange = (data, isChecked) => {
     setSelectedIds((prevSelectedIds) => {
@@ -48,6 +51,22 @@ function FacilityListing() {
       }
     });
   };
+
+  const renderSelectAllText = () => {
+    if (selectedIds.length === 0) return null;
+    return (
+      <>
+        {selectedIds.length} Facility on this page are selected.{" "}
+        <span
+          onClick={console.log("hi select all data")}
+          className="text-blue-600 cursor-pointer hover:underline font-medium"
+        >
+          Select all {totalFacility} Facilities in Facility Listing.
+        </span>
+      </>
+    );
+  };
+
   const getActionMenu = () => {
     let temp = [
       {
@@ -198,6 +217,7 @@ function FacilityListing() {
       //   tileCardData: cardData,
       enableGlobalSearch: true,
       actionMenu: getActionMenu,
+      selectAllExisitngData: renderSelectAllText(),
       //   genericActionMenu: getGenericCardActionMenu,
       exportButton: "Export Notices",
       searchPlaceholder: "Search across Facilities",
