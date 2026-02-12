@@ -27,7 +27,7 @@ const convertStructuredToSelectionMap = (structured = []) => {
     const sub = item.subOptions?.map((s) => s.id.toString()) || [];
     const child =
       item.subOptions?.flatMap(
-        (s) => s.childOptions?.map((c) => c.id.toString()) || []
+        (s) => s.childOptions?.map((c) => c.id.toString()) || [],
       ) || [];
     map[item.id.toString()] = {
       main: true,
@@ -52,7 +52,7 @@ const convertSelectionMapToStructured = (selection, baseOptions) => {
           ...sub,
           childOptions:
             sub.childOptions?.filter((child) =>
-              sel.child.includes(child.id.toString())
+              sel.child.includes(child.id.toString()),
             ) || [],
         })) || [];
 
@@ -77,7 +77,7 @@ const SelectorPopup = ({
   options = [],
   searchPlaceholderLeft = "Search Communities",
   searchPlaceholderRight = "Search Block or Unit",
-  hideSearch
+  hideSearch,
 }) => {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="100%" fullWidth>
@@ -121,7 +121,8 @@ export const MainFilter = ({
   noDataMsg,
   searchPlaceholderLeft,
   searchPlaceholderRight,
-  hideSearch
+  hideSearch,
+  disableRightSide = true,
 }) => {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -137,7 +138,7 @@ export const MainFilter = ({
 
   const dataSource = useMemo(
     () => (readOnly ? initialSelection : options),
-    [readOnly, options, initialSelection]
+    [readOnly, options, initialSelection],
   );
 
   useEffect(() => {
@@ -202,15 +203,15 @@ export const MainFilter = ({
         const parentSub = dataSource
           .find((o) => o.id === mainId)
           ?.subOptions.find((s) =>
-            s.childOptions?.some((c) => c.id === childId)
+            s.childOptions?.some((c) => c.id === childId),
           );
 
         if (parentSub) {
           const allChildren = parentSub.childOptions.map((c) =>
-            c.id.toString()
+            c.id.toString(),
           );
           const selectedChildren = newChild.filter((id) =>
-            allChildren.includes(id)
+            allChildren.includes(id),
           );
           const sid = parentSub.id.toString();
 
@@ -237,7 +238,7 @@ export const MainFilter = ({
         const subs = dataSource.find((o) => o.id === mainId)?.subOptions || [];
         const subIds = subs.map((s) => s.id.toString());
         const childIds = subs.flatMap(
-          (s) => s.childOptions?.map((c) => c.id.toString()) || []
+          (s) => s.childOptions?.map((c) => c.id.toString()) || [],
         );
         if (checked) {
           newSub = subIds;
@@ -268,7 +269,7 @@ export const MainFilter = ({
   const filteredOptions = useMemo(() => {
     if (!searchTerm) return dataSource;
     return dataSource.filter((opt) =>
-      opt.name.toLowerCase().includes(searchTerm.toLowerCase())
+      opt.name.toLowerCase().includes(searchTerm.toLowerCase()),
     );
   }, [searchTerm, dataSource]);
 
@@ -280,7 +281,7 @@ export const MainFilter = ({
       const childList =
         main.subOptions.find((s) => s.id === subId)?.childOptions || [];
       const count = childList.filter((c) =>
-        sel.child?.includes(c.id.toString())
+        sel.child?.includes(c.id.toString()),
       )?.length;
       return { childCount: count };
     } else {
@@ -309,7 +310,7 @@ export const MainFilter = ({
 
     const totalChild = sub.childOptions.length;
     const selectedChild = sel.child?.filter((id) =>
-      sub.childOptions.some((c) => c.id.toString() === id)
+      sub.childOptions.some((c) => c.id.toString() === id),
     )?.length;
 
     return selectedChild > 0 && selectedChild < totalChild;
@@ -331,7 +332,7 @@ export const MainFilter = ({
           .toLowerCase()
           .includes(rightSearchTerm.toLowerCase());
         const childMatch = sub.childOptions?.some((child) =>
-          child.name.toLowerCase().includes(rightSearchTerm.toLowerCase())
+          child.name.toLowerCase().includes(rightSearchTerm.toLowerCase()),
         );
         return subNameMatch || childMatch;
       });
@@ -366,10 +367,15 @@ export const MainFilter = ({
   };
   return (
     <div
-      className={`${containerClassName ? containerClassName : "min-h-[85vh] max-h-[85vh]"
-        } flex flex-col md:flex-row overflow-auto md:overflow-hidden`}
+      className={`${
+        containerClassName ? containerClassName : "min-h-[85vh] max-h-[85vh]"
+      } flex flex-col md:flex-row overflow-auto md:overflow-hidden`}
     >
-      <Box className="md:w-1/3 flex flex-col">
+      <Box
+        className={`flex flex-col ${
+          !disableRightSide ? "md:w-full" : "md:w-1/3"
+        }`}
+      >
         <DialogTitle
           sx={{
             position: "sticky",
@@ -390,54 +396,56 @@ export const MainFilter = ({
             )}
           </div>
           {/* {!readOnly && ( */}
-          {!hideSearch && <TextField
-            fullWidth
-            size="small"
-            placeholder={searchPlaceholderLeft}
-            value={searchInput}
-            onChange={(e) => {
-              const input = e.target.value;
+          {!hideSearch && (
+            <TextField
+              fullWidth
+              size="small"
+              placeholder={searchPlaceholderLeft}
+              value={searchInput}
+              onChange={(e) => {
+                const input = e.target.value;
 
-              let sanitizedInput = input
-                .replace(/^\s+/, "")
-                .replace(/\s{2,}/g, " ");
-              if (activeOptionId) {
-                setActiveOptionId(null);
-              }
-              setSearchInput(sanitizedInput);
-            }}
-            className="px-3! border-noned! border-y! border-[#EBEBEB]!"
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "#FFFFFF",
-                height: "50px",
-                "& fieldset": {
-                  border: "none",
+                let sanitizedInput = input
+                  .replace(/^\s+/, "")
+                  .replace(/\s{2,}/g, " ");
+                if (activeOptionId) {
+                  setActiveOptionId(null);
+                }
+                setSearchInput(sanitizedInput);
+              }}
+              className="px-3! border-noned! border-y! border-[#EBEBEB]!"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "#FFFFFF",
+                  height: "50px",
+                  "& fieldset": {
+                    border: "none",
+                  },
                 },
-              },
-            }}
-            InputProps={
-              searchInput && {
-                // startAdornment: (
-                //   <InputAdornment position="start">
-                //     <LuSearch className="text-[#ADADAD]" size={16} />
-                //   </InputAdornment>
-                // ),
-                endAdornment: true && (
-                  <InputAdornment position="end">
-                    <button
-                      className="cursor-pointer!"
-                      onClick={() => {
-                        setSearchInput("");
-                      }}
-                    >
-                      <LuX />
-                    </button>
-                  </InputAdornment>
-                ),
+              }}
+              InputProps={
+                searchInput && {
+                  // startAdornment: (
+                  //   <InputAdornment position="start">
+                  //     <LuSearch className="text-[#ADADAD]" size={16} />
+                  //   </InputAdornment>
+                  // ),
+                  endAdornment: true && (
+                    <InputAdornment position="end">
+                      <button
+                        className="cursor-pointer!"
+                        onClick={() => {
+                          setSearchInput("");
+                        }}
+                      >
+                        <LuX />
+                      </button>
+                    </InputAdornment>
+                  ),
+                }
               }
-            }
-          />}
+            />
+          )}
         </DialogTitle>
         {/* )} */}
         <div className="flex-1 overflow-y-auto">
@@ -462,16 +470,16 @@ export const MainFilter = ({
                   onChange={() => {
                     const isAllSelected = areAllCommunitiesSelected();
                     filteredOptions.forEach((opt) =>
-                      updateSelection(opt.id, null, null, !isAllSelected)
+                      updateSelection(opt.id, null, null, !isAllSelected),
                     );
                   }}
                 />
                 <ListItemText
                   primary={
-                    <div className={`${!readOnly && "ps-3"} flex justify-between items-center`}>
-                      <h4 className="text-[16px] text-[#121212]">
-                        All
-                      </h4>
+                    <div
+                      className={`${!readOnly && "ps-3"} flex justify-between items-center`}
+                    >
+                      <h4 className="text-[16px] text-[#121212]">All</h4>
                     </div>
                   }
                 />
@@ -487,10 +495,11 @@ export const MainFilter = ({
                     setActiveOptionId(opt.id);
                     // updateSelection(opt.id, null, null, !isChecked(opt.id));
                   }}
-                  className={`rounded-md cursor-pointer transition-all ${activeOptionId === opt.id
-                    ? "bg-[#FBF5FF] text-[#884EA7]"
-                    : ""
-                    } p-6! rounded-none hover:bg-[#FBF5FF]!`}
+                  className={`rounded-md cursor-pointer transition-all ${
+                    activeOptionId === opt.id
+                      ? "bg-[#FBF5FF] text-[#884EA7]"
+                      : ""
+                  } p-6! rounded-none hover:bg-[#FBF5FF]!`}
                 >
                   {!readOnly && (
                     <Checkbox
@@ -504,7 +513,9 @@ export const MainFilter = ({
                   )}
                   <ListItemText
                     primary={
-                      <div className={`${!readOnly && "ps-3"} flex justify-between items-center`}>
+                      <div
+                        className={`${!readOnly && "ps-3"} flex justify-between items-center`}
+                      >
                         <h4 className="text-[16px]">{opt.name}</h4>
                         <div
                           onClick={(e) => {
@@ -516,7 +527,7 @@ export const MainFilter = ({
                           {!readOnly && subCount > 0 && (
                             <p className="text-[#884EA7]" ml={1}>
                               {opt?.subOptions?.length == subCount &&
-                                subCount != 0
+                              subCount != 0
                                 ? "All"
                                 : subCount}
                             </p>
@@ -533,278 +544,282 @@ export const MainFilter = ({
         </div>
       </Box>
 
-      <Box className="md:w-2/3 flex flex-col justify-between md:border-l border-[#EBEBEB]">
-        <DialogTitle
-          sx={{
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-            padding: 0,
-            backgroundColor: "white",
-          }}
-        >
-          <div className="flex justify-between">
-            <h4 className="px-6 py-4 font-semibold! text-base! text-[#4D4D4F]">
-              {rightHeader}
-            </h4>
-            {closeButton && (
-              <button
-                className={"mr-2 hidden md:block!"}
-                onClick={onCloseCick || onClose}
-              >
-                <LuCircleX size={24} />
-              </button>
-            )}
-          </div>
-          {activeOptionId && !hideSearch && (
-            <TextField
-              fullWidth
-              size="small"
-              placeholder={searchPlaceholderRight}
-              value={rightSearchInput}
-              onChange={(e) => {
-                const input = e.target.value;
+      {disableRightSide && (
+        <Box className="md:w-2/3 flex flex-col justify-between md:border-l border-[#EBEBEB]">
+          <DialogTitle
+            sx={{
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+              padding: 0,
+              backgroundColor: "white",
+            }}
+          >
+            <div className="flex justify-between">
+              <h4 className="px-6 py-4 font-semibold! text-base! text-[#4D4D4F]">
+                {rightHeader}
+              </h4>
+              {closeButton && (
+                <button
+                  className={"mr-2 hidden md:block!"}
+                  onClick={onCloseCick || onClose}
+                >
+                  <LuCircleX size={24} />
+                </button>
+              )}
+            </div>
+            {activeOptionId && !hideSearch && (
+              <TextField
+                fullWidth
+                size="small"
+                placeholder={searchPlaceholderRight}
+                value={rightSearchInput}
+                onChange={(e) => {
+                  const input = e.target.value;
 
-                const sanitizedInput = input
-                  .replace(/^\s+/, "")
-                  .replace(/\s{2,}/g, " ");
+                  const sanitizedInput = input
+                    .replace(/^\s+/, "")
+                    .replace(/\s{2,}/g, " ");
 
-                setRightSearchInput(sanitizedInput);
-              }}
-              className="px-3! border-noned! border-y! border-[#EBEBEB]!"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "#FFFFFF",
-                  height: "50px",
-                  "& fieldset": {
-                    border: "none",
+                  setRightSearchInput(sanitizedInput);
+                }}
+                className="px-3! border-noned! border-y! border-[#EBEBEB]!"
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#FFFFFF",
+                    height: "50px",
+                    "& fieldset": {
+                      border: "none",
+                    },
                   },
-                },
-              }}
-              InputProps={
-                rightSearchInput?.length > 0 && {
-                  // startAdornment: (
-                  //   <InputAdornment position="start">
-                  //     <LuSearch className="text-[#ADADAD]" size={16} />
-                  //   </InputAdornment>
-                  // ),
-                  endAdornment: true && (
-                    <InputAdornment position="end">
-                      <button
-                        className="cursor-pointer!"
-                        onClick={() => {
-                          setRightSearchInput("");
-                        }}
-                      >
-                        <LuX />
-                      </button>
-                    </InputAdornment>
-                  ),
+                }}
+                InputProps={
+                  rightSearchInput?.length > 0 && {
+                    // startAdornment: (
+                    //   <InputAdornment position="start">
+                    //     <LuSearch className="text-[#ADADAD]" size={16} />
+                    //   </InputAdornment>
+                    // ),
+                    endAdornment: true && (
+                      <InputAdornment position="end">
+                        <button
+                          className="cursor-pointer!"
+                          onClick={() => {
+                            setRightSearchInput("");
+                          }}
+                        >
+                          <LuX />
+                        </button>
+                      </InputAdornment>
+                    ),
+                  }
                 }
-              }
-            />
-          )}
-        </DialogTitle>
-        {activeOptionId ? (
-          <div className="p-6 flex flex-1 flex-col gap-6 overflow-y-auto">
-            {activeOptionId &&
-              suboptionsFiltered?.map((sub) => {
-                const { childCount = 0 } = getCounts(activeOptionId, sub.id);
+              />
+            )}
+          </DialogTitle>
+          {activeOptionId ? (
+            <div className="p-6 flex flex-1 flex-col gap-6 overflow-y-auto">
+              {activeOptionId &&
+                suboptionsFiltered?.map((sub) => {
+                  const { childCount = 0 } = getCounts(activeOptionId, sub.id);
 
-                return (
-                  <div className="border-[0.5px] border-[#EBEBEB] rounded">
-                    <Box
-                      onClick={() => toggleExpand(sub.id)}
-                      key={sub.id}
-                      className="p-4 
+                  return (
+                    <div className="border-[0.5px] border-[#EBEBEB] rounded">
+                      <Box
+                        onClick={() => toggleExpand(sub.id)}
+                        key={sub.id}
+                        className="p-4 
                       rounded border-b border-[#EBEBEB] cursor-pointer"
-                    // bg-[#F9F9F9]
-                    >
-                      <Box className="flex justify-between items-center">
-                        <Box className="flex items-start gap-3">
-                          {!readOnly && (
-                            <Checkbox
-                              className="p-0!"
-                              checked={isChecked(activeOptionId, sub.id)}
-                              indeterminate={isSubIndeterminate(
-                                activeOptionId,
-                                sub.id
-                              )}
-                              onChange={(e) =>
-                                updateSelection(
-                                  activeOptionId,
-                                  sub.id,
-                                  null,
-                                  e.target.checked
-                                )
-                              }
-                            />
-                          )}
-                          <div className="flex flex-col gap-2">
-                            <h4 className="text-[#121212] leading-5">
-                              {sub.name}
-                            </h4>
-                            {!readOnly && childCount > 0 && (
-                              <p className="font-medium text-xs text-[#4D4D4F] leading-[18px]">
-                                {sub?.childOptions?.length == childCount &&
-                                  childCount != 0
-                                  ? "All"
-                                  : `${childCount} selected`}
-                              </p>
-                            )}
-                            {!readOnly && childCount == 0 && (
-                              <p className="font-medium text-xs text-[#4D4D4F] leading-[18px]">
-                                Select this block to choose units
-                              </p>
-                            )}
-                          </div>
-                        </Box>
-                        {sub.childOptions?.length > 0 && (
-                          <IconButton>
-                            {expandedSub[sub.id] ? (
-                              <ExpandLess />
-                            ) : (
-                              <ExpandMore />
-                            )}
-                          </IconButton>
-                        )}
-                      </Box>
-                    </Box>
-                    <Collapse className="bg-white" in={expandedSub[sub.id]}>
-                      <List dense disablePadding>
-                        {!readOnly &&
-                          sub.childOptions?.length > 0 &&
-                          rightSearchTerm?.length == 0 && (
-                            <ListItem
-                              className="p-4!"
-                              key={sub.id + "k"}
-                              sx={{ pl: 2 }}
-                            >
+                        // bg-[#F9F9F9]
+                      >
+                        <Box className="flex justify-between items-center">
+                          <Box className="flex items-start gap-3">
+                            {!readOnly && (
                               <Checkbox
                                 className="p-0!"
-                                checked={
-                                  sub?.childOptions?.length == childCount
-                                }
+                                checked={isChecked(activeOptionId, sub.id)}
+                                indeterminate={isSubIndeterminate(
+                                  activeOptionId,
+                                  sub.id,
+                                )}
                                 onChange={(e) =>
                                   updateSelection(
                                     activeOptionId,
                                     sub.id,
                                     null,
-                                    e.target.checked
+                                    e.target.checked,
                                   )
                                 }
                               />
-                              <ListItemText
-                                className={`${!readOnly && "ps-3!"} m-0!`}
-                                primary={"All Units"}
-                              />
-                            </ListItem>
+                            )}
+                            <div className="flex flex-col gap-2">
+                              <h4 className="text-[#121212] leading-5">
+                                {sub.name}
+                              </h4>
+                              {!readOnly && childCount > 0 && (
+                                <p className="font-medium text-xs text-[#4D4D4F] leading-[18px]">
+                                  {sub?.childOptions?.length == childCount &&
+                                  childCount != 0
+                                    ? "All"
+                                    : `${childCount} selected`}
+                                </p>
+                              )}
+                              {!readOnly && childCount == 0 && (
+                                <p className="font-medium text-xs text-[#4D4D4F] leading-[18px]">
+                                  Select this block to choose units
+                                </p>
+                              )}
+                            </div>
+                          </Box>
+                          {sub.childOptions?.length > 0 && (
+                            <IconButton>
+                              {expandedSub[sub.id] ? (
+                                <ExpandLess />
+                              ) : (
+                                <ExpandMore />
+                              )}
+                            </IconButton>
                           )}
-                        {sub.childOptions
-                          ?.filter(
-                            (child) =>
-                              child.name
-                                .toLowerCase()
-                                .includes(rightSearchTerm.toLowerCase()) ||
-                              sub.name
-                                .toLowerCase()
-                                .includes(rightSearchTerm.toLowerCase())
-                          )
-                          .map((child) => (
-                            <ListItem
-                              className="p-4!"
-                              key={child.id}
-                              sx={{ pl: 2 }}
-                            >
-                              {!readOnly && (
+                        </Box>
+                      </Box>
+                      <Collapse className="bg-white" in={expandedSub[sub.id]}>
+                        <List dense disablePadding>
+                          {!readOnly &&
+                            sub.childOptions?.length > 0 &&
+                            rightSearchTerm?.length == 0 && (
+                              <ListItem
+                                className="p-4!"
+                                key={sub.id + "k"}
+                                sx={{ pl: 2 }}
+                              >
                                 <Checkbox
                                   className="p-0!"
-                                  checked={isChecked(
-                                    activeOptionId,
-                                    null,
-                                    child.id
-                                  )}
+                                  checked={
+                                    sub?.childOptions?.length == childCount
+                                  }
                                   onChange={(e) =>
                                     updateSelection(
                                       activeOptionId,
+                                      sub.id,
                                       null,
-                                      child.id,
-                                      e.target.checked
+                                      e.target.checked,
                                     )
                                   }
                                 />
-                              )}
-                              <ListItemText
-                                className={`${!readOnly && "ps-3"} m-0!`}
-                                primary={child.name}
-                              />
-                            </ListItem>
-                          ))}
-                      </List>
-                    </Collapse>
-                  </div>
-                );
-              })}
-            {suboptionsFiltered?.length == 0 && (
+                                <ListItemText
+                                  className={`${!readOnly && "ps-3!"} m-0!`}
+                                  primary={"All Units"}
+                                />
+                              </ListItem>
+                            )}
+                          {sub.childOptions
+                            ?.filter(
+                              (child) =>
+                                child.name
+                                  .toLowerCase()
+                                  .includes(rightSearchTerm.toLowerCase()) ||
+                                sub.name
+                                  .toLowerCase()
+                                  .includes(rightSearchTerm.toLowerCase()),
+                            )
+                            .map((child) => (
+                              <ListItem
+                                className="p-4!"
+                                key={child.id}
+                                sx={{ pl: 2 }}
+                              >
+                                {!readOnly && (
+                                  <Checkbox
+                                    className="p-0!"
+                                    checked={isChecked(
+                                      activeOptionId,
+                                      null,
+                                      child.id,
+                                    )}
+                                    onChange={(e) =>
+                                      updateSelection(
+                                        activeOptionId,
+                                        null,
+                                        child.id,
+                                        e.target.checked,
+                                      )
+                                    }
+                                  />
+                                )}
+                                <ListItemText
+                                  className={`${!readOnly && "ps-3"} m-0!`}
+                                  primary={child.name}
+                                />
+                              </ListItem>
+                            ))}
+                        </List>
+                      </Collapse>
+                    </div>
+                  );
+                })}
+              {suboptionsFiltered?.length == 0 && (
+                <NoData
+                  image={
+                    "https://d18aratlqkym29.cloudfront.net/assets/no-block-selected.svg"
+                  }
+                  title={"No data found"}
+                  description={"No block or unit found with that name."}
+                  containerClassName={"!p-0"}
+                />
+              )}
+            </div>
+          ) : (
+            <div className="flex-1 flex justify-center items-center overflow-y-auto border-t border-[#EBEBEB]">
               <NoData
                 image={
                   "https://d18aratlqkym29.cloudfront.net/assets/no-block-selected.svg"
                 }
-                title={"No data found"}
-                description={"No block or unit found with that name."}
+                title={noDataMsg?.title || "No community selected"}
+                description={
+                  noDataMsg?.description ||
+                  "Select a community before choosing blocks."
+                }
                 containerClassName={"!p-0"}
               />
-            )}
-          </div>
-        ) : (
-          <div className="flex-1 flex justify-center items-center overflow-y-auto border-t border-[#EBEBEB]">
-            <NoData
-              image={
-                "https://d18aratlqkym29.cloudfront.net/assets/no-block-selected.svg"
-              }
-              title={noDataMsg?.title || "No community selected"}
-              description={
-                noDataMsg?.description ||
-                "Select a community before choosing blocks."
-              }
-              containerClassName={"!p-0"}
-            />
-          </div>
-        )}
+            </div>
+          )}
 
-        {!readOnly && !FromFilters && (
-          <DialogActions
-            sx={{
-              position: "sticky",
-              bottom: 0,
-              zIndex: 1,
-              backgroundColor: "white",
-              borderTop: "1px solid #ebebeb",
-              padding: 0,
-            }}
-          >
-            <Box className="flex w-full bg-white justify-end gap-4 px-6 py-3">
-              <Button
-                variant="outlined"
-                onClick={() => {
-                  setSelection({});
-                  onReset?.();
-                }}
-              >
-                Reset
-              </Button>
-              <Button
-                variant="contained"
-                onClick={() =>
-                  onSave(convertSelectionMapToStructured(selection, dataSource))
-                }
-              >
-                Save
-              </Button>
-            </Box>
-          </DialogActions>
-        )}
-      </Box>
+          {!readOnly && !FromFilters && (
+            <DialogActions
+              sx={{
+                position: "sticky",
+                bottom: 0,
+                zIndex: 1,
+                backgroundColor: "white",
+                borderTop: "1px solid #ebebeb",
+                padding: 0,
+              }}
+            >
+              <Box className="flex w-full bg-white justify-end gap-4 px-6 py-3">
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setSelection({});
+                    onReset?.();
+                  }}
+                >
+                  Reset
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    onSave(
+                      convertSelectionMapToStructured(selection, dataSource),
+                    )
+                  }
+                >
+                  Save
+                </Button>
+              </Box>
+            </DialogActions>
+          )}
+        </Box>
+      )}
     </div>
   );
 };

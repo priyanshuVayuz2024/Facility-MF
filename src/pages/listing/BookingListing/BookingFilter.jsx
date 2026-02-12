@@ -7,9 +7,8 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
-import FilterBar from "../../components/ui/FilterBar";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { basePath } from "../../utils";
+import FilterBar from "../../../components/ui/FilterBar";
 
 const selectorOptions = [
   {
@@ -1679,6 +1678,46 @@ const statusOptions = [
   { label: "Pending", value: "pending" },
   { label: "Canceled", value: "canceled" },
 ];
+
+export const bookingFilterConfig = [
+  {
+    id: 0,
+    label: "Communities",
+    key: "communitySelection",
+    type: "community_tree",
+    options: selectorOptions, // pass dynamically
+  },
+
+  {
+    id: 1,
+    label: "Chargeable",
+    key: "chargeable",
+    type: "checkbox",
+    options: filterChargeable,
+  },
+
+  {
+    id: 2,
+    label: "Status",
+    key: "status",
+    type: "checkbox", // can switch to radio if needed
+    options: statusOptions,
+  },
+
+  {
+    id: 3,
+    label: "Date Range",
+    key: "date_range",
+    type: "date_range",
+    options: [
+      { label: "Last 7 Days", value: "last_7_days" },
+      { label: "Current Month", value: "current_month" },
+      { label: "Last Month", value: "last_month" },
+      { label: "Custom Range", value: "custom" },
+    ],
+  },
+];
+
 const formatDateRangeLabel = (range) => {
   const map = {
     last_7_days: "Last 7 Days",
@@ -1736,7 +1775,7 @@ function BookingFilter() {
         !chargeable.length || chargeable.includes("all")
           ? "All"
           : capitalize(chargeable?.[0]),
-      "Select Status":
+      Status:
         !status.length || status.includes("all")
           ? "All"
           : status.map((str) => capitalize(str)).join(", "),
@@ -1873,7 +1912,6 @@ function BookingFilter() {
       communitySelection: [],
     }));
 
-
     navigate("/facilities", { replace: true });
   };
 
@@ -1908,8 +1946,8 @@ function BookingFilter() {
         break;
       }
       case "custom": {
-        startDate = formatDate(globalFilterState?.start_date);
-        endDate = formatDate(globalFilterState?.end_date);
+        startDate = formatDate(bookingGlobalFilterState?.start_date);
+        endDate = formatDate(bookingGlobalFilterState?.end_date);
         break;
       }
       default:
@@ -1956,7 +1994,7 @@ function BookingFilter() {
     }
 
     const allChargeableValues = filterDataOptions.Chargeable.map(
-      (v) => v.value
+      (v) => v.value,
     );
 
     const selectedChargable = bookingGlobalFilterState.chargeable || [];
@@ -2071,7 +2109,7 @@ function BookingFilter() {
   const rebuildStructuredFromUrl = (
     ids = [],
     selectorOptions = [],
-    type = "unit"
+    type = "unit",
   ) => {
     const structured = [];
 
@@ -2083,7 +2121,7 @@ function BookingFilter() {
 
         if (type === "unit") {
           matchedUnits = block.childOptions?.filter((unit) =>
-            ids.includes(unit.id.toString())
+            ids.includes(unit.id.toString()),
           );
         }
 
@@ -2155,7 +2193,7 @@ function BookingFilter() {
     const date_range = searchParams.get("date_range") || "";
     const allStatuses = statusOptions.map((opt) => opt.value); // Add this line
     const allChargeable = filterDataOptions?.Chargeable?.map(
-      (opt) => opt.value
+      (opt) => opt.value,
     );
     const urlChargeable = (searchParams.get("chargeable") || "")
       .split(",")
@@ -2257,9 +2295,9 @@ function BookingFilter() {
       byBlocks.forEach((community) =>
         community.subOptions.forEach((block) =>
           block.childOptions.forEach((unit) =>
-            unitIdsInBlocks.add(unit.id.toString())
-          )
-        )
+            unitIdsInBlocks.add(unit.id.toString()),
+          ),
+        ),
       );
 
       const merged = JSON.parse(JSON.stringify(byCommunity)); // Start from community selection
@@ -2272,14 +2310,14 @@ function BookingFilter() {
           } else {
             srcCommunity.subOptions.forEach((srcBlock) => {
               let targetBlock = targetCommunity.subOptions.find(
-                (b) => b.id === srcBlock.id
+                (b) => b.id === srcBlock.id,
               );
               if (!targetBlock) {
                 targetCommunity.subOptions.push(srcBlock);
               } else {
                 srcBlock.childOptions.forEach((unit) => {
                   const isAlreadyIn = targetBlock.childOptions.find(
-                    (u) => u.id === unit.id
+                    (u) => u.id === unit.id,
                   );
                   if (!isAlreadyIn) {
                     targetBlock.childOptions.push(unit);
@@ -2312,7 +2350,7 @@ function BookingFilter() {
               .split(",")
               .map((s) => s.trim())
               .filter(Boolean)
-          : []
+          : [],
       );
 
       return values.length > 0;
@@ -2388,6 +2426,7 @@ function BookingFilter() {
             // onChange={(updated) => {
             //   setFilterValues(updated);
             // }}
+            config={bookingFilterConfig}
             globalFilterState={bookingGlobalFilterState}
             setGlobalFilterState={setBookingGlobalFilterState}
             handleGlobalFilterChange={handleBookingGlobalFilterChange}

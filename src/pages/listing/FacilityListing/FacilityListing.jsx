@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import FacilityHeader from "./FacilityHeader";
-import { MetaTitle } from "../../components/metaTitle";
-import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
+import { MetaTitle } from "../../../components/metaTitle";
+import { BreadCrumbCustom } from "../../../components/ui/breadCrumb";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { basePath, getPageTitle } from "../../utils";
+import { basePath, getPageTitle } from "../../../utils";
 import { Box, Button, Checkbox, Chip } from "@mui/material";
 import {
   LuBan,
@@ -17,11 +17,12 @@ import {
   LuSquarePlus,
   LuX,
 } from "react-icons/lu";
-import MicrofrontendLoader from "../../MFloader/MicroFrontendLoader";
-import { facilities, headers } from "../../components/dummyData";
-import Status from "../../components/ui/StatusColor";
+import MicrofrontendLoader from "../../../MFloader/MicroFrontendLoader";
+import { facilities, headers } from "../../../components/dummyData";
+import Status from "../../../components/ui/StatusColor";
 import { SquarePause, Trash2 } from "lucide-react";
-import DeleteFacilityModal from "../../components/ui/DeleteFacilityModal";
+import DeleteFacilityModal from "../../../components/ui/DeleteFacilityModal";
+import FacilityFilter from "./FacilityFilter";
 
 function FacilityListing() {
   const location = useLocation();
@@ -254,6 +255,7 @@ function FacilityListing() {
         }
       />
       <FacilityHeader />
+      <FacilityFilter />
       <MicrofrontendLoader
         ref={tableRef}
         // scriptUrl={"http://localhost:5000/reusableTable-bundle.js" + `?date=${Date.now()}`}
