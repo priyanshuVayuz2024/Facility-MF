@@ -29,49 +29,95 @@ function FacilityListing() {
   const pathname = location.pathname;
   const tableRef = useRef(null);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [isAllSelected, setIsAllSelected] = useState(false);
+  const [unselectedIds, setUnselectedIds] = useState([]);
   const [deleteFacModal, setDeleteFacModal] = useState(false);
-  console.log(selectedIds, "selectedIds");
+  console.log(selectedIds, unselectedIds, isAllSelected, "selectedIds");
   const navigate = useNavigate();
-  const [selectAllData, setSelectAllData] = useState("");
+
   const handleDeleteModal = () => {
     setDeleteFacModal(false);
   };
-  console.log(selectAllData, "selectAllData");
 
   const totalFacility = 140;
 
   const handleCheckboxChange = (data, isChecked) => {
-    setSelectedIds((prevSelectedIds) => {
-      if (isChecked) {
-        return [...prevSelectedIds, data];
-      } else {
-        return prevSelectedIds.filter(
-          (selectedId) => selectedId.id !== data.id,
-        );
-      }
-    });
+    console.log(data, isChecked, "ischecked");
+    if (isAllSelected) {
+      // When global select is ON → manage exclusions
+      setUnselectedIds((prev) =>
+        isChecked
+          ? prev.filter((prevData) => prevData?.id !== data.id)
+          : [...prev, data],
+      );
+    } else {
+      // Normal page selection
+      setSelectedIds((prev) =>
+        isChecked
+          ? [...prev, data]
+          : prev.filter((item) => item.id !== data.id),
+      );
+    }
+  };
+
+  const handleSelectAllGlobal = () => {
+    setIsAllSelected(true);
+    setSelectedIds([]); // clear page state
+    setUnselectedIds([]); // reset exclusions
+  };
+
+  const handleClearSelection = () => {
+    setIsAllSelected(false);
+    setSelectedIds([]);
+    setUnselectedIds([]);
   };
 
   const renderSelectAllText = () => {
-    if (selectedIds.length === 0) return null;
+    if (selectedIds.length === 0 && !isAllSelected) return null;
     return (
       <>
-        {selectedIds.length} Facility on this page are selected.{" "}
-        <span
-          onClick={console.log("hi select all data")}
-          className="text-blue-600 cursor-pointer hover:underline font-medium"
-        >
-          Select all {totalFacility} Facilities in Facility Listing.
-        </span>
+        {selectedIds.length > 0 && !isAllSelected && (
+          <div className="">
+            {selectedIds.length} Facility on this page are selected.{" "}
+            <span
+              onClick={handleSelectAllGlobal}
+              className="text-[#884ea7] cursor-pointer font-medium hover:underline"
+            >
+              Select all {totalFacility} Facilities in Facility Listing.
+            </span>
+          </div>
+        )}
+        {isAllSelected && (
+          <div className=" flex gap-2">
+            <span>
+              All {totalFacility} facility in facilities listing are selected.
+            </span>
+
+            <span
+              onClick={handleClearSelection}
+              className="text-[#884ea7] cursor-pointer font-medium hover:underline"
+            >
+              Clear Selection
+            </span>
+          </div>
+        )}
       </>
     );
+  };
+
+  const isRowChecked = (data) => {
+    if (isAllSelected) {
+      return !unselectedIds.some((item) => item.id === data.id);
+    }
+    return selectedIds.some((item) => item.id == data?.id);
   };
 
   const getActionMenu = () => {
     let temp = [
       {
         text: "De-select",
-        onClick: () => setSelectedIds([]),
+        onClick: () =>
+          isAllSelected ? handleClearSelection() : setSelectedIds([]),
         className: "!text-[#4D4D4F]",
         icon: (
           <LuSquareMinus
@@ -93,7 +139,7 @@ function FacilityListing() {
     //     // disabled: loadingApprovingNotice || loadingRejectingNotice,
     //   },
 
-    if (selectedIds.length > 0) {
+    if (selectedIds.length == 1) {
       temp.push(
         {
           text: "View",
@@ -123,17 +169,19 @@ function FacilityListing() {
           onClick: () =>
             navigate(`${basePath}/suspend-facility/${selectedIds?.[0]?.id}`),
         },
-        {
-          text: "Delete",
-          className: "!text-[#4d4d4f] ",
-          icon: <Trash2 color="#4d4d4f" />,
-
-          onClick: () => setDeleteFacModal(true),
-        },
       );
     }
+    if (selectedIds?.length > 0 || isAllSelected) {
+      temp.push({
+        text: "Delete",
+        className: "!text-[#4d4d4f] ",
+        icon: <Trash2 color="#4d4d4f" />,
 
-    if (selectedIds?.length > 0) {
+        onClick: () => setDeleteFacModal(true),
+      });
+    }
+
+    if (selectedIds?.length > 0 || isAllSelected) {
       return temp;
     } else {
       return [
@@ -157,9 +205,7 @@ function FacilityListing() {
         <Checkbox
           className="text-[#121212]!"
           disabled={false}
-          checked={selectedIds?.some(
-            (selectedId) => selectedId?.id == data?.id,
-          )}
+          checked={isRowChecked(data)}
           onChange={(e) => handleCheckboxChange(data, e.target.checked)}
         />
       ),
