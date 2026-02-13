@@ -11,6 +11,7 @@ import FilterModal from "./FilterModal";
 // import { useSelector } from "react-redux";
 
 export default function FilterBar({
+  config,
   filters = {},
   values = {},
   onChange,
@@ -30,6 +31,8 @@ export default function FilterBar({
   const dateRef = useRef();
   const [selectedFilterKey, setSelectedFilterKey] = useState(null);
   // Detect outside click to close date picker
+
+  console.log(filters, "filters");
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -74,6 +77,7 @@ export default function FilterBar({
         </div>
       </div>
       <FilterModal
+        config={config}
         open={filterModal}
         onClose={() => setFilterModal(!filterModal)}
         globalFilterState={globalFilterState}

@@ -26,17 +26,17 @@ export const BreadCrumbCustom = ({
     });
   }
 
-    // Function to handle link click
-    const handleLinkClick = (to) => {
-        if (showWarning) {
-            // Prevent direct navigation and open confirmation dialog
-            setTargetLink(to);
-            setwarningDialog(true);
-        } else {
-            // No warning, navigate directly
-            navigate(`${basePath}${to}`);
-        }
-    };
+  // Function to handle link click
+  const handleLinkClick = (to) => {
+    if (showWarning) {
+      // Prevent direct navigation and open confirmation dialog
+      setTargetLink(to);
+      setwarningDialog(true);
+    } else {
+      // No warning, navigate directly
+      navigate(`${basePath}${to}`);
+    }
+  };
 
   return (
     <>
@@ -57,8 +57,8 @@ export const BreadCrumbCustom = ({
         separator={"/"}
       >
         {links
-          .filter((data) => data !== false)
-          .map(({ label, icon, to }, index) => (
+          ?.filter((data) => data !== false)
+          ?.map(({ label, icon, to }, index) => (
             <Box
               key={index}
               component="button"

@@ -1,9 +1,11 @@
 import React from "react";
-import { counts } from "../../components/dummyData";
+
 import { useLocation, useNavigate } from "react-router-dom";
 import { IconButton } from "@mui/material";
-import { basePath } from "../../utils";
-import ticketIcon from "../../../public/icons/ticket-unchecked.svg";
+import ticketIcon from "../../../../public/icons/ticket-unchecked.svg";
+import totalFacility from "../../../../public/icons/total-facility.svg";
+import { basePath } from "../../../utils";
+import { counts } from "../../../components/dummyData";
 
 function FacilityHeader() {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ function FacilityHeader() {
       label: "Total Facilities",
       count: formatCount(counts?.active_booking),
       icon: (
-        <img src="/icons/total-facility.svg" />
+        <img src={totalFacility} />
         // <LuFileSpreadsheet className="text-[#36AB6C] h-[20px] w-[20px]" />
       ),
       //   color: "bg-gradient-to-b from-[#E7F5ED] to-[#E6F4E6]",
@@ -81,7 +83,7 @@ function FacilityHeader() {
                     </IconButton>
                   )}
                 </div>
-                <div className="text-xl font-semibold leading-[24px]">
+                <div className="text-xl font-semibold leading-6">
                   {item.count.toString().padStart(2, "0")}
                 </div>
               </div>

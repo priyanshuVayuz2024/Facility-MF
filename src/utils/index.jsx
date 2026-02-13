@@ -148,6 +148,13 @@ export const bookingBreadcrumbLinks = {
   },
 };
 
+export const DividerLine = ({ thick }) => (
+  <hr
+    className={`border-[#EBEBEB] ${thick ? "border-b-0" : "border-dashed"
+      } my-4`}
+  />
+);
+
 
 
 export const stepperCSS = (theme) => ({

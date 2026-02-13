@@ -105,6 +105,10 @@ export const facilities = [
     intercom: "400900",
     approval: "Yes",
     chargeable: "No",
+    unit: "Block A - 001",
+    startDate: "18-November-2025",
+    endDate: "20-November-2025",
+    timeSlot: "06:00 hr - 07:00 hrs",
   },
   {
     id: "id2",
@@ -115,6 +119,10 @@ export const facilities = [
     intercom: "987900",
     approval: "No",
     chargeable: "No",
+    unit: "Block A - 001",
+    startDate: "18-November-2025",
+    endDate: "20-November-2025",
+    timeSlot: "06:00 hr - 07:00 hrs",
   },
   {
     id: "id3",
@@ -125,6 +133,10 @@ export const facilities = [
     intercom: "987900",
     approval: "No",
     chargeable: "Yes",
+    unit: "Block A - 001",
+    startDate: "18-November-2025",
+    endDate: "20-November-2025",
+    timeSlot: "06:00 hr - 07:00 hrs",
   },
   {
     id: "id4",
@@ -135,6 +147,10 @@ export const facilities = [
     intercom: "987903",
     approval: "Yes",
     chargeable: "Yes",
+    unit: "Block A - 001",
+    startDate: "18-November-2025",
+    endDate: "20-November-2025",
+    timeSlot: "06:00 hr - 07:00 hrs",
   },
   {
     id: "id5",
@@ -145,6 +161,10 @@ export const facilities = [
     intercom: "987905",
     approval: "Yes",
     chargeable: "No",
+    unit: "Block A - 001",
+    startDate: "18-November-2025",
+    endDate: "20-November-2025",
+    timeSlot: "06:00 hr - 07:00 hrs",
   },
 ];
 
@@ -287,5 +307,30 @@ export const pricing = [
     time: "06:00 hrs - 07:00 hrs",
     rate: "₹ 100",
     discountedRate: "₹ 100",
+  },
+];
+
+export const DeleteFacilityHeaders = [
+
+  {
+    title: "Facility Name",
+  },
+  {
+    title: "Community",
+  },
+  {
+    title: "Unit",
+  },
+  {
+    title: "Status",
+  },
+  {
+    title: "Start Date",
+  },
+  {
+    title: "End Date",
+  },
+  {
+    title: "Time Slot",
   },
 ];

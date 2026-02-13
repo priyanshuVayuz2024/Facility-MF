@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import FacilityHeader from "./FacilityHeader";
-import { MetaTitle } from "../../components/metaTitle";
-import { BreadCrumbCustom } from "../../components/ui/breadCrumb";
+import { MetaTitle } from "../../../components/metaTitle";
+import { BreadCrumbCustom } from "../../../components/ui/breadCrumb";
 import { Link, useLocation } from "react-router-dom";
-import { basePath, getPageTitle } from "../../utils";
+import { basePath, getPageTitle } from "../../../utils";
 import { Box, Button, Checkbox, Chip } from "@mui/material";
-import cancelBookingAnimation from "../../assets/animations/cancelBookings.json";
+import cancelBookingAnimation from "../../../assets/animations/cancelBookings.json";
 import {
   LuBan,
   LuCheck,
@@ -16,15 +15,15 @@ import {
   LuSquarePlus,
   LuX,
 } from "react-icons/lu";
-import MicrofrontendLoader from "../../MFloader/MicroFrontendLoader";
+import MicrofrontendLoader from "../../../MFloader/MicroFrontendLoader";
 import {
   bookingHeaders,
   bookings,
   facilities,
   headers,
-} from "../../components/dummyData";
-import Status from "../../components/ui/StatusColor";
-import ConfirmDialog from "../../components/ui/ConfirmDialog";
+} from "../../../components/dummyData";
+import Status from "../../../components/ui/StatusColor";
+import ConfirmDialog from "../../../components/ui/ConfirmDialog";
 import BookingFilter from "./BookingFilter";
 import BookingHeader from "./BookingHeader";
 
@@ -147,7 +146,7 @@ function BookingListing() {
     // Facility Name (Maps to 'facilityName')
     facilityName: {
       text: data.facilityName,
-      link: `/booking/${data.id}?from=${ROUTE_TO_FROM_KEY[location.pathname]}`,
+      link: `/booking/${data.id}`,
       outerStyle: "min-w-[180px] max-w-[200px] !whitespace-normal",
       innerStyle: "line-clamp-2 text-left font-medium text-[#884EA7]",
     },

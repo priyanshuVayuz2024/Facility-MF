@@ -34,6 +34,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { MainFilter } from "./selectorPopup";
 
 export default function FilterModal({
+  config,
   open,
   onClose,
   globalFilterState,
@@ -49,7 +50,9 @@ export default function FilterModal({
 }) {
   // const { permissions } = useSelector((state) => state.meta);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [filter, setFilter] = useState(selectedFilterKey || 0);
+  const activeFilterConfig = config.find((item) => item.id === filter);
+  console.log(activeFilterConfig, "activeFilterConfig");
   const [isStartDatePickerOpen, setIsStartDatePickerOpen] = useState(false);
   const [startDateValue, setStartDateValue] = useState(null);
   const [isEndDatePickerOpen, setIsEndDatePickerOpen] = useState(false);
@@ -60,7 +63,6 @@ export default function FilterModal({
   //   globalFilterState.visibility.length == 0 ||
   //   globalFilterState?.status?.length == 0;
 
-  const [filter, setFilter] = useState(selectedFilterKey || 0);
   const location = useLocation();
   const navigate = useNavigate();
   const [clearFilter, setClearFilter] = useState(false);
@@ -111,7 +113,7 @@ export default function FilterModal({
     date ? new Date(date).toLocaleDateString("en-CA") : "";
 
   const filteredOptions = filterDataOptions.Filters.filter((opt) =>
-    opt.label.toLowerCase().includes(searchTerm.toLowerCase())
+    opt.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleFilterClose = () => {
@@ -223,28 +225,28 @@ export default function FilterModal({
         </div>
 
         <div className="md:w-3/4 flex flex-col justify-between md:border-l border-[#EBEBEB]">
-          {filter === 0 && (
+          {activeFilterConfig?.type === "community_tree" && (
             <MainFilter
               open={open}
               onClose={onclose}
-              options={selectorOptions}
+              options={activeFilterConfig.options}
               clearFilter={clearFilter}
               setClearFilter={setClearFilter}
               leftHeader="Communities"
-              rightHeader="Select Blocks & Units"
               FromFilters={true}
-              initialSelection={globalFilterState.communitySelection}
+              disableRightSide={false}
+              initialSelection={globalFilterState[activeFilterConfig.key]}
               onCloseCick={onClose}
               onSave={(selection) => {
                 setGlobalFilterState((prev) => ({
                   ...prev,
-                  communitySelection: selection,
+                  [activeFilterConfig.key]: selection,
                 }));
               }}
               onReset={() => {
                 setGlobalFilterState((prev) => ({
                   ...prev,
-                  communitySelection: [],
+                  [activeFilterConfig.key]: [],
                 }));
               }}
               closeButton={false}
@@ -255,30 +257,24 @@ export default function FilterModal({
               }}
             />
           )}
-          {filter === 1 && (
+
+          {/* ---------------- CHECKBOX / RADIO ---------------- */}
+          {["checkbox", "radio"].includes(activeFilterConfig?.type) && (
             <CheckboxFilter
-              title="Chargeable"
-              type="checkbox"
-              options={filterDataOptions.Chargeable}
-              value={globalFilterState?.chargeable}
+              title={activeFilterConfig.label}
+              type={activeFilterConfig.type}
+              options={activeFilterConfig.options}
+              value={globalFilterState[activeFilterConfig.key]}
+              filterKey={activeFilterConfig.key}
               onChange={handleGlobalFilterChange}
               toggleAllFilters={toggleAllFilters}
             />
           )}
 
-          {filter === 2 && (
-            <CheckboxFilter
-              title="Status"
-              type="checkbox"
-              // type={"radio"}
-              options={filterDataOptions.Status}
-              value={globalFilterState?.status}
-              onChange={handleGlobalFilterChange}
-              toggleAllFilters={toggleAllFilters}
-            />
-          )}
-          {filter === 3 && (
+          {/* ---------------- DATE RANGE ---------------- */}
+          {activeFilterConfig?.type === "date_range" && (
             <div className="flex flex-col md:flex-row!">
+              {/* Left → Radio */}
               <div
                 className={`${
                   globalFilterState?.date_range === "custom"
@@ -287,20 +283,24 @@ export default function FilterModal({
                 }`}
               >
                 <CheckboxFilter
-                  title="Date Range"
+                  title={activeFilterConfig.label}
                   type="radio"
-                  options={filterDataOptions.DateRange}
+                  options={activeFilterConfig.options}
                   value={globalFilterState?.date_range}
+                  filterKey="date_range"
                   onChange={handleGlobalFilterChange}
                 />
               </div>
 
+              {/* Right → Custom Dates */}
               {globalFilterState?.date_range === "custom" && (
                 <div className="flex flex-col md:w-1/2">
                   <h4 className="p-4 font-semibold">Custom Date</h4>
+
                   <div className="flex flex-col gap-4 p-4 border-t border-[#EBEBEB]">
+                    {/* FROM */}
                     <div className="flex flex-col gap-3">
-                      <FormLabel className="text-[#4D4D4F]!">From</FormLabel>
+                      <FormLabel>From</FormLabel>
 
                       <DatePicker
                         open={isStartDatePickerOpen}
@@ -313,45 +313,13 @@ export default function FilterModal({
                             start_date: val,
                           }))
                         }
-                        slots={{
-                          openPickerIcon: () => (
-                            <LuCalendarDays color="#884EA7" size={16} />
-                          ),
-                        }}
-                        slotProps={{
-                          textField: {
-                            fullWidth: true,
-                            onClick: () => setIsStartDatePickerOpen(true),
-                            sx: {
-                              // height: "40px",
-                              backgroundColor: "#FAFAFA",
-
-                              "& .MuiPickersInputBase-root": {
-                                height: "40px",
-                                fontSize: "14px",
-                                color: "#121212",
-                                // padding: 0,
-                                border: "0.5px solid #EBEBEB",
-                                borderRadius: "4px",
-                              },
-                              "& .MuiInputBase-root": {},
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "none",
-                              },
-                              "&:hover": {
-                                borderWidth: "0.5px",
-                              },
-
-                              "&.Mui-focused": {
-                                borderWidth: "0.5px",
-                              },
-                            },
-                          },
-                        }}
                       />
                     </div>
+
+                    {/* TO */}
                     <div className="flex flex-col gap-3">
-                      <FormLabel className="text-[#4D4D4F]!">To</FormLabel>
+                      <FormLabel>To</FormLabel>
+
                       <DatePicker
                         open={isEndDatePickerOpen}
                         onOpen={() => setIsEndDatePickerOpen(true)}
@@ -366,41 +334,6 @@ export default function FilterModal({
                         }
                         minDate={globalFilterState.start_date || null}
                         maxDate={new Date()}
-                        slots={{
-                          openPickerIcon: () => (
-                            <LuCalendarDays color="#884EA7" size={16} />
-                          ),
-                        }}
-                        slotProps={{
-                          textField: {
-                            fullWidth: true,
-                            onClick: () => setIsEndDatePickerOpen(true),
-                            sx: {
-                              // height: "40px",
-                              backgroundColor: "#FAFAFA",
-
-                              "& .MuiPickersInputBase-root": {
-                                height: "40px",
-                                fontSize: "14px",
-                                color: "#121212",
-                                // padding: 0,
-                                border: "0.5px solid #EBEBEB",
-                                borderRadius: "4px",
-                              },
-                              "& .MuiInputBase-root": {},
-                              "& .MuiOutlinedInput-notchedOutline": {
-                                border: "none",
-                              },
-                              "&:hover": {
-                                borderWidth: "0.5px",
-                              },
-
-                              "&.Mui-focused": {
-                                borderWidth: "0.5px",
-                              },
-                            },
-                          },
-                        }}
                       />
                     </div>
                   </div>
@@ -467,7 +400,7 @@ function CheckboxFilter({
   const select = (opt) => {
     const selectedValue = typeof opt === "object" ? opt.value : opt;
     const allValues = options?.map((o) =>
-      typeof o === "object" ? o.value : o
+      typeof o === "object" ? o.value : o,
     );
 
     const isMultiSelectToggleKey = toggleAllFilters;

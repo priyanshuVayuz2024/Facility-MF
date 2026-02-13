@@ -4,9 +4,7 @@ import CreateLayout from "./pages/createFacility/CreateLayout";
 import BasicDetails from "./pages/createFacility/BasicDetails";
 import TimeAvailability from "./pages/createFacility/TimeAvailability";
 import BookingRules from "./pages/createFacility/BookingRules";
-import FacilityListing from "./pages/listing/FacilityListing";
 import FacilityLayout from "./components/ui/FacilityLayout";
-import BookingListing from "./pages/listing/BookingListing";
 import { Provider } from "react-redux";
 import FacilityPreview from "./pages/createFacility/PreviewFacility";
 import BookingCreateLayout from "./pages/createBooking/BookingCreateLayout";
@@ -17,6 +15,9 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import BookingPreview from "./pages/createBooking/BookingPreview";
 import FacilityDetail from "./pages/facilityDetail";
 import BookingDetailPage from "./pages/bookingDetail";
+import SuspendFacility from "./pages/suspendFacility/SuspendFacility";
+import BookingListing from "./pages/listing/BookingListing/BookingListing";
+import FacilityListing from "./pages/listing/FacilityListing/FacilityListing";
 
 function App() {
   const store = window.sharedStore;
@@ -41,6 +42,10 @@ function App() {
               <Route path="/pending_bookings" element={<BookingListing />} />
               <Route path="/facility/:id" element={<FacilityDetail />} />
               <Route path="/booking/:id" element={<BookingDetailPage />} />
+              <Route
+                path="/suspend-facility/:id"
+                element={<SuspendFacility />}
+              />
 
               <Route path="/create-facility" element={<CreateLayout />}>
                 <Route index element={<BasicDetails />} />
