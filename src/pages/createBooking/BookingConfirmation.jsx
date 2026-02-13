@@ -20,51 +20,19 @@ import ConfirmDialog from "../../components/ui/ConfirmDialog";
 import { bookingScheduleSchema } from "../../validation/bookingSchema";
 import { basePath, bookingFrequencyOptions } from "../../utils";
 import crossIcon from "../../../public/icons/crossIcon.svg";
+import { CalendarMonthOutlined } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setMultipleBookingFields } from "../../redux/slice/bookingCreateSlice";
 import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
-import { LuChevronDown } from "react-icons/lu";
-
-// =============================
-// Time Input Component
-// =============================
-export function TimeInput({ value, onChange, error, helperText }) {
-    const [internal, setInternal] = useState(value || "");
-
-    const formatTime = (v) => {
-        v = v.replace(/\D/g, "");
-        if (v.length === 0) return "";
-        if (v.length <= 2) return v;
-        if (v.length <= 4) return `${v.slice(0, 2)}:${v.slice(2)}`;
-        return `${v.slice(0, 2)}:${v.slice(2, 4)}`;
-    };
-
-    const handleInput = (e) => {
-        const formatted = formatTime(e.target.value);
-        setInternal(formatted);
-        onChange(formatted);
-    };
-
-    useEffect(() => {
-        setInternal(value || "");
-    }, [value]);
+import { TimeRangeInput } from "../../components/ui/TimeRangeInput";
+import { DropdownSelect } from "../../components/ui/DropdownSelect";
 
 
-    return (
-        <TextField
-            value={internal}
-            onChange={handleInput}
-            placeholder="00:00 hrs"
-            size="small"
-            fullWidth
-            error={error}
-            helperText={helperText}
-            inputProps={{ maxLength: 5 }}
-        />
-    );
-}
+
+
+
 
 // =============================
 // BOOKING CONFIRMATION PAGE
@@ -148,6 +116,9 @@ export default function BookingConfirmation() {
         setPopupOpen(false)
     }
 
+
+
+
     // =============================
     // UI STARTS HERE
     // =============================
@@ -157,22 +128,12 @@ export default function BookingConfirmation() {
             {/* Booking Frequency */}
 
 
-            <FormControl className="flex flex-col gap-2">
-                <FormLabel required className="formLabels">Booking Frequency</FormLabel>
-                <Button
-                    onClick={() => setPopupOpen(true)}
-                    variant="outlined"
-                    sx={{ textTransform: "none", justifyContent: "flex-start" }}
-                >
-                    {bookingFrequency?.length > 0
-                        ? `${bookingFrequency.length} Selected`
-                        : "Choose booking frequency"}
-                    <span className="ml-auto"><LuChevronDown /></span>
-                </Button>
-                {errors?.bookingFrequency && (
-                    <FormHelperText error>{errors.bookingFrequency?.message}</FormHelperText>
-                )}
-            </FormControl>
+            <DropdownSelect
+                label="Booking Frequency"
+                valueCount={0}
+                placeholder="Choose Booking Frequency"
+                onClick={() => setPopupOpen(true)}
+            />
 
             <SimpleSelectorPopup
                 open={popupOpen}
@@ -191,88 +152,140 @@ export default function BookingConfirmation() {
 
 
 
-            {/* DATE RANGE */}
+            {/* BOOKING DATE */}
             <Box>
-                <Typography className="mb-1!">Date Range</Typography>
-
-                <Box className="grid sm:grid-cols-2 gap-6">
-
-                    {/* FROM DATE */}
-                    <Controller
-                        name="fromDate"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControl>
-                                <FormLabel className="formLabels">From</FormLabel>
-
-                                <DatePicker
-                                    value={toDateObject(field.value)}
-                                    onChange={(newVal) => {
-                                        field.onChange(toStorableString(newVal));
-                                    }}
-                                    format="MM/dd/yyyy"
-                                    slotProps={{
-                                        textField: {
-                                            placeholder: "MM/DD/YYYY",
-                                            size: "small",
-                                            error: !!errors.fromDate,
-                                            helperText: errors.fromDate?.message,
-                                        }
-                                    }}
-                                />
-
-                            </FormControl>
-                        )}
-                    />
-
-                    {/* TO DATE */}
-                    <Controller
-                        name="toDate"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControl>
-                                <FormLabel className="formLabels">To</FormLabel>
-
-                                <DatePicker
-                                    value={toDateObject(field.value)}
-                                    onChange={(newVal) => {
-                                        field.onChange(toStorableString(newVal));
-                                    }}
-                                    format="MM/dd/yyyy"
-                                    slotProps={{
-                                        textField: {
-                                            placeholder: "MM/DD/YYYY",
-                                            size: "small",
-                                            error: !!errors.toDate,
-                                            helperText: errors.toDate?.message,
-                                        }
-                                    }}
-                                />
-
-                            </FormControl>
-                        )}
-                    />
-
+                <Box className="flex justify-between items-center mb-2">
+                    <FormLabel required className="formLabels">
+                        Booking Date
+                    </FormLabel>
+                    <Button
+                        variant="text"
+                        sx={{ color: "#884EA7", textTransform: "none" }}
+                        startIcon={<CalendarMonthOutlined />}
+                        className="p-0!"
+                    >
+                        Check Availability
+                    </Button>
                 </Box>
+
+                {/* ✅ SINGLE DATE PICKER */}
+                {bookingFrequency?.[0] == 1 ? (
+                    <Box className="w-full flex flex-col">
+                        <Controller
+                            name="bookingDate"
+                            control={control}
+                            render={({ field }) => (
+                                <DatePicker
+                                    value={toDateObject(field.value)}
+                                    onChange={(newVal) =>
+                                        field.onChange(toStorableString(newVal))
+                                    }
+                                    format="dd/MM/yyyy"
+                                    slotProps={{
+                                        textField: {
+                                            placeholder: "DD/MM/YYYY",
+                                            size: "small",
+                                            error: !!errors.bookingDate,
+                                            helperText: errors.bookingDate?.message,
+                                        },
+                                    }}
+                                />
+                            )}
+                        />
+                    </Box>
+                )
+                    : (
+                        <Box className="flex gap-3 w-full">
+                            <Controller
+                                name="fromDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormControl className="flex-1">
+                                        <FormLabel className="formLabels">From</FormLabel>
+                                        <DatePicker
+                                            value={toDateObject(field.value)}
+                                            onChange={(newVal) =>
+                                                field.onChange(toStorableString(newVal))
+                                            }
+                                            format="MM/dd/yyyy"
+                                            slotProps={{
+                                                textField: {
+                                                    fullWidth: true,   // ✅ important
+                                                    placeholder: "MM/DD/YYYY",
+                                                    size: "small",
+                                                    error: !!errors.fromDate,
+                                                    helperText: errors.fromDate?.message,
+                                                    InputProps: {
+                                                        sx: {
+                                                            backgroundColor: "#FAFAFA",
+                                                        },
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </FormControl>
+                                )}
+                            />
+
+                            <Controller
+                                name="toDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormControl className="flex-1">
+                                        <FormLabel className="formLabels">To</FormLabel>
+                                        <DatePicker
+                                            value={toDateObject(field.value)}
+                                            onChange={(newVal) =>
+                                                field.onChange(toStorableString(newVal))
+                                            }
+                                            format="MM/dd/yyyy"
+                                            slotProps={{
+                                                textField: {
+                                                    fullWidth: true,
+                                                    placeholder: "MM/DD/YYYY",
+                                                    size: "small",
+                                                    error: !!errors.toDate,
+                                                    helperText: errors.toDate?.message,
+                                                    InputProps: {
+                                                        sx: {
+                                                            backgroundColor: "#FAFAFA",
+                                                        },
+                                                    },
+                                                },
+                                            }}
+                                        />
+                                    </FormControl>
+                                )}
+                            />
+                        </Box>
+
+                    )}
             </Box>
 
-            {/* TIME RANGE */}
+            {/* BOOKING TIME */}
             <Box>
-                <FormLabel className="formLabels">Time</FormLabel>
-                <Typography className="text-xs text-[#4D4D4F] mb-2">
-                    Booking must be between 05:00 hrs and 23:00 hrs
+                <FormLabel required className="formLabels text-base!">
+                    Time
+                </FormLabel>
+
+                <Typography className="text-sm! text-[#ADADAD] mb-4">
+                    Booking must be between 05:00 AM and 11:00 PM
                 </Typography>
 
-                <Box className="grid sm:grid-cols-2 gap-6">
+                <Box className="flex gap-4 w-full mt-3">
 
                     {/* START TIME */}
                     <Controller
                         name="startTime"
                         control={control}
                         render={({ field }) => (
-                            <FormControl>
-                                <FormLabel className="formLabels">Start Time</FormLabel>
-                                <TimeInput {...field} error={!!errors.startTime} helperText={errors.startTime?.message} />
+                            <FormControl className="flex-1">
+                                <FormLabel>Start Time</FormLabel>
+                                <TimeRangeInput
+                                    {...field}
+                                    error={!!errors.startTime}
+                                    helperText={errors.startTime?.message}
+                                />
                             </FormControl>
                         )}
                     />
@@ -282,15 +295,20 @@ export default function BookingConfirmation() {
                         name="endTime"
                         control={control}
                         render={({ field }) => (
-                            <FormControl>
-                                <FormLabel className="formLabels">End Time</FormLabel>
-                                <TimeInput {...field} error={!!errors.endTime} helperText={errors.endTime?.message} />
+                            <FormControl className="flex-1">
+                                <FormLabel>End Time</FormLabel>
+                                <TimeRangeInput
+                                    {...field}
+                                    error={!!errors.endTime}
+                                    helperText={errors.endTime?.message}
+                                />
                             </FormControl>
                         )}
                     />
 
                 </Box>
             </Box>
+
 
             {/* CONSENT */}
             <Box>

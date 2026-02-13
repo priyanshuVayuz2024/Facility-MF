@@ -6,14 +6,15 @@ export const getMuiTheme = () => {
   const getVar = (name) =>
     getComputedStyle(document.documentElement)
       .getPropertyValue(`--${name}`)
-      .trim() || "#000";
+      .trim() || "#f5f5f5";
 
   return createTheme({
     palette: {
       mode:
-        document.documentElement.getAttribute("data-theme") === "dark"
-          ? "dark"
-          : "light",
+        // document.documentElement.getAttribute("data-theme") === "dark"
+        //   ? "dark"
+        //   :
+        "light",
       primary: {
         main: getVar("color-primary"),
       },

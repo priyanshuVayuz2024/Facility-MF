@@ -1,3 +1,4 @@
+
 export const basePath = localStorage?.getItem("facilitesMF") || "";
 
 export const getPageTitle = (pathname) => {
@@ -99,6 +100,14 @@ export const bookingForOptions = [
   { id: 5, name: "Third Party Vendors" },
   { id: 6, name: "Faculty" },
 ];
+export const facilityOptions = [
+  { id: 1, name: "Gym" },
+  { id: 2, name: "Park" },
+  { id: 3, name: "Auditorium" },
+  { id: 4, name: "Community Hall" },
+  { id: 5, name: "Parking" },
+  { id: 6, name: "Badminton Court" },
+];
 
 // facility
 
@@ -138,3 +147,70 @@ export const bookingBreadcrumbLinks = {
     to: `${basePath}/pending_bookings`,
   },
 };
+
+
+
+export const stepperCSS = (theme) => ({
+  width: "fit-content",
+  paddingX: "4px",
+  paddingTop: "16px",
+  paddingBottom: "32px",
+  "& .MuiStep-root": {
+    paddingLeft: "12px",
+    paddingRight: "12px",
+  },
+  "& .MuiStepIcon-root": {
+    color: "#EBEBEB",
+    "&.Mui-completed": {
+      color: "#4caf50",
+    },
+    "&.Mui-active": {
+      // backgroundColor: "#FBF5FF",
+      color: "#FBF5FF",
+      border: "1px solid #884EA7",
+      borderRadius: "50%",
+    },
+  },
+  "& .MuiStepLabel-label": {
+    fontSize: "16px",
+    fontWeight: 500,
+    color: "#ADADAD",
+    "&.Mui-active": {
+      color: "#884EA7",
+      fontWeight: "600",
+    },
+    "&.Mui-completed": {
+      color: "#121212",
+      fontWeight: "500",
+    },
+  },
+  "& .MuiStepLabel-iconContainer": {
+    paddingRight: "12px",
+  },
+  "& .MuiStepIcon-root.Mui-active .MuiStepIcon-text": {
+    color: "#884EA7",
+    fill: "#884EA7",
+    fontWeight: 500,
+  },
+  "& .MuiStepIcon-root.Mui-active.Mui-completed": {
+    color: "#4caf50 !important",
+    border: "none !important",
+    fontWeight: 500,
+  },
+
+  "& .MuiStepIcon-text": {
+    // color: "#884EA7",
+    fill: "#ADADAD",
+  },
+  "& .MuiStepConnector-lineHorizontal": {
+    width: "4px",
+
+    [theme.breakpoints.up("sm")]: {
+      width: "90px",
+    },
+
+    [theme.breakpoints.up("md")]: {
+      width: "121px",
+    },
+  },
+})

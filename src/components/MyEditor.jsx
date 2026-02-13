@@ -12,6 +12,7 @@ export const MyEditor = ({
   required = false,
   validateOnChange = true,
   onBlur,
+  className,
   ...props
 }) => {
   const quillRef = useRef();
@@ -173,7 +174,7 @@ export const MyEditor = ({
       <ReactQuill
         style={{ fontFamily: "Outfit" }}
         className={`bg-[#FAFAFA] pr-[100px] relative flex flex-col-reverse border-[0.5px] rounded! ${error ? "border-[#AB0000]" : "border-[#EBEBEB] hover:border-[#884EA7]"
-          }`}
+          } ${className}`}
         ref={quillRef}
         value={value}
         onChange={handleChange}

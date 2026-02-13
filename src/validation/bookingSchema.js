@@ -1,29 +1,33 @@
 import * as Yup from "yup";
+import { stripHtml } from "../utils";
 
 
 export const bookingDetailsSchema = Yup.object().shape({
     type: Yup.string()
         .required("Booking type is required"),
-    block: Yup
-        .mixed()
-        .when("type", {
-            is: "personal",
-            then: (schema) => schema.required("Block is required"),
-            otherwise: (schema) => schema.notRequired(),
-        }),
-    flat: Yup
-        .mixed()
-        .when("type", {
-            is: "personal",
-            then: (schema) => schema.required("Flat is required"),
-            otherwise: (schema) => schema.notRequired(),
-        }),
-    bookingFor: Yup.array()
-        .required("Booking for value is required")
-        .min(1, "Please select at least one option"),
-    purpose: Yup.string()
-        .required("Purpose is required").max(100, "Maximum 100 characters allowed"),
 
+    bookingFor: Yup.array()
+        .of(Yup.string())
+        .required("Booking for is required")
+        .min(1, "Please select at least one option"),
+
+    facility: Yup.array()
+        .of(Yup.string())
+        .required("Facility is required")
+        .min(1, "Please select at least one facility"),
+
+    purpose: Yup.string()
+        .required("Purpose is required")
+        .test(
+            "max-after-strip-html",
+            "Maximum 100 characters allowed",
+            function (value) {
+                if (!value) return true; // required handles empty case
+
+                const strippedValue = stripHtml(value); // your existing function
+                return strippedValue.length <= 100;
+            }
+        ),
 });
 
 

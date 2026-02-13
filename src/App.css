@@ -15,14 +15,14 @@ body {
     --color-border: #e0e0e0;
 }
 
-html[data-theme="dark"] {
+/* html[data-theme="dark"] {
     --color-primary: #2563eb;
     --color-secondary: #9333ea;
     --color-background: #0f172a;
     --color-text: #f1f5f9;
     --color-icon: #f1f5f9;
     --color-border: #36465e;
-}
+} */
 
 html[data-theme="red"] {
     --color-primary: #dc2626;
