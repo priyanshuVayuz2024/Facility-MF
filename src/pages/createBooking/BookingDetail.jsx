@@ -310,7 +310,12 @@ export default function BookingDetail() {
                         <MyEditor
                             value={field.value}
                             setValue={field.onChange}
-                            className="h-40!"
+                            className=" [&_.ql-container]:h-auto!
+    [&_.ql-container]:min-h-0!
+    [&_.ql-editor]:h-auto!
+    [&_.ql-editor]:overflow-visible!
+
+    [&_.ql-editor]:min-h-40!"
                             placeholder="Enter purpose of booking"
                         />
                     </Box>
