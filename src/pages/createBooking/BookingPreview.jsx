@@ -17,8 +17,7 @@ import DOMPurify from "dompurify";
 
 import dayjs from "dayjs";
 import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
-import ActionButtons from "../../components/ui/ActionButtons";
-
+import ActionButtons from "../../components/ui/Button/ActionButtons";
 // -----------------------------
 // Helper Formatters
 // -----------------------------

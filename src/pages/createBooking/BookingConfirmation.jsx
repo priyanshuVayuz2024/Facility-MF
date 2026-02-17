@@ -28,8 +28,7 @@ import { setMultipleBookingFields } from "../../redux/slice/bookingCreateSlice";
 import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
 import { TimeRangeInput } from "../../components/ui/TimeRangeInput";
 import { DropdownSelect } from "../../components/ui/DropdownSelect";
-import ActionButtons from "../../components/ui/ActionButtons";
-
+import ActionButtons from "../../components/ui/Button/ActionButtons";
 
 
 
