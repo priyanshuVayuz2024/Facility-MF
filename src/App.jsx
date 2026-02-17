@@ -18,7 +18,7 @@ import BookingDetailPage from "./pages/bookingDetail";
 import SuspendFacility from "./pages/suspendFacility/SuspendFacility";
 import BookingListing from "./pages/listing/BookingListing/BookingListing";
 import FacilityListing from "./pages/listing/FacilityListing/FacilityListing";
-import SetFacilityRate from "./pages/setRate/setFacilityRate";
+import SetFacilityRate from "./pages/setRate/setFacilityRate.jsx";
 import RateLayout from "./pages/setRate/RateLayout";
 import RateCardSetup from "./pages/setRate/RateCardSetup";
 
