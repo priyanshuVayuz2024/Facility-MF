@@ -23,8 +23,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMultipleFacilityFormFields } from "../../redux/slice/facilityCreateSlice.js";
 import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup.jsx";
 import { DropdownSelect } from "../../components/ui/DropdownSelect.jsx";
-import ActionButtons from "../../components/ui/ActionButtons.jsx";
-
+import ActionButtons from "../../components/ui/Button/ActionButtons.jsx";
 export default function BasicDetails() {
     const dispatch = useDispatch();
     const facilityFormData = useSelector(state => state.facility);
