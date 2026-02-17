@@ -18,6 +18,9 @@ import BookingDetailPage from "./pages/bookingDetail";
 import SuspendFacility from "./pages/suspendFacility/SuspendFacility";
 import BookingListing from "./pages/listing/BookingListing/BookingListing";
 import FacilityListing from "./pages/listing/FacilityListing/FacilityListing";
+import SetFacilityRate from "./pages/setRate/setFacilityRate";
+import RateLayout from "./pages/setRate/RateLayout";
+import RateCardSetup from "./pages/setRate/RateCardSetup";
 
 function App() {
   const store = window.sharedStore;
@@ -57,6 +60,13 @@ function App() {
                 <Route path="booking-rules" element={<BookingRules />} />
                 <Route path="preview" element={<FacilityPreview />} />
               </Route>
+
+              <Route path="/set-facility-rate" element={<RateLayout />}>
+                <Route index element={<SetFacilityRate />} />
+                <Route path="basic-details" element={<SetFacilityRate />} />
+                <Route path="rate-card-setup" element={<RateCardSetup />} />
+              </Route>
+
               <Route path="/create-booking" element={<BookingCreateLayout />}>
                 <Route index element={<BookingDetail />} />
                 <Route path="details" element={<BookingDetail />} />

@@ -7,6 +7,7 @@ import { FormWrapper } from "../../components/ui/wrapper/form.jsx";
 import { basePath } from "../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFacilityForm } from "../../redux/slice/facilityCreateSlice.js";
+import { stepperSx } from "../../styles/stepperStyles.js";
 
 const steps = [
     { label: "Basic Details", path: "basic-details" },
@@ -79,73 +80,10 @@ export default function CreateLayout() {
             ) : (
                 <FormWrapper className="flex flex-col overflow-auto!">
                     {!isPreviewPage &&
-                        < Stepper
+                        <Stepper
                             nonLinear
                             activeStep={activeStep}
-                            sx={{
-                                width: "fit-content",
-                                paddingX: "4px",
-                                paddingTop: "16px",
-                                paddingBottom: "32px",
-                                "& .MuiStep-root": {
-                                    paddingLeft: "12px",
-                                    paddingRight: "12px",
-                                },
-                                "& .MuiStepIcon-root": {
-                                    color: "#EBEBEB",
-                                    "&.Mui-completed": {
-                                        color: "#4caf50",
-                                    },
-                                    "&.Mui-active": {
-                                        // backgroundColor: "#FBF5FF",
-                                        color: "#FBF5FF",
-                                        border: "1px solid #884EA7",
-                                        borderRadius: "50%",
-                                    },
-                                },
-                                "& .MuiStepLabel-label": {
-                                    fontSize: "16px",
-                                    fontWeight: 500,
-                                    color: "#ADADAD",
-                                    "&.Mui-active": {
-                                        color: "#884EA7",
-                                        fontWeight: "600",
-                                    },
-                                    "&.Mui-completed": {
-                                        color: "#121212",
-                                        fontWeight: "500",
-                                    },
-                                },
-                                "& .MuiStepLabel-iconContainer": {
-                                    paddingRight: "12px",
-                                },
-                                "& .MuiStepIcon-root.Mui-active .MuiStepIcon-text": {
-                                    color: "#884EA7",
-                                    fill: "#884EA7",
-                                    fontWeight: 500,
-                                },
-                                "& .MuiStepIcon-root.Mui-active.Mui-completed": {
-                                    color: "#4caf50 !important",
-                                    border: "none !important",
-                                    fontWeight: 500,
-                                },
-
-                                "& .MuiStepIcon-text": {
-                                    // color: "#884EA7",
-                                    fill: "#ADADAD",
-                                },
-                                "& .MuiStepConnector-lineHorizontal": {
-                                    width: "4px",
-
-                                    [theme.breakpoints.up("sm")]: {
-                                        width: "90px",
-                                    },
-
-                                    [theme.breakpoints.up("md")]: {
-                                        width: "121px",
-                                    },
-                                },
-                            }}
+                            sx={stepperSx}
                         >
                             {steps.map((s, index) => (
                                 <Step key={s.label} completed={completed.includes(index)}>

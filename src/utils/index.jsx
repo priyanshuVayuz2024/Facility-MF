@@ -110,6 +110,32 @@ export const facilityOptions = [
 ];
 
 // facility
+export const chargeTypeGroupOptions = [
+  { id: 1, name: "Prepaid" },
+  { id: 2, name: "Flat Rate" },
+  { id: 3, name: "Included With Maintenance" },
+  { id: 4, name: "Pay at Use" },
+  { id: 5, name: "Subscription " },
+];
+
+
+export const chargeTypeOptions = [
+  { id: 1, name: "Flat Rate" },
+  { id: 2, name: "Metered Hourly Rate" },
+  { id: 3, name: "Metered Daily Rate" },
+];
+
+
+export const chargeFacilityCategoryOptions = [
+  { id: 1, name: "Facility Usage" },
+  { id: 2, name: "Subscription / Membership" },
+  { id: 3, name: "Flat Rate Usage" },
+  { id: 4, name: "Deposit / Security" },
+  { id: 5, name: "Penalty / Fine" },
+
+
+];
+
 
 export const categoryOptions = [
   { id: 1, name: "Gym" },

@@ -26,8 +26,7 @@ import { MyEditor } from "../../components/MyEditor.jsx";
 import FilterPopup from "../../components/ui/filterPopup/FilterPopup.jsx";
 import { SelectBox } from "../../components/ui/SelectBox.jsx";
 import { DropdownSelect } from "../../components/ui/DropdownSelect.jsx";
-import ActionButtons from "../../components/ui/ActionButtons.jsx";
-
+import ActionButtons from "../../components/ui/Button/ActionButtons.jsx";
 export default function BookingDetail() {
     const dispatch = useDispatch();
     const bookingFormData = useSelector(state => state.booking);
