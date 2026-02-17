@@ -1,7 +1,7 @@
 import { Button, FormControl, FormLabel } from "@mui/material";
 import { LuChevronDown } from "react-icons/lu";
 
-export const DropdownSelect = ({ label, valueCount, placeholder, onClick }) => {
+export const DropdownSelect = ({ label, valueCount, placeholder, onClick, icon }) => {
     const hasValue = valueCount > 0;
 
     return (
@@ -19,7 +19,7 @@ export const DropdownSelect = ({ label, valueCount, placeholder, onClick }) => {
             >
                 {hasValue ? `${valueCount} Selected` : placeholder}
                 <span className="ml-auto text-[#884EA7]!">
-                    <LuChevronDown />
+                    {icon ? icon : <LuChevronDown />}
                 </span>
             </Button>
         </FormControl>

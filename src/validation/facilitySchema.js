@@ -7,16 +7,16 @@ export const facilityBasicDetailsSchema = Yup.object().shape({
         .max(100, "Maximum 100 characters allowed")
         .min(2, "Name should be minimum 2 characters"),
 
-    category: Yup.array()
-        .min(1, "Select at least one Category")
+    category: Yup.object()
+        .nullable()
         .required("Facility category is required"),
 
     community: Yup.array()
         .min(1, "Select at least one community")
         .required("Community selection required"),
 
-    accessibleTo: Yup.object()
-        .nullable()
+    accessibleTo: Yup.array()
+        .min(1, "Select at least one access level")
         .required("Access level required"),
 
     intercom: Yup.string()
