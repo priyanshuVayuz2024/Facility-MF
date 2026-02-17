@@ -4,7 +4,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { MetaTitle } from "../../components/metaTitle";
 import { BreadCrumbCustom } from "../../components/ui/breadCrumb.jsx";
 import { FormWrapper } from "../../components/ui/wrapper/form.jsx";
-import { basePath } from "../../utils/index.jsx";
+import { basePath, stepperCSS } from "../../utils/index.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFacilityForm } from "../../redux/slice/facilityCreateSlice.js";
 import { stepperSx } from "../../styles/stepperStyles.js";
@@ -83,7 +83,8 @@ export default function CreateLayout() {
                         <Stepper
                             nonLinear
                             activeStep={activeStep}
-                            sx={stepperSx}
+                            sx={stepperCSS(theme)}
+
                         >
                             {steps.map((s, index) => (
                                 <Step key={s.label} completed={completed.includes(index)}>

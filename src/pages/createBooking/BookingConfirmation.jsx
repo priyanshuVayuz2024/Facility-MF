@@ -28,6 +28,7 @@ import { setMultipleBookingFields } from "../../redux/slice/bookingCreateSlice";
 import SimpleSelectorPopup from "../../components/ui/simpleSelectorPopup";
 import { TimeRangeInput } from "../../components/ui/TimeRangeInput";
 import { DropdownSelect } from "../../components/ui/DropdownSelect";
+import ActionButtons from "../../components/ui/ActionButtons";
 
 
 
@@ -62,7 +63,7 @@ export default function BookingConfirmation() {
         formState: { errors, isValid },
     } = useForm({
         defaultValues: reduxData,
-        resolver: yupResolver(bookingScheduleSchema),
+        // resolver: yupResolver(bookingScheduleSchema),
         mode: "onChange",
     });
 
@@ -361,14 +362,21 @@ export default function BookingConfirmation() {
             </Box>
 
             {/* BUTTONS */}
-            <div className="flex justify-between border-t border-[#EDEDED] pt-4">
-                <Button variant="outlined" onClick={() => setCancelDialog(true)}>Cancel</Button>
+            <ActionButtons
+                startText="Cancel"
+                onStart={() => setCancelDialog(true)}
+                backText="Back"
+                onBack={() => goToStep(0)}
+                nextText="Preview"
+                onNext={handleSubmit(onSubmit)}
+            // nextProps={{ disabled: !isValid }}
+            />
 
-                <Box className="flex gap-2">
-                    <Button variant="outlined" onClick={() => goToStep(0)}>Back</Button>
-                    <Button variant="contained" disabled={!isValid} onClick={handleSubmit(onSubmit)}>Preview</Button>
-                </Box>
-            </div>
+
+
+
+
+
 
             {/* CANCEL CONFIRM */}
             <ConfirmDialog

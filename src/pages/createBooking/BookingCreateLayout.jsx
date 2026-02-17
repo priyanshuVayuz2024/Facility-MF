@@ -71,8 +71,8 @@ export default function BookingCreateLayout() {
             {/* Breadcrumb and Page Title */}
             <BreadCrumbCustom
                 fixed={true}
-                links={[{ label: "Booking List", to: `${basePath}/` }]}
-                pageTitle={isPreviewPage ? "Preview Booking" : "Add New Booking"}
+                links={isPreviewPage ? [{ label: "Facilities", to: `${basePath}/` }, { label: "Add New Booking", to: `${basePath}/create-booking/confirmation` }] : [{ label: "Facilities", to: `${basePath}/` }]}
+                pageTitle={isPreviewPage ? "Preview Booking Details" : "Add New Booking"}
                 description={!isPreviewPage && "Add a new booking for this facility"}
                 backLink={isPreviewPage && `${basePath}/create-booking/confirmation`}
 
