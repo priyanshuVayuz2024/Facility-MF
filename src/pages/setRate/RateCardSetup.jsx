@@ -23,7 +23,7 @@ import {
   chargeTypeGroupOptions,
   chargeTypeOptions,
   communityOptions,
-  stripHtml,
+  stripHtml
 } from "../../utils/index.jsx";
 import { LuBuilding, LuChevronDown } from "react-icons/lu";
 import crossIcon from "../../../public/icons/crossIcon.svg";
@@ -219,84 +219,78 @@ export default function RateCardSetup() {
         )}
       />
 
-<Controller
-  name="rate"
-  control={control}
-  render={({ field }) => (
-    <Box className="flex flex-col gap-2">
-      <FormLabel required className="formLabels">
-        Rate
-      </FormLabel>
+      <Controller
+        name="rate"
+        control={control}
+        render={({ field }) => (
+          <Box className="flex flex-col gap-2">
+            <FormLabel required className="formLabels">
+              Rate
+            </FormLabel>
 
-      <Box className="relative">
-        <TextField
-          {...field}
-          placeholder="00.00"
-          inputMode="decimal"
-          slotProps={{
-            htmlInput: {
-              maxLength: 10,
-            },
-          }}
-          sx={{
-            "& .MuiInputBase-root": {
-              paddingLeft: "12px",
-            },
-            "& .MuiInputBase-input": {
-              paddingLeft: "2.5rem",
-            },
-          }}
-          InputProps={{
-            startAdornment: (
-              <div className="flex items-center justify-center w-10 h-10 text-gray-500">
-                <HiCurrencyRupee className="w-5 h-5" />
-              </div>
-            ),
-          }}
-          onKeyDown={(e) => {
-            const allowedKeys = [
-              "Backspace",
-              "Delete",
-              "ArrowLeft",
-              "ArrowRight",
-              "Tab",
-            ];
+            <Box className="relative">
+              <TextField
+                {...field}
+                placeholder="00.00"
+                inputMode="decimal"
+                slotProps={{
+                  htmlInput: {
+                    maxLength: 10,
+                  },
+                }}
+                sx={{
+                  "& .MuiInputBase-root": {
+                    paddingLeft: "12px",
+                  },
+                  "& .MuiInputBase-input": {
+                    paddingLeft: "2.5rem",
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <div className="flex items-center justify-center w-10 h-10 text-gray-500">
+                      <HiCurrencyRupee className="w-5 h-5" />
+                    </div>
+                  ),
+                }}
+                onKeyDown={(e) => {
+                  const allowedKeys = [
+                    "Backspace",
+                    "Delete",
+                    "ArrowLeft",
+                    "ArrowRight",
+                    "Tab",
+                  ];
 
-            if (allowedKeys.includes(e.key)) return;
+                  if (allowedKeys.includes(e.key)) return;
 
-            // allow numbers
-            if (/^[0-9]$/.test(e.key)) return;
+                  if (/^[0-9]$/.test(e.key)) return;
 
-            // allow one decimal
-            if (e.key === "." && !field.value?.includes(".")) return;
+                  if (e.key === "." && !field.value?.includes(".")) return;
 
-            // block everything else
-            e.preventDefault();
-          }}
-          /* -------- Handle typing & paste -------- */
-          onChange={(e) => {
-            let value = e.target.value;
+                  e.preventDefault();
+                }}
+                onChange={(e) => {
+                  let value = e.target.value;
 
-            // remove non-numeric except dot
-            value = value.replace(/[^0-9.]/g, "");
+                  value = value.replace(/[^0-9.]/g, "");
 
-            // allow only one dot
-            const parts = value.split(".");
-            if (parts.length > 2) {
-              value = parts[0] + "." + parts[1];
-            }
+                  const parts = value.split(".");
+                  if (parts.length > 2) {
+                    value = parts[0] + "." + parts[1];
+                  }
 
-            field.onChange(value);
-          }}
-        />
-      </Box>
+                  field.onChange(value);
+                }}
+              />
+            </Box>
 
-      {errors.rate && (
-        <FormHelperText error>{errors.rate.message}</FormHelperText>
-      )}
-    </Box>
-  )}
-/>
+            {errors.rate && (
+              <FormHelperText error>{errors.rate.message}</FormHelperText>
+            )}
+          </Box>
+        )}
+      />
       {/* Buttons */}
       <div className="flex  gap-3 ">
         <div className="flex justify-start w-fit ">
